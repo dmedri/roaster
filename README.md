@@ -2,9 +2,12 @@
 
 Check R updates and build sources
 
-## Informations
+## Introduction
 
-This tool is a bash prototype with some notable features:
+This project is an attempt to design new deployments of R and
+add new admin utilities.
+
+Since the early bash prototypes there are some notable features:
 
 * check info about the latest R stable release;
 * show the status of your (system) R installations;
