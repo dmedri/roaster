@@ -19,12 +19,13 @@ echo -e "\n\e[32mRoaster\e[0m - Check R updates and build sources."
 echo -e "Copyright 2019 Daniele Medri - GNU LGPL 2.1+\n"
 echo -e "Use --help for the available options.\n"
 
-# check programs
-command -v awk   >/dev/null 2>&1 || { echo >&2 "'awk'   (required)"; exit; }
-command -v cat   >/dev/null 2>&1 || { echo >&2 "'cat'   (required)"; exit; }
-command -v tar   >/dev/null 2>&1 || { echo >&2 "'tar'   (required)"; exit; }
-command -v wget  >/dev/null 2>&1 || { echo >&2 "'wget'  (required)"; exit; }
-command -v grep  >/dev/null 2>&1 || { echo >&2 "'grep'  (required)"; exit; }
+# checks for needed programs
+command -v awk   >/dev/null 2>&1 || { echo >&2 "'awk'  (required)"; exit; }
+command -v cat   >/dev/null 2>&1 || { echo >&2 "'cat'  (required)"; exit; }
+command -v tar   >/dev/null 2>&1 || { echo >&2 "'tar'  (required)"; exit; }
+command -v wget  >/dev/null 2>&1 || { echo >&2 "'wget' (required)"; exit; }
+command -v grep  >/dev/null 2>&1 || { echo >&2 "'grep' (required)"; exit; }
+command -v sudo  >/dev/null 2>&1 || { echo >&2 "'sudo' (required)"; exit; }
 
 # Check Linux distribution
 DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
