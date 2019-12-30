@@ -60,18 +60,19 @@ function check-status {
 
 # Build init
 function R-build-init {
-	# Installing required includes
-	function check-requirements {
+	# Checks and helpful tips about required packages
+	function check-packages {
 		if [[ "$DISTRO_OS"=="Debian GNU/Linux" ]]; then
-			echo -e "Installing needed packages to build."
+			echo -e "\n$DISTRO_OS"
+			echo -e "Installing needed packages to build.\n"
 			sudo apt-get build-dep r-base --yes --quiet
 			sudo apt-get install build-essential --yes --quiet
 		else
-			echo "Unknown Linux distribution."
+			echo -e "\nUnknown Linux distribution.\n"
 		fi
 	}
 
-	# Checks and downloads
+	# Check latest release and download it
 	function download-latest {
 		cd $RDIR/src
 		if [[ ! -d "R-$VERLATEST" ]]; then
@@ -90,7 +91,7 @@ function R-build-init {
 	if [[ ! -d $RDIR ]]; then
 		mkdir -p $RDIR/src/
 	fi
-	check-requirements
+	check-packages
 	download-latest
 }
 
