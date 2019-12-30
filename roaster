@@ -4,7 +4,7 @@
 MIRROR="https://cloud.r-project.org"
 OPTION='--without-recommended-packages'
 
-#################### don't touch below this line ####################
+########## don't change anything below this line ##########
 
 # Program settings
 RDIR="$HOME/RVE"
@@ -13,7 +13,6 @@ SRCF="R-latest.tar.gz"
 SRCD="VERSION-INFO.dcf"
 RLIB="$RDIR/lib/R/library/"
 REQU="$RDIR/src/requirements.txt"
-#####################################################################
 
 # Header
 echo -e "\n\e[32mRoaster\e[0m - Check R updates and build sources."
