@@ -115,7 +115,7 @@ function R-build-virtualenv {
 function R-build_standard {
 	cd $RDIR/src/R-$VERLATEST && ./configure \
 		$OPTION && make \
-		&& make install \
+		&& sudo make install \
 		&& make clean
 	echo -e "\n\e[32mBuild done. Trying command 'R'...\e[0m\n"
 	cd $HOME && R
