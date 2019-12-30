@@ -13,24 +13,24 @@ This tool is a bash prototype with some notable features:
 	* a virtual environment (flat-style) under user space.
 ## Usage
 
-Question: How many R installations are available in my system?
-Question: Are there some updated R releases?
+* Question: How many R installations are available in my system?
+* Question: Are there some updated R releases?
 
-'''
+```bash
 $ roaster --check-status
-'''
+```
 
-Question: What should I do to install latest R release in my system?
+* Question: What should I do to install latest R release in my system?
 
-'''
+```bash
 $ roaster --build-standard
-'''
+```
 
-Question: What should I do to install latest R release as a virtual environment
+* Question: What should I do to install latest R release as a virtual environment
 in userspace?
 
-'''
+```bash
 $ roaster --build-virtualenv
-'''
+```
 
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
