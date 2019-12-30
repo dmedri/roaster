@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+
+# Customizable settings
+MIRROR="https://cloud.r-project.org"
+OPTION='--without-recommended-packages'
+
+#################### don't touch below this line ####################
+
+# Program settings
+RDIR="$HOME/RVE"
+SRCU="$MIRROR/src/base/"
+SRCF="R-latest.tar.gz"
+SRCD="VERSION-INFO.dcf"
+RLIB="$RDIR/lib/R/library/"
+REQU="$RDIR/src/requirements.txt"
+#####################################################################
+
+# Header
+echo -e "\n\e[32mRoaster\e[0m - Check R updates and build sources."
+echo -e "Copyright 2019 Daniele Medri - GNU LGPL 2.1+\n"
+echo -e "Use --help for the available options.\n"
+
+# check programs
+command -v awk   >/dev/null 2>&1 || { echo >&2 "'awk'   (required)"; exit; }
+command -v cat   >/dev/null 2>&1 || { echo >&2 "'cat'   (required)"; exit; }
+command -v tar   >/dev/null 2>&1 || { echo >&2 "'tar'   (required)"; exit; }
+command -v wget  >/dev/null 2>&1 || { echo >&2 "'wget'  (required)"; exit; }
+command -v grep  >/dev/null 2>&1 || { echo >&2 "'grep'  (required)"; exit; }
+
+# Check Linux distribution
+DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
+
+# Check latest R release
+VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
+
+# Check latest version
+function check-status {
+	echo -e "\nR:"
+
+	# check online
+	echo -e "\t\e[32m$VERLATEST\e[0m\tAvailable online"
+
+	# Check for R local
+	CHECKR=$(command -v R)
+	if [[ $CHECKR != "" && -e $CHECKR ]]; then
+		VERR=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$VERR\e[0m\t(standard installation $CHECKR)"
+	fi
+	
+	# Check for R Virtual Environment
+	CHECKRVE=$(command -v RVE)
+	if [[ $CHECKRVE != "" && -e $CHECKRVE ]]; then
+		VERRVE=$(RVE --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$VERRVE\e[0m\t(virtualenv $CHECKRVE)\n"
+	elif [[ -f $RDIR/bin/RVE ]]; then
+		VERRVE=$($RDIR/bin/RVE --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$VERRVE\e[0m\t(virtualenv $RDIR/bin not in PATH)\n"
+	fi
+}
+
+# Build init
+function R-build-init {
+	# Installing required includes
+	function check-requirements {
+		if [[ "$DISTRO_OS"=="Debian GNU/Linux" ]]; then
+			echo -e "Installing needed packages to build."
+			sudo apt-get build-dep r-base --yes --quiet
+			sudo apt-get install build-essential --yes --quiet
+		else
+			echo "Unknown Linux distribution."
+		fi
+	}
+
+	# Checks and downloads
+	function download-latest {
+		cd $RDIR/src
+		if [[ ! -d "R-$VERLATEST" ]]; then
+			if [[ -f $RDIR/src/$SRCF ]]; then
+				rm $SRCF
+			fi
+			wget $SRCU/$SRCF --quiet && tar zxvf $SRCF
+		else
+			echo -e "Latest R release already available."
+			echo -e "Source code in $RDIR/src/R-$VERLATEST"
+			echo -e "Exit."
+			exit
+		fi
+	}
+
+	if [[ ! -d $RDIR ]]; then
+		mkdir -p $RDIR/src/
+	fi
+	check-requirements
+	download-latest
+}
+
+# Option --build-virtualenv
+function R-build-virtualenv {
+	cd $RDIR/src/R-$VERLATEST && ./configure \
+		--prefix=$RDIR \
+		--exec-prefix=$RDIR \
+		--disable-rpath $OPTION && make \
+		&& make install \
+		&& make clean
+	if [[ -f $RDIR/bin/R ]]; then
+		mv $RDIR/bin/R $RDIR/bin/RVE
+		export PATH="$PATH:$RDIR/bin/"
+	fi
+	echo -e "\n\e[32mBuild done. Trying command 'RVE'...\e[0m"
+	echo -e "(Please, add '$RDIR/bin/' to your PATH)\n"
+	cd $HOME && RVE
+}
+
+# Option --build-standard
+function R-build_standard {
+	cd $RDIR/src/R-$VERLATEST && ./configure \
+		$OPTION && make \
+		&& make install \
+		&& make clean
+	echo -e "\n\e[32mBuild done. Trying command 'R'...\e[0m\n"
+	cd $HOME && R
+}
+
+# Help menu
+while [[ -n "$1" ]]; do
+	case "$1" in
+	--check-status) echo "Check available R releases."
+		check-status
+		;;
+	--build-standard) echo "Build R standard setup in system."
+		R-build-init
+		R-build-standard
+		;;
+	--build-virtualenv) echo "Build R as virtual environment."
+		R-build-init
+		R-build-virtualenv
+		;;
+	*)
+	 	echo -e "\nInformations:\n"
+		echo -e "\t--check-status   \tCheck available R releases."
+	 	echo -e "\nBuild latest R release:\n"
+		echo -e "\t--build-standard  \tStandard setup, in system."
+		echo -e "\t--build-virtualenv\tStandard setup, as virtual environment."
+	 	echo -e "\nBuild options (hardcoded):\n"
+		echo -e "\t mirror: $MIRROR"
+		echo -e "\toptions: $OPTION"
+	 	;;
+	esac
+	shift
+done
