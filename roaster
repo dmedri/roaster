@@ -2,7 +2,8 @@
 
 # Customizable settings
 MIRROR="https://cloud.r-project.org"
-OPTION='--without-recommended-packages'
+OPTSTD='--without-recommended-packages'
+OPTRVE='--without-recommended-packages'
 
 ########## don't change anything below this line ##########
 
@@ -100,7 +101,7 @@ function R-build-virtualenv {
 	cd $RDIR/src/R-$VERLATEST && ./configure \
 		--prefix=$RDIR \
 		--exec-prefix=$RDIR \
-		--disable-rpath $OPTION && make \
+		--disable-rpath $OPTRVE && make \
 		&& make install \
 		&& make clean
 	if [[ -f $RDIR/bin/R ]]; then
@@ -115,7 +116,7 @@ function R-build-virtualenv {
 # Option --build-standard
 function R-build_standard {
 	cd $RDIR/src/R-$VERLATEST && ./configure \
-		$OPTION && make \
+		$OPTSTD && make \
 		&& sudo make install \
 		&& make clean
 	echo -e "\n\e[32mBuild done. Trying command 'R'...\e[0m\n"
@@ -143,8 +144,9 @@ while [[ -n "$1" ]]; do
 		echo -e "\t--build-standard  \tStandard setup, in system."
 		echo -e "\t--build-virtualenv\tStandard setup, as virtual environment."
 	 	echo -e "\nBuild options (hardcoded):\n"
-		echo -e "\t mirror: $MIRROR"
-		echo -e "\toptions: $OPTION"
+		echo -e "\t    mirror: $MIRROR"
+		echo -e "\t  standard: $OPTSTD"
+		echo -e "\tvirtualenv: $OPTRVE"
 	 	;;
 	esac
 	shift
