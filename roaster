@@ -8,12 +8,12 @@ OPTRVE='--without-recommended-packages'
 ########## don't change anything below this line ##########
 
 # Program settings
-RDIR="$HOME/RVE"
+#RDIR="$HOME/RVE"
+RVE="$HOME/RVE"
+RCO="$HOME/.roaster"
 SRCU="$MIRROR/src/base/"
 SRCF="R-latest.tar.gz"
 SRCD="VERSION-INFO.dcf"
-RLIB="$RDIR/lib/R/library/"
-REQU="$RDIR/src/requirements.txt"
 
 # Header
 echo -e "\n\e[32mRoaster\e[0m - Check R updates and build sources."
@@ -34,6 +34,12 @@ DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
 # Check latest R release
 VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
 
+# Create roaster working directories
+if [[ ! -d $RCO ]]; then
+	mkdir -p $RCO/{src,log}
+	echo -e "MIRROR=''\nOPTSTD=''\nOPTRVE=''" > $RCO/config
+fi
+
 # Check latest version
 function check-status {
 	echo -e "\nR:"
@@ -53,9 +59,9 @@ function check-status {
 	if [[ $CHECKRVE != "" && -e $CHECKRVE ]]; then
 		VERRVE=$(RVE --version | awk '$1=="R" && $2=="version" {print $3}')
 		echo -e "\t\e[32m$VERRVE\e[0m\t(virtualenv $CHECKRVE)\n"
-	elif [[ -f $RDIR/bin/RVE ]]; then
-		VERRVE=$($RDIR/bin/RVE --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$VERRVE\e[0m\t(virtualenv $RDIR/bin not in PATH)\n"
+	elif [[ -f $RVE/bin/RVE ]]; then
+		VERRVE=$($RVE/bin/RVE --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$VERRVE\e[0m\t(virtualenv $RVE/bin not in PATH)\n"
 	fi
 }
 
@@ -75,47 +81,49 @@ function R-build-init {
 
 	# Check latest release and download it
 	function download-latest {
-		cd $RDIR/src
+		cd $RCO/src
 		if [[ ! -d "R-$VERLATEST" ]]; then
-			if [[ -f $RDIR/src/$SRCF ]]; then
+			if [[ -f $RCO/src/$SRCF ]]; then
 				rm $SRCF
 			fi
 			wget $SRCU/$SRCF --quiet && tar zxvf $SRCF
 		else
 			echo -e "Latest R release already available."
-			echo -e "Source code in $RDIR/src/R-$VERLATEST"
+			echo -e "Source code in $RCO/src/R-$VERLATEST"
 			echo -e "Exit."
 			exit
 		fi
 	}
 
-	if [[ ! -d $RDIR ]]; then
-		mkdir -p $RDIR/src/
-	fi
 	check-packages
 	download-latest
 }
 
 # Option --build-virtualenv
 function R-build-virtualenv {
-	cd $RDIR/src/R-$VERLATEST && ./configure \
-		--prefix=$RDIR \
-		--exec-prefix=$RDIR \
+	# Create virtualenv directory
+	if [[ ! -d $RVE ]]; then
+		mkdir -p $RVE
+	fi
+
+	cd $RCO/src/R-$VERLATEST && ./configure \
+		--prefix=$RVE \
+		--exec-prefix=$RVE \
 		--disable-rpath $OPTRVE && make \
 		&& make install \
 		&& make clean
-	if [[ -f $RDIR/bin/R ]]; then
-		mv $RDIR/bin/R $RDIR/bin/RVE
-		export PATH="$PATH:$RDIR/bin/"
+	if [[ -f $RVE/bin/R ]]; then
+		mv $RVE/bin/R $RVE/bin/RVE
+		export PATH="$PATH:$RVE/bin/"
 	fi
 	echo -e "\n\e[32mBuild done. Trying command 'RVE'...\e[0m"
-	echo -e "(Please, add '$RDIR/bin/' to your PATH)\n"
+	echo -e "(Please, add '$RVE/bin/' to your PATH)\n"
 	cd $HOME && RVE
 }
 
 # Option --build-standard
 function R-build_standard {
-	cd $RDIR/src/R-$VERLATEST && ./configure \
+	cd $RCO/src/R-$VERLATEST && ./configure \
 		$OPTSTD && make \
 		&& sudo make install \
 		&& make clean
