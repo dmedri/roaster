@@ -16,9 +16,9 @@ SRCF="R-latest.tar.gz"
 SRCD="VERSION-INFO.dcf"
 
 # Header
-echo -e "\n\e[32mRoaster\e[0m - Check R updates and build sources."
-echo -e "Copyright 2019 Daniele Medri - GNU LGPL 2.1+\n"
-echo -e "Use --help for the available options.\n"
+echo -e "\e[32mRoaster\e[0m - Check R updates and build sources."
+echo -e "Copyright 2019 Daniele Medri - GNU LGPL 2.1+"
+echo -e "Use 'roaster --help' for the available options.\n"
 
 # checks for needed programs
 command -v awk   >/dev/null 2>&1 || { echo >&2 "'awk'  (required)"; exit; }
@@ -36,12 +36,12 @@ VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
 
 # Create roaster working directories
 if [[ ! -d $RCO ]]; then
-	mkdir -p $RCO/{src,log}
-	echo -e "MIRROR='$MIRROR'\n \
-		 OPTSTD='$OPTSTD'\n \
-		 OPTRVE='$OPTRVE'" > $RCO/config
-elif [[ -f $RCO/config ]]; then
-	#
+	mkdir -p $RCO/{src,logs,checks}
+	echo -e "MIRROR='$MIRROR'\n" \
+		"OPTSTD='$OPTSTD'\n" \
+		"OPTRVE='$OPTRVE'" > $RCO/config
+#elif [[ -f $RCO/config ]]; then
+#	# wait	
 fi
 
 # Check latest version
@@ -74,17 +74,23 @@ function R-build-init {
 	# Checks and helpful tips about required packages
 	function check-packages {
 		if [[ "$DISTRO_OS"=="Debian GNU/Linux" ]]; then
-			echo -e "\n$DISTRO_OS"
-			echo -e "Installing needed packages to build.\n"
-			sudo apt-get build-dep r-base --yes --quiet
-			sudo apt-get install build-essential --yes --quiet
+			if [[ ! -f $RCO/checks/required-packages ]]; then
+				echo -e "\n$DISTRO_OS"
+				echo -e "Installing needed packages to build.\n"
+				sudo apt-get build-dep r-base --yes --quiet
+				sudo apt-get install build-essential --yes --quiet
+				echo $(date) > $RCO/checks/required-packages
+			else
+				echo -e "Required packages already checked."
+				echo -e "(remove $RCO/checks/required-packages to restore)\n"
+			fi
 		else
 			echo -e "\nUnknown Linux distribution.\n"
 		fi
 	}
 
 	# Check latest release and download it
-	function download-latest {
+	function download-latest-stable {
 		cd $RCO/src
 		if [[ ! -d "R-$VERLATEST" ]]; then
 			if [[ -f $RCO/src/$SRCF ]]; then
@@ -92,15 +98,13 @@ function R-build-init {
 			fi
 			wget $SRCU/$SRCF --quiet && tar zxvf $SRCF
 		else
-			echo -e "Latest R release already available."
-			echo -e "Source code in $RCO/src/R-$VERLATEST"
-			echo -e "Exit."
-			exit
+			echo -e "\nLatest R release already available."
+			echo -e "(sources in $RCO/src/R-$VERLATEST)\n"
 		fi
 	}
 
 	check-packages
-	download-latest
+	download-latest-stable
 }
 
 # Option --build-virtualenv
@@ -120,19 +124,26 @@ function R-build-virtualenv {
 		mv $RVE/bin/R $RVE/bin/RVE
 		export PATH="$PATH:$RVE/bin/"
 	fi
-	echo -e "options(prompt='(RVE)> ')" > $RVE/.RProfile
+	echo -e "local({\n\toptions(prompt='(RVE)> ')\n})" > $RVE/.RProfile
 	echo -e "\n\e[32mBuild done. Trying command 'RVE'...\e[0m"
 	echo -e "(Please, add '$RVE/bin/' to your PATH)\n"
 	cd $HOME && RVE
 }
 
 # Option --build-standard
-function R-build_standard {
-	cd $RCO/src/R-$VERLATEST && ./configure \
-		$OPTSTD && make \
-		&& sudo make install \
-		&& make clean
-	echo -e "\n\e[32mBuild done. Trying command 'R'...\e[0m\n"
+function R-build-standard {
+	cd $RCO/src/R-$VERLATEST && ./configure	$OPTSTD && make
+	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+	while true; do
+		read -p "Build: 'make' done. Install now? (y/n) " yn
+		case $yn in
+			[yY]* ) sudo make install && make clean; break;;
+			[nN]* ) echo -e "\nBrowse the code and 'sudo make install'.\n"; exit;;
+			* ) echo "Please, answer y/n.";;
+		esac
+	done
+	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+	echo -e "\n\e[32mBuild: 'make install' done. Trying command 'R'...\e[0m\n"
 	cd $HOME && R
 }
 
@@ -151,12 +162,12 @@ while [[ -n "$1" ]]; do
 		R-build-virtualenv
 		;;
 	*)
-	 	echo -e "\nInformations:\n"
+	 	echo -e "Informations:"
 		echo -e "\t--check-status   \tCheck available R releases."
-	 	echo -e "\nBuild latest R release:\n"
+	 	echo -e "\nBuild latest R release:"
 		echo -e "\t--build-standard  \tStandard setup, in system."
 		echo -e "\t--build-virtualenv\tStandard setup, as virtual environment."
-	 	echo -e "\nBuild options (hardcoded):\n"
+	 	echo -e "\nBuild options (hardcoded):"
 		echo -e "\t    mirror: $MIRROR"
 		echo -e "\t  standard: $OPTSTD"
 		echo -e "\tvirtualenv: $OPTRVE"

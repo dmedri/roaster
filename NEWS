@@ -1,7 +1,6 @@
 CHANGES WITH ...
 	* reworked configuration directories;
-	* functionality to retrieve mirrors list;
-	* code refinements.
+	* build-standard: interaction before install
 
 CHANGES WITH V0.1
 
