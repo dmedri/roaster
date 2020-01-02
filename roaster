@@ -37,7 +37,11 @@ VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
 # Create roaster working directories
 if [[ ! -d $RCO ]]; then
 	mkdir -p $RCO/{src,log}
-	echo -e "MIRROR=''\nOPTSTD=''\nOPTRVE=''" > $RCO/config
+	echo -e "MIRROR='$MIRROR'\n \
+		 OPTSTD='$OPTSTD'\n \
+		 OPTRVE='$OPTRVE'" > $RCO/config
+elif [[ -f $RCO/config ]]; then
+	#
 fi
 
 # Check latest version
@@ -116,6 +120,7 @@ function R-build-virtualenv {
 		mv $RVE/bin/R $RVE/bin/RVE
 		export PATH="$PATH:$RVE/bin/"
 	fi
+	echo -e "options(prompt='(RVE)> ')" > $RVE/.RProfile
 	echo -e "\n\e[32mBuild done. Trying command 'RVE'...\e[0m"
 	echo -e "(Please, add '$RVE/bin/' to your PATH)\n"
 	cd $HOME && RVE
