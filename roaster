@@ -14,6 +14,7 @@ RCO="$HOME/.roaster"
 SRCU="$MIRROR/src/base/"
 SRCF="R-latest.tar.gz"
 SRCD="VERSION-INFO.dcf"
+CRANM="CRAN_mirrors.csv"
 
 # Header
 echo -e "\e[32mRoaster\e[0m - Check R updates and build sources."
@@ -29,20 +30,49 @@ command -v grep  >/dev/null 2>&1 || { echo >&2 "'grep' (required)"; exit; }
 command -v sudo  >/dev/null 2>&1 || { echo >&2 "'sudo' (required)"; exit; }
 
 # Check Linux distribution
-DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
+function check-os-info {
+	DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
+}
+check-os-info
 
 # Check latest R release
-VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
+function check-r-stable-latest {
+	VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
+}
+check-r-stable-latest
 
-# Create roaster working directories
-if [[ ! -d $RCO ]]; then
-	mkdir -p $RCO/{src,logs,checks}
-	echo -e "MIRROR='$MIRROR'\n" \
-		"OPTSTD='$OPTSTD'\n" \
-		"OPTRVE='$OPTRVE'" > $RCO/config
-#elif [[ -f $RCO/config ]]; then
-#	# wait	
-fi
+# Create a new config file
+function roaster-config-add {
+	echo "Roaster: adding config file..."
+	echo -e "MIRROR=\"$MIRROR\"\nOPTSTD=\"$OPTSTD\"\nOPTRVE=\"$OPTRVE\"" > $RCO/config
+}
+
+# Convert CRAN mirror .csv in text standard
+function roaster-infos-mirrors-conv {
+	if [[ -f $RCO/infos/$CRANM ]]; then
+		echo -e "# $(date)\n" > $RCO/infos/MIRRORS && \
+		cat $RCO/infos/$CRANM | awk -F "\"*,\"*" '{print $2,$4}' | sort | uniq >> $RCO/infos/MIRRORS
+	else
+		echo -e "Missed file."
+	fi
+}
+
+# Create an updated mirrors file
+function roaster-infos-mirrors-get {
+	echo "Roaster: adding MIRRORS file..."
+	wget -O- -q $MIRROR/$CRANM -O $RCO/infos/$CRANM && \
+	roaster-infos-mirrors-conv
+}
+
+# Check roaster working directories
+function check-roaster-working-dirs {
+	if [[ ! -d $RCO ]]; then
+		mkdir -p $RCO/{src,logs,checks,infos}
+		roaster-config-add
+		roaster-infos-mirrors-get
+	fi
+}
+check-roaster-working-dirs
 
 # Check latest version
 function check-status {
