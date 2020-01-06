@@ -72,10 +72,10 @@ function roaster-infos-mirrors-get {
 }
 
 # Create rve.Profile for virtual environments
-function roaster-infos-rve-rprofile {
-	echo "Roaster: adding rve.RProfile..."
-	echo -e "options(repos=structure(c(CRAN=\"$MIRROR\")))" > $RCO/infos/rve.RProfile
-}
+#function roaster-infos-rve-rprofile {
+#	echo "Roaster: adding rve.RProfile..."
+#	echo -e "options(repos=structure(c(CRAN=\"$MIRROR\")))" > $RCO/infos/rve.RProfile
+#}
 
 # Check roaster working directories
 function check-roaster-working-dirs {
@@ -83,7 +83,7 @@ function check-roaster-working-dirs {
 		mkdir -p $RCO/{src,logs,checks,infos}
 		roaster-config-add
 		roaster-infos-mirrors-get
-		roaster-infos-rve-rprofile
+#		roaster-infos-rve-rprofile
 	fi
 }
 check-roaster-working-dirs
@@ -156,6 +156,16 @@ function R-build-virtualenv {
 	# Create virtualenv directory
 	if [[ ! -d $RVE ]]; then
 		mkdir -p $RVE/workspace
+	else
+		echo -e "\e[32mThe directory ~/RVE already exist.\e[0m"
+		while true; do
+			read -p "Backup the old and go ahead with the new one? (y/n) " yn
+			case $yn in
+				[yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d-%H%M%S"); break;;
+				[nN]* ) echo -e "Ok, bye."; exit;;
+				* ) echo "Please, answer y/n.";;
+			esac
+		done
 	fi
 
 	cd $RCO/src/R-$VERLATEST && ./configure \
@@ -168,7 +178,7 @@ function R-build-virtualenv {
 		mv $RVE/bin/R $RVE/bin/RVE
 		export PATH="$PATH:$RVE/bin/"
 	fi
-	echo -e "local({\n\toptions(prompt='(RVE)> ')\n})" > $RVE/.RProfile
+#	echo -e "local({\n\toptions(prompt='(RVE)> ')\n})" > $RVE/.RProfile
 	echo -e "\n\e[32mBuild done. Trying command 'RVE'...\e[0m"
 	echo -e "(Please, add '$RVE/bin/' to your PATH)\n"
 	cd $HOME && RVE
@@ -191,6 +201,26 @@ function R-build-standard {
 	cd $HOME && R
 }
 
+# Show build options
+function R-build-ask {
+	echo -e "R:"
+	echo -e "\t$VERLATEST"
+	echo -e "Os:"
+	echo -e "\t$DISTRO_OS"
+	echo -e "Build:"
+	echo -e "\t$BTYPE"
+	echo -e "\t$BOPTS"
+	echo -e "\n"
+	while true; do
+		read -p "Build: ready to go? (y/n) " yn
+		case $yn in
+			[yY]* ) echo "Ok, let's start..."; break;;
+			[nN]* ) echo "Ok, bye."; exit;;
+			* ) echo "Please, aswer y/n.";;
+		esac
+	done
+}
+
 # Help menu
 while [[ -n "$1" ]]; do
 	case "$1" in
@@ -198,11 +228,17 @@ while [[ -n "$1" ]]; do
 		check-status
 		;;
 	--build-standard) echo "Build R standard setup in system."
+		BTYPE="standard (in system)"
+		BOPTS="$OPTSTD"
 		R-build-init
+		R-build-ask
 		R-build-standard
 		;;
 	--build-virtualenv) echo "Build R as virtual environment."
+		BTYPE="virtual environment (in userspace)"
+		BOPTS="$OPTRVE"
 		R-build-init
+		R-build-ask
 		R-build-virtualenv
 		;;
 	*)
