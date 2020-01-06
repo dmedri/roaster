@@ -1,0 +1,9 @@
+#
+# .Renviron
+#
+
+# Linux
+R_LIBS = ~/R/library
+
+# Windows
+R_LIBS = C:/R/library

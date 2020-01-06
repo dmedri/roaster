@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 
-# Customizable settings
-MIRROR="https://cloud.r-project.org"
-OPTSTD='--without-recommended-packages'
-OPTRVE='--without-recommended-packages'
-
 ########## don't change anything below this line ##########
 
-# Program settings
-#RDIR="$HOME/RVE"
+# Roaster base settings
 RVE="$HOME/RVE"
 RCO="$HOME/.roaster"
+
+# Setting to be used w/o ~/.roaster/config
+if [[ ! -f $RCO/config ]]; then
+	MIRROR="https://cloud.r-project.org"
+	OPTSTD='--without-recommended-packages'
+	OPTRVE='--without-recommended-packages'
+else
+	MIRROR=$(cat $RCO/config | grep ^MIRROR | awk -F '"' '{print $2}')
+	OPTSTD=$(cat $RCO/config | grep ^OPTSTD | awk -F '"' '{print $2}')
+	OPTRVE=$(cat $RCO/config | grep ^OPTRVE | awk -F '"' '{print $2}')
+fi
+
+# Roaster build settings
 SRCU="$MIRROR/src/base/"
 SRCF="R-latest.tar.gz"
 SRCD="VERSION-INFO.dcf"
@@ -18,7 +25,7 @@ CRANM="CRAN_mirrors.csv"
 
 # Header
 echo -e "\e[32mRoaster\e[0m - Check R updates and build sources."
-echo -e "Copyright 2019 Daniele Medri - GNU LGPL 2.1+"
+echo -e "Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+"
 echo -e "Use 'roaster --help' for the available options.\n"
 
 # checks for needed programs
@@ -64,12 +71,19 @@ function roaster-infos-mirrors-get {
 	roaster-infos-mirrors-conv
 }
 
+# Create rve.Profile for virtual environments
+function roaster-infos-rve-rprofile {
+	echo "Roaster: adding rve.RProfile..."
+	echo -e "options(repos=structure(c(CRAN=\"$MIRROR\")))" > $RCO/infos/rve.RProfile
+}
+
 # Check roaster working directories
 function check-roaster-working-dirs {
 	if [[ ! -d $RCO ]]; then
 		mkdir -p $RCO/{src,logs,checks,infos}
 		roaster-config-add
 		roaster-infos-mirrors-get
+		roaster-infos-rve-rprofile
 	fi
 }
 check-roaster-working-dirs
@@ -141,7 +155,7 @@ function R-build-init {
 function R-build-virtualenv {
 	# Create virtualenv directory
 	if [[ ! -d $RVE ]]; then
-		mkdir -p $RVE
+		mkdir -p $RVE/workspace
 	fi
 
 	cd $RCO/src/R-$VERLATEST && ./configure \
