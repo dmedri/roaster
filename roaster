@@ -90,8 +90,6 @@ check-roaster-working-dirs
 
 # Check latest version
 function check-status {
-	echo -e "\nR:"
-
 	# check online
 	echo -e "\t\e[32m$VERLATEST\e[0m\tAvailable online"
 
@@ -103,6 +101,7 @@ function check-status {
 	else
 		echo -e "\t\e[32mIt seems that R isn't available\e[0m"
 	fi
+	echo -e "\n"
 }
 
 # Build init
