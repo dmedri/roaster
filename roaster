@@ -101,7 +101,6 @@ function check-status {
 	else
 		echo -e "\t\e[32mIt seems that R isn't available\e[0m"
 	fi
-	echo -e "\n"
 }
 
 # Build init
