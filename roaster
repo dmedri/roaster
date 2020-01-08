@@ -135,8 +135,9 @@ function R-build-init {
 				rm $SRCF
 			fi
 			wget $SRCU/$SRCF --quiet && tar zxvf $SRCF
+			echo -e "2) Downloaded latest archive and prepared the source code."
 		else
-			echo -e "\nLatest R release already available."
+			echo -e "2) Source code already available."
 		fi
 	}
 
