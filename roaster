@@ -94,10 +94,11 @@ function check-status {
 	echo -e "\t\e[32m$VERLATEST\e[0m\tAvailable online"
 
 	# Check for R local
-	CHECKR=$(command -v R)
-	if [[ $CHECKR != "" && -e $CHECKR ]]; then
-		VERR=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$VERR\e[0m\tInstalled in $CHECKR"
+	#CHECKR=$(command -v R)
+	local checkr=$(command -v R)
+	if [[ $checkr != "" && -e $checkr ]]; then
+		local verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$verr\e[0m\tInstalled in $checkr"
 	else
 		echo -e "\t\e[32mIt seems that R isn't available\e[0m"
 	fi
@@ -229,7 +230,7 @@ while [[ -n "$1" ]]; do
 		R-build-ask
 		R-build-virtualenv
 		;;
-	*)
+	* )
 	 	echo -e "Informations:"
 		echo -e "\t--check-status   \tCheck available R releases."
 	 	echo -e "\nBuild latest R release:"
@@ -243,3 +244,15 @@ while [[ -n "$1" ]]; do
 	esac
 	shift
 done
+
+# unsetting vars
+unset MIRROR
+unset OPTSTD
+unset OPTRVE
+unset BTYPE
+unset BOPTS
+unset VERLATEST
+unset DISTRO_OS
+unset RCC
+unset RCO
+unset RVE
