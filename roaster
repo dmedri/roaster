@@ -191,8 +191,7 @@ function R-build-standard {
 		esac
 	done
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-	echo -e "\n\e[32mBuild: 'make install' done. Trying command 'R'...\e[0m\n"
-	cd $HOME && R
+	echo -e "\n\e[32mBuild: 'make install' done.\e[0m\n"
 }
 
 # Show build options
