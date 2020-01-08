@@ -17,7 +17,7 @@ deactivate () {
 	# reset old home
 	if ! [[ -z "$ROASTER_SYS_HOME" ]]; then
 		HOME="$ROASTER_SYS_HOME"
-		export HOME
+		export HOME && cd
 		unset ROASTER_SYS_HOME
 	fi
 
@@ -52,7 +52,7 @@ export ROASTER_RVE_ENV
 
 ROASTER_SYS_HOME="$HOME"
 HOME="$HOME/RVE"
-export HOME
+export HOME && cd
 
 #R_HOME="$ROASTER_RVE_ENV/workspace"
 #export R_HOME
