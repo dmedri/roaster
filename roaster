@@ -97,7 +97,7 @@ function check-status {
 	CHECKR=$(command -v R)
 	if [[ $CHECKR != "" && -e $CHECKR ]]; then
 		VERR=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$VERR\e[0m\t(standard installation $CHECKR)"
+		echo -e "\t\e[32m$VERR\e[0m\tInstalled in $CHECKR"
 	else
 		echo -e "\t\e[32mIt seems that R isn't available\e[0m"
 	fi
