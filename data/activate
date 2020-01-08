@@ -1,6 +1,6 @@
 # Roaster RVE bin/activate
 
-# help
+# helpful message to run this command
 if [[ "${BASH_SOURCE-}" = "$0" ]]; then
 	echo -e "\e[32mPlease, run: \$ source $0\e[0m"
 	exit 33
@@ -39,6 +39,7 @@ deactivate () {
 deactivate nondestructive
 
 # set env variables
+
 ROASTER_RVE_ENV="$HOME/RVE"
 export ROASTER_RVE_ENV
 
@@ -52,15 +53,15 @@ ROASTER_SYS_PATH="$PATH"
 PATH="$ROASTER_RVE_ENV/bin:$PATH"
 export PATH
 
-#if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT-}" ] ; then
-	ROASTER_SYS_PS1="${PS1-}"
-	if [ "x" != x ] ; then
-		PS1="${PS1-}"
-	else
-		PS1="(`basename \"$ROASTER_RVE_ENV\"`) ${PS1-}"
-	fi
-	export PS1
-#fi
+# set bash prompt
+
+ROASTER_SYS_PS1="${PS1-}"
+if [ "x" != x ] ; then
+	PS1="${PS1-}"
+else
+	PS1="(`basename \"$ROASTER_RVE_ENV\"`) ${PS1-}"
+fi
+export PS1
 
 # reset commands history
 if [[ -n "${BASH-}" ]]; then
