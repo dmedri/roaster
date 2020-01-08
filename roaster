@@ -84,7 +84,6 @@ function check-roaster-working-dirs {
 		mkdir -p $RCO/{src,logs,checks,infos}
 		roaster-config-add
 		roaster-infos-mirrors-get
-#		roaster-infos-rve-rprofile
 	fi
 }
 check-roaster-working-dirs
@@ -101,16 +100,8 @@ function check-status {
 	if [[ $CHECKR != "" && -e $CHECKR ]]; then
 		VERR=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
 		echo -e "\t\e[32m$VERR\e[0m\t(standard installation $CHECKR)"
-	fi
-	
-	# Check for R Virtual Environment
-	CHECKRVE=$(command -v RVE)
-	if [[ $CHECKRVE != "" && -e $CHECKRVE ]]; then
-		VERRVE=$(RVE --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$VERRVE\e[0m\t(virtualenv $CHECKRVE)\n"
-	elif [[ -f $RVE/bin/RVE ]]; then
-		VERRVE=$($RVE/bin/RVE --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$VERRVE\e[0m\t(virtualenv $RVE/bin not in PATH)\n"
+	else
+		echo -e "\t\e[32mIt seems that R isn't available\e[0m"
 	fi
 }
 
