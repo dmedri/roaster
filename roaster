@@ -134,7 +134,7 @@ function R-build-init {
 			if [[ -f $RCO/src/$SRCF ]]; then
 				rm $SRCF
 			fi
-			wget $SRCU/$SRCF --quiet && tar zxvf $SRCF
+			wget $SRCU/$SRCF --quiet && tar zxf $SRCF
 			echo -e "2) Downloaded latest archive and prepared the source code."
 		else
 			echo -e "2) Source code already available."
@@ -197,8 +197,7 @@ function R-build-ask {
 	echo -e "You're installing R \e[32m$VERLATEST\e[0m on \e[32m$DISTRO_OS\e[0m\n"
 	echo -e "Build informations:"
 	echo -e "\t$BTYPE"
-	echo -e "\t$BOPTS"
-	echo -e "\n"
+	echo -e "\t$BOPTS\n"
 	while true; do
 		read -p "Ready to go? (y/n) " yn
 		case $yn in
