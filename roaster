@@ -169,11 +169,10 @@ function R-build-virtualenv {
 		&& make install \
 		&& make clean
 	echo -e "\n\e[32mBuild done.\e[0m"
-	echo -e "\e[32mActivating virtual environment...\e[0m"
+	echo -e "\e[32mAHelp:\e[0m"
 	cat $RRC/data/activate > $RVE/bin/activate
-	echo -e " Enable: 'source ~/RVE/bin/activate'"
+	echo -e " Enable: 'source $RVE/bin/activate'"
 	echo -e "Disable: 'deactivate'\n"
-	source $RVE/bin/activate
 }
 
 # Option --build-standard
