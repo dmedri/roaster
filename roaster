@@ -196,20 +196,17 @@ function R-build-standard {
 
 # Show build options
 function R-build-ask {
-	echo -e "R:"
-	echo -e "\t$VERLATEST"
-	echo -e "Os:"
-	echo -e "\t$DISTRO_OS"
-	echo -e "Build:"
+	echo -e "You're installing R \e[32m$VERLATEST\e[0m on \e[32m$DISTRO_OS\e[0m\n"
+	echo -e "Build informations:"
 	echo -e "\t$BTYPE"
 	echo -e "\t$BOPTS"
 	echo -e "\n"
 	while true; do
-		read -p "Build: ready to go? (y/n) " yn
+		read -p "Ready to go? (y/n) " yn
 		case $yn in
 			[yY]* ) echo "Ok, let's start..."; break;;
 			[nN]* ) echo "Ok, bye."; exit;;
-			* ) echo "Please, aswer y/n.";;
+			* ) echo "Please, answer y/n.";;
 		esac
 	done
 }
