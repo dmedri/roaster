@@ -8,10 +8,17 @@ fi
 
 deactivate () {
 	# reset old environment variables
-	if ! [ -z "${ROASTER_SYS_PATH:+_}" ] ; then
+	if ! [[ -z "${ROASTER_SYS_PATH:+_}" ]]; then
 		PATH="$ROASTER_SYS_PATH"
 		export PATH
 		unset ROASTER_SYS_PATH
+	fi
+
+	# reset old home
+	if ! [[ -z "$ROASTER_SYS_HOME" ]]; then
+		HOME="$ROASTER_SYS_HOME"
+		export HOME
+		unset ROASTER_SYS_HOME
 	fi
 
 	# reset commands history
@@ -42,6 +49,10 @@ deactivate nondestructive
 
 ROASTER_RVE_ENV="$HOME/RVE"
 export ROASTER_RVE_ENV
+
+ROASTER_SYS_HOME="$HOME"
+HOME="$HOME/RVE"
+export HOME
 
 #R_HOME="$ROASTER_RVE_ENV/workspace"
 #export R_HOME
