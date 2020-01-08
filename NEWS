@@ -1,6 +1,8 @@
-CHANGES WITH ...
+CHANGES WITH v0.2
 	* reworked configuration directories;
+	* build: show attributs before start
 	* build-standard: interaction before install
+	* build-virtualenv: check available directories
 
 CHANGES WITH V0.1
 
