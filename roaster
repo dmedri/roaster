@@ -128,6 +128,15 @@ function R-build-init {
 				echo -e "Required packages already checked."
 				echo -e "(remove $RCO/checks/required-packages to restore)\n"
 			fi
+		elif [[ "$DISTRO_OS"=="Red Hat Linux" ]]; then
+			if [[ ! -f $RCO/checks/required-packages ]]; then
+				echo -e "\n$DISTRO_OS"
+				echo -e "Installing needed packages to build.\n"
+				### need tests ###
+				yum-builddep R
+				##################
+				echo $(date) > $RCO/checks/required-packages
+			fi
 		else
 			echo -e "\nUnknown Linux distribution.\n"
 		fi
