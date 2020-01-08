@@ -109,6 +109,28 @@ function check-status {
 function R-build-init {
 	# Checks and helpful tips about required packages
 	function check-packages {
+		if [[ ! -f $RCO/checks/required-packages ]]; then
+			if [[ "$DISTRO_OS" == "Debian GNU/Linux" ]]; then
+				echo -e "$DISTRO_OS: installing needed packages to build...\n"
+				sudo apt-get build-dep r-base --yes --quiet
+				sudo apt-get install build-essential --yes --quiet
+				echo $(date) > $RCO/checks/required-packages
+			elif [[ "$DISTRO_OS" == "Red Hat Linux" ]]; then
+				echo -e "$DISTRO_OS: installing needed packages to build...\n"
+				### need tests ###
+				yum-builddep R
+				##################
+				echo $(date) > $RCO/checks/required-packages
+			else
+				echo "Unknown Linux distribution."
+			fi
+		else
+			echo	"Build dependencies satisfied."
+		fi
+	}
+
+	# Checks and helpful tips about required packages
+	function check-packages {
 		if [[ "$DISTRO_OS"=="Debian GNU/Linux" ]]; then
 			if [[ ! -f $RCO/checks/required-packages ]]; then
 				echo -e "\n$DISTRO_OS"
