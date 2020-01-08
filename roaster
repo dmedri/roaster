@@ -2,7 +2,7 @@
 
 ########## don't change anything below this line ##########
 
-RCC=$(pwd)
+RRC=$(pwd)
 
 # Roaster base settings
 RVE="$HOME/RVE"
@@ -173,7 +173,6 @@ function R-build-virtualenv {
 	echo -e " Enable: 'source ~/RVE/bin/activate'"
 	echo -e "Disable: 'deactivate'\n"
 	source $RVE/bin/activate
-	cd $RVE && echo "You're here: $(pwd)"
 }
 
 # Option --build-standard
