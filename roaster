@@ -169,18 +169,12 @@ function R-build-virtualenv {
 		--disable-rpath $OPTRVE && make \
 		&& make install \
 		&& make clean
-#	if [[ -f $RVE/bin/R ]]; then
-#		mv $RVE/bin/R $RVE/bin/RVE
-#		export PATH="$PATH:$RVE/bin/"
-#	fi
 	echo -e "\n\e[32mBuild done.\e[0m"
 	echo -e "\e[32mActivating virtual environment...\e[0m"
 	cat $RRC/data/activate > $RVE/bin/activate
 	echo -e " Enable: 'source ~/RVE/bin/activate'"
-	echo -e "Disable: 'deactivate'"
-#	echo -e "\n\e[32mBuild done. Trying command 'RVE'...\e[0m"
-#	echo -e "(Please, add '$RVE/bin/' to your PATH)\n"
-#	cd $HOME && RVE
+	echo -e "Disable: 'deactivate'\n"
+	source $RVE/bin/activate
 }
 
 # Option --build-standard
