@@ -67,7 +67,7 @@ function roaster-infos-mirrors-conv {
 		echo -e "# $(date)\n" > $RCO/infos/MIRRORS && \
 		cat $RCO/infos/$CRANM | awk -F "\"*,\"*" '{print $2,$4}' | sort | uniq >> $RCO/infos/MIRRORS
 	else
-		echo -e "Missed file."
+		echo -e "Can't find $RCO/infos/$CRANM."
 	fi
 }
 
@@ -77,12 +77,6 @@ function roaster-infos-mirrors-get {
 	wget -O- -q $MIRROR/$CRANM -O $RCO/infos/$CRANM && \
 	roaster-infos-mirrors-conv
 }
-
-# Create rve.Profile for virtual environments
-#function roaster-infos-rve-rprofile {
-#	echo "Roaster: adding rve.RProfile..."
-#	echo -e "options(repos=structure(c(CRAN=\"$MIRROR\")))" > $RCO/infos/rve.RProfile
-#}
 
 # Check roaster working directories
 function check-roaster-working-dirs {
