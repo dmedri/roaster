@@ -218,14 +218,14 @@ while [[ -n "$1" ]]; do
 		check-status
 		;;
 	--build-standard) echo "Build R standard setup in system."
-		BTYPE="standard (in system)"
+		BTYPE="Standard (in system)"
 		BOPTS="$OPTSTD"
 		R-build-init
 		R-build-ask
 		R-build-standard
 		;;
 	--build-virtualenv) echo "Build R as virtual environment."
-		BTYPE="virtual environment (in userspace)"
+		BTYPE="Virtual Environment (in userspace)"
 		BOPTS="$OPTRVE"
 		R-build-init
 		R-build-ask
@@ -237,7 +237,7 @@ while [[ -n "$1" ]]; do
 	 	echo -e "\nBuild latest R release:"
 		echo -e "\t--build-standard  \tStandard setup, in system."
 		echo -e "\t--build-virtualenv\tStandard setup, as virtual environment."
-	 	echo -e "\nBuild options (hardcoded):"
+	 	echo -e "\nBuild options (see. $RCO/config):"
 		echo -e "\t    mirror: $MIRROR"
 		echo -e "\t  standard: $OPTSTD"
 		echo -e "\tvirtualenv: $OPTRVE"
