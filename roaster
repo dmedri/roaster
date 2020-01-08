@@ -139,7 +139,6 @@ function R-build-init {
 			wget $SRCU/$SRCF --quiet && tar zxvf $SRCF
 		else
 			echo -e "\nLatest R release already available."
-			echo -e "(sources in $RCO/src/R-$VERLATEST)\n"
 		fi
 	}
 
