@@ -109,21 +109,21 @@ function R-build-init {
 	function check-packages {
 		if [[ ! -f $RCO/checks/required-packages ]]; then
 			if [[ "$DISTRO_OS" == "Debian GNU/Linux" ]]; then
-				echo -e "$DISTRO_OS: installing needed packages to build...\n"
+				echo -e "1) $DISTRO_OS: installing build dependencies...\n"
 				sudo apt-get build-dep r-base --yes --quiet
 				sudo apt-get install build-essential --yes --quiet
 				echo $(date) > $RCO/checks/required-packages
 			elif [[ "$DISTRO_OS" == "Red Hat Linux" ]]; then
-				echo -e "$DISTRO_OS: installing needed packages to build...\n"
+				echo -e "1) $DISTRO_OS: installing build dependencies...\n"
 				### need tests ###
 				yum-builddep R
 				##################
 				echo $(date) > $RCO/checks/required-packages
 			else
-				echo "Unknown Linux distribution."
+				echo "1) Unknown Linux distribution."
 			fi
 		else
-			echo	"Build dependencies satisfied."
+			echo	"1) Build dependencies satisfied."
 		fi
 	}
 
@@ -214,14 +214,16 @@ while [[ -n "$1" ]]; do
 	--check-status) echo "Check available R releases."
 		check-status
 		;;
-	--build-standard) echo "Build R standard setup in system."
+	--build-standard)
+		#echo "Build R standard setup in system."
 		BTYPE="Standard (in system)"
 		BOPTS="$OPTSTD"
 		R-build-init
 		R-build-ask
 		R-build-standard
 		;;
-	--build-virtualenv) echo "Build R as virtual environment."
+	--build-virtualenv)
+		#echo "Build R as virtual environment."
 		BTYPE="Virtual Environment (in userspace)"
 		BOPTS="$OPTRVE"
 		R-build-init
