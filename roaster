@@ -28,7 +28,6 @@ CRANM="CRAN_mirrors.csv"
 # Header
 echo -e "\e[32mRoaster\e[0m - Check R updates and build sources."
 echo -e "Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+"
-echo -e "Use 'roaster --help' for the available options.\n"
 
 # checks for needed programs
 command -v awk   >/dev/null 2>&1 || { echo >&2 "'awk'  (required)"; exit; }
@@ -152,7 +151,7 @@ function R-build-virtualenv {
 	if [[ ! -d $RVE ]]; then
 		mkdir -p $RVE/workspace
 	else
-		echo -e "\e[32mThe directory ~/RVE already exist.\e[0m"
+		echo -e "\e[32mThe directory RVE already exist.\e[0m"
 		while true; do
 			read -p "Backup the old and go ahead with the new one? (y/n) " yn
 			case $yn in
@@ -208,6 +207,19 @@ function R-build-ask {
 	done
 }
 
+# Roaster options
+function app-options {
+	 	echo -e "Informations:"
+		echo -e "\t--check-status   \tCheck available R releases."
+	 	echo -e "\nBuild latest R release:"
+		echo -e "\t--build-standard  \tStandard setup, in system."
+		echo -e "\t--build-virtualenv\tStandard setup, as virtual environment."
+	 	echo -e "\nBuild options (see. $RCO/config):"
+		echo -e "\t    mirror: $MIRROR"
+		echo -e "\t  standard: $OPTSTD"
+		echo -e "\tvirtualenv: $OPTRVE"
+}
+
 # Help menu
 while [[ -n "$1" ]]; do
 	case "$1" in
@@ -230,16 +242,11 @@ while [[ -n "$1" ]]; do
 		R-build-ask
 		R-build-virtualenv
 		;;
+	--help)
+		app-options
+		;;
 	* )
-	 	echo -e "Informations:"
-		echo -e "\t--check-status   \tCheck available R releases."
-	 	echo -e "\nBuild latest R release:"
-		echo -e "\t--build-standard  \tStandard setup, in system."
-		echo -e "\t--build-virtualenv\tStandard setup, as virtual environment."
-	 	echo -e "\nBuild options (see. $RCO/config):"
-		echo -e "\t    mirror: $MIRROR"
-		echo -e "\t  standard: $OPTSTD"
-		echo -e "\tvirtualenv: $OPTRVE"
+	 	echo -e "Use 'roaster --help' for the available options."
 	 	;;
 	esac
 	shift
