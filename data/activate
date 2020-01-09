@@ -46,26 +46,20 @@ deactivate () {
 deactivate nondestructive
 
 # set env variables
-
 ROASTER_RVE_ENV="$HOME/RVE"
 export ROASTER_RVE_ENV
-
 ROASTER_SYS_HOME="$HOME"
 HOME="$HOME/RVE"
 export HOME && cd
-
 #R_HOME="$ROASTER_RVE_ENV/workspace"
 #export R_HOME
-
-#R_ENVIRONMENT="$ROASTER_RVE_ENV/workspace"
+#R_ENVIRONMENT="$ROASTER_RVE_ENV"
 #export R_ENVIRONMENT
-
 ROASTER_SYS_PATH="$PATH"
 PATH="$ROASTER_RVE_ENV/bin:$PATH"
 export PATH
 
 # set bash prompt
-
 ROASTER_SYS_PS1="${PS1-}"
 if [ "x" != x ] ; then
 	PS1="${PS1-}"

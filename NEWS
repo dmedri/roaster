@@ -1,10 +1,10 @@
-CHANGES WITH v0.2
-	* reworked configuration directories;
-	* build: show attributs before start
-	* build-standard: interaction before install
-	* build-virtualenv: check available directories
+CHANGES WITH v0.2 "Tempesta di fuoco"
+	* reworked almost all the code for a better logic
+	* nen ~/.roaster directory
+	* more checks and functionalities
+	* new --get-mirrors option
 
-CHANGES WITH V0.1
+CHANGES WITH V0.1 "Tzunami assassino"
 
 	* checks for latest R release;
 	* two build types available (standard, virtualenv);

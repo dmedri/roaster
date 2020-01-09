@@ -2,22 +2,32 @@
 
 ########## don't change anything below this line ##########
 
-RRC=$(pwd)
-
 # Roaster base settings
+RRC=$(pwd)
 RVE="$HOME/RVE"
 RCO="$HOME/.roaster"
 
-# Setting to be used w/o ~/.roaster/config
-if [[ ! -f $RCO/config ]]; then
-	MIRROR="https://cloud.r-project.org"
-	OPTSTD='--without-recommended-packages'
-	OPTRVE='--without-recommended-packages'
-else
+# Check roaster working directories
+function check-roaster-working-dirs {
+	if [[ ! -d $RCO ]]; then
+		mkdir -p $RCO/{src,logs,checks,infos}
+
+		# Create a new config file
+		if [[ -f $RRC/data/tmpl.config ]]; then
+			cat $RRC/data/tmpl.config > $RCO/config
+		else
+			echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
+			echo "OPTSTD=\"\"" >> $RCO/config
+			echo "OPTRVE=\"\"" >> $RCO/config
+		fi
+	fi
+
+	# Query available settings
 	MIRROR=$(cat $RCO/config | grep ^MIRROR | awk -F '"' '{print $2}')
 	OPTSTD=$(cat $RCO/config | grep ^OPTSTD | awk -F '"' '{print $2}')
 	OPTRVE=$(cat $RCO/config | grep ^OPTRVE | awk -F '"' '{print $2}')
-fi
+}
+check-roaster-working-dirs
 
 # Roaster build settings
 SRCU="$MIRROR/src/base/"
@@ -28,6 +38,7 @@ CRANM="CRAN_mirrors.csv"
 # Header
 echo -e "\e[32mRoaster\e[0m - Check R updates and build sources."
 echo -e "Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+"
+echo -e "Use 'roaster --help' for the available options.\n"
 
 # checks for needed programs
 command -v awk   >/dev/null 2>&1 || { echo >&2 "'awk'  (required)"; exit; }
@@ -38,62 +49,35 @@ command -v wget  >/dev/null 2>&1 || { echo >&2 "'wget' (required)"; exit; }
 command -v grep  >/dev/null 2>&1 || { echo >&2 "'grep' (required)"; exit; }
 command -v sudo  >/dev/null 2>&1 || { echo >&2 "'sudo' (required)"; exit; }
 
-# Check Linux distribution
-function check-os-info {
-	if [[ -f /etc/os-release ]]; then
-		DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
-	else
-		echo "Can't find /etc/os-release."
-	fi
-}
-check-os-info
-
 # Check latest R release
-function check-r-stable-latest {
+function check-rstable-latest {
 	VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
-}
-check-r-stable-latest
-
-# Create a new config file
-function roaster-config-add {
-	echo "Roaster: adding config file..."
-	echo -e "MIRROR=\"$MIRROR\"\nOPTSTD=\"$OPTSTD\"\nOPTRVE=\"$OPTRVE\"" > $RCO/config
-}
-
-# Convert CRAN mirror .csv in text standard
-function roaster-infos-mirrors-conv {
-	if [[ -f $RCO/infos/$CRANM ]]; then
-		echo -e "# $(date)\n" > $RCO/infos/MIRRORS && \
-		cat $RCO/infos/$CRANM | awk -F "\"*,\"*" '{print $2,$4}' | sort | uniq >> $RCO/infos/MIRRORS
-	else
-		echo -e "Can't find $RCO/infos/$CRANM."
-	fi
 }
 
 # Create an updated mirrors file
-function roaster-infos-mirrors-get {
-	echo "Roaster: adding MIRRORS file..."
-	wget -O- -q $MIRROR/$CRANM -O $RCO/infos/$CRANM && \
-	roaster-infos-mirrors-conv
-}
-
-# Check roaster working directories
-function check-roaster-working-dirs {
-	if [[ ! -d $RCO ]]; then
-		mkdir -p $RCO/{src,logs,checks,infos}
-		roaster-config-add
-		roaster-infos-mirrors-get
+function roaster-get-mirrors {
+	if [[ -d $RCO/infos ]]; then
+		wget -O- -q $MIRROR/$CRANM | awk -F "\"*,\"*" '{print $2,$4}' | sort | uniq > $RCO/infos/MIRRORS
+		echo "File $RCO/infos/MIRRORS updated."
 	fi
+	while true; do
+		read -p "Do you want to see its content? (y/n) " yn
+		case $yn in
+			[yY]* ) more $RCO/infos/MIRRORS; break;;
+			[nN]* ) exit;;
+			* ) echo "Please, answer y/n.";;
+		esac
+	done
 }
-check-roaster-working-dirs
 
 # Check latest version
 function check-status {
+	echo "Status of R versions:"
+
 	# check online
 	echo -e "\t\e[32m$VERLATEST\e[0m\tAvailable online"
 
 	# Check for R local
-	#CHECKR=$(command -v R)
 	local checkr=$(command -v R)
 	if [[ $checkr != "" && -e $checkr ]]; then
 		local verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
@@ -105,6 +89,16 @@ function check-status {
 
 # Build init
 function R-build-init {
+
+	# Check Linux distribution
+	function check-os-info {
+		if [[ -f /etc/os-release ]]; then
+			DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
+		else
+			echo "Can't find /etc/os-release."
+		fi
+	}
+
 	# Checks and helpful tips about required packages
 	function check-packages {
 		if [[ ! -f $RCO/checks/required-packages ]]; then
@@ -141,6 +135,7 @@ function R-build-init {
 		fi
 	}
 
+	check-os-info
 	check-packages
 	download-latest-stable
 }
@@ -149,7 +144,7 @@ function R-build-init {
 function R-build-virtualenv {
 	# Create virtualenv directory
 	if [[ ! -d $RVE ]]; then
-		mkdir -p $RVE/workspace
+		mkdir $RVE
 	else
 		echo -e "\e[32mThe directory RVE already exist.\e[0m"
 		while true; do
@@ -169,10 +164,15 @@ function R-build-virtualenv {
 		&& make install \
 		&& make clean
 	echo -e "\n\e[32mBuild done.\e[0m"
-	echo -e "\e[32mAHelp:\e[0m"
-	cat $RRC/data/activate > $RVE/bin/activate
-	echo -e " Enable: 'source $RVE/bin/activate'"
-	echo -e "Disable: 'deactivate'\n"
+	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
+		cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
+	fi
+	if [[ -f $RRC/data/activate ]]; then
+		echo -e "\e[32mHelp:\e[0m"
+		cat $RRC/data/activate > $RVE/bin/activate
+		echo -e " Enable: 'source $RVE/bin/activate'"
+		echo -e "Disable: 'deactivate'\n"
+	fi
 }
 
 # Option --build-standard
@@ -207,14 +207,30 @@ function R-build-ask {
 	done
 }
 
+# Unsetting variables
+function freemem {
+	# unsetting vars
+	unset MIRROR
+	unset OPTSTD
+	unset OPTRVE
+	unset BTYPE
+	unset BOPTS
+	unset VERLATEST
+	unset DISTRO_OS
+	unset RCC
+	unset RCO
+	unset RVE
+}
+
 # Roaster options
 function app-options {
 	 	echo -e "Informations:"
 		echo -e "\t--check-status   \tCheck available R releases."
+		echo -e "\t--get-mirrors    \tUpdate mirrors list."
 	 	echo -e "\nBuild latest R release:"
-		echo -e "\t--build-standard  \tStandard setup, in system."
-		echo -e "\t--build-virtualenv\tStandard setup, as virtual environment."
-	 	echo -e "\nBuild options (see. $RCO/config):"
+		echo -e "\t--build-standard  \tCommon installation in system."
+		echo -e "\t--build-virtualenv\tCreate a virtual environment."
+	 	echo -e "\nBuild options (in \e[32m$RCO/config\e[0m):"
 		echo -e "\t    mirror: $MIRROR"
 		echo -e "\t  standard: $OPTSTD"
 		echo -e "\tvirtualenv: $OPTRVE"
@@ -222,44 +238,34 @@ function app-options {
 
 # Help menu
 while [[ -n "$1" ]]; do
-	case "$1" in
-	--check-status) echo "Check available R releases."
+	case $1 in
+	"--check-status")
+		check-rstable-latest
 		check-status
 		;;
-	--build-standard)
-		#echo "Build R standard setup in system."
+	"--get-mirrors")
+		roaster-get-mirrors
+		;;
+	"--build-standard")
+		check-rstable-latest
 		BTYPE="Standard (in system)"
 		BOPTS="$OPTSTD"
 		R-build-init
 		R-build-ask
 		R-build-standard
 		;;
-	--build-virtualenv)
-		#echo "Build R as virtual environment."
+	"--build-virtualenv")
+		check-rstable-latest
 		BTYPE="Virtual Environment (in userspace)"
 		BOPTS="$OPTRVE"
 		R-build-init
 		R-build-ask
 		R-build-virtualenv
 		;;
-	--help)
+	"--help")
 		app-options
 		;;
-	* )
-	 	echo -e "Use 'roaster --help' for the available options."
-	 	;;
 	esac
 	shift
 done
-
-# unsetting vars
-unset MIRROR
-unset OPTSTD
-unset OPTRVE
-unset BTYPE
-unset BOPTS
-unset VERLATEST
-unset DISTRO_OS
-unset RCC
-unset RCO
-unset RVE
+freemem
