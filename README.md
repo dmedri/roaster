@@ -9,31 +9,18 @@ add new admin utilities.
 
 Since the early bash prototypes there are some notable features:
 
-* check info about the latest R stable release;
-* show the status of your (system) R installations;
-* retrieve, build and install latest release in two solutions:
-	* a standard common build;
-	* a virtual environment (flat-style) under user space.
-## Usage
+* get the latest R stable release;
+* show informations about local installation (standard);
+* get an updated MIRRORS list;
+* build R for your system (build-standard)
+* create a virtual environment (build-virtualenv)
 
-* Question: How many R installations are available in my system?
-* Question: Are there some updated R releases?
+## Guide / Help
 
-```bash
-$ roaster --check-status
-```
+Common uses:
 
-* Question: What should I do to install latest R release in my system?
+* [standard build on your system](docs/build-standard.md)
+* [create a virtual environment](docs/build-virtualenv.md)
 
-```bash
-$ roaster --build-standard
-```
-
-* Question: What should I do to install latest R release as a virtual environment
-in userspace?
-
-```bash
-$ roaster --build-virtualenv
-```
-
+--
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
