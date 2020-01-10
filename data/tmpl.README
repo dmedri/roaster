@@ -1,0 +1,15 @@
+#
+# RVE (R Virtual Environment)
+#
+
+1) run "source ~/RVE/bin/activate"
+
+- The prompt changed (welcome aboard!)
+- Your HOME directory is now ~/RVE.
+- Your PATH add "bin/" and you'll be able to run R
+- You'll find a basic ".Rprofile" in your HOME.
+- The "workspace/" directory should be used for your code.
+
+2) run "deactivate"
+
+- HOME and PATH vars will be restored to previous setup.

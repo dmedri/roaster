@@ -164,9 +164,18 @@ function R-build-virtualenv {
 		&& make install \
 		&& make clean
 	echo -e "\n\e[32mBuild done.\e[0m"
+
+	# add RVE/.Rprofile
 	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
 		cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
 	fi
+
+	# add RVE/REAME
+	if [[ -f $RRC/data/tmpl.README ]]; then
+		cat $RRC/data/tmpl.README > $RVE/README
+	fi
+	
+	# add RVE/bin/activate
 	if [[ -f $RRC/data/tmpl.activate ]]; then
 		echo -e "\e[32mHelp:\e[0m"
 		cat $RRC/data/tmpl.activate > $RVE/bin/activate
