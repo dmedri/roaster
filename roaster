@@ -143,19 +143,19 @@ function R-build-init {
 # Option --build-virtualenv
 function R-build-virtualenv {
 	# Create virtualenv directory
-	if [[ ! -d $RVE ]]; then
-		mkdir $RVE
-	else
+	if [[ -d $RVE ]]; then
 		echo -e "\e[32mThe directory RVE already exist.\e[0m"
 		while true; do
 			read -p "Backup the old and go ahead with the new one? (y/n) " yn
 			case $yn in
 				[yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d-%H%M%S"); break;;
-				[nN]* ) echo -e "Ok, bye."; exit;;
-				* ) echo "Please, answer y/n.";;
+				[nN]* ) echo "Ok, bye."; exit;;
+				* ) echo "Please, answer (y/n).";;
 			esac
 		done
 	fi
+	# Add the main directory
+	mkdir -p $RVE/workspace
 
 	cd $RCO/src/R-$VERLATEST && ./configure \
 		--prefix=$RVE \
@@ -163,24 +163,24 @@ function R-build-virtualenv {
 		--disable-rpath $OPTRVE && make \
 		&& make install \
 		&& make clean
-	echo -e "\n\e[32mBuild done.\e[0m"
+	echo -e "\n\e[32mBuild done.\e[0m\n"
 
 	# add RVE/.Rprofile
 	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
 		cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
 	fi
 
-	# add RVE/REAME
+	# add RVE/README
 	if [[ -f $RRC/data/tmpl.README ]]; then
 		cat $RRC/data/tmpl.README > $RVE/README
 	fi
 	
 	# add RVE/bin/activate
 	if [[ -f $RRC/data/tmpl.activate ]]; then
-		echo -e "\e[32mHelp:\e[0m"
+		echo -e "\e[32mR Virtual Environment\e[0m"
 		cat $RRC/data/tmpl.activate > $RVE/bin/activate
-		echo -e " Enable: 'source $RVE/bin/activate'"
-		echo -e "Disable: 'deactivate'\n"
+		echo -e " enable: \$ source $RVE/bin/activate"
+		echo -e "disable: \$ deactivate\n"
 	fi
 }
 
@@ -193,7 +193,7 @@ function R-build-standard {
 		case $yn in
 			[yY]* ) sudo make install && make clean; break;;
 			[nN]* ) echo -e "\nBrowse the code and 'sudo make install'.\n"; exit;;
-			* ) echo "Please, answer y/n.";;
+			* ) echo "Please, answer (y/n).";;
 		esac
 	done
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
@@ -207,11 +207,11 @@ function R-build-ask {
 	echo -e "\t$BTYPE"
 	echo -e "\t$BOPTS\n"
 	while true; do
-		read -p "Ready to go? (y/n) " yn
+		read -p "Are you ready to start? (y/n) " yn
 		case $yn in
 			[yY]* ) echo "Ok, let's start..."; break;;
 			[nN]* ) echo "Ok, bye."; exit;;
-			* ) echo "Please, answer y/n.";;
+			* ) echo "Please, answer (y/n).";;
 		esac
 	done
 }

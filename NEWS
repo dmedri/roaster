@@ -1,6 +1,12 @@
+CHANGES WITH v0.3 "Gelido Cryos"
+	* data: new templates and docs
+	* build-virtualenv: 
+	* build-standard: more system checks
+	* build-standard: reworked logic
+
 CHANGES WITH v0.2 "Tempesta di fuoco"
 	* reworked almost all the code for a better logic
-	* nen ~/.roaster directory
+	* new ~/.roaster directory
 	* more checks and functionalities
 	* new --get-mirrors option
 
