@@ -1,11 +1,8 @@
 # roaster
 
-## Create a Virtual Environment: configure options
+## Create a Virtual Environment: custom options
 
-R uses GNU Autotools in the build process. One of the first
-commands to run is the `./configure` script to check dependencies
-and set options. Since `roaster` try to do boring stuff and reduce
-complexity, to customize your build you need to edit one file.
+In the build process of R, some options could be customized for your needs.
 
 ```bash
 user@host:~$ vi ~/.roaster/config
