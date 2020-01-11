@@ -117,7 +117,7 @@ function R-build-init {
 				echo "1) Unknown Linux distribution."
 			fi
 		else
-			echo	"1) Build dependencies satisfied."
+			echo "1) Build dependencies satisfied."
 		fi
 	}
 
