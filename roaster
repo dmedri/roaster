@@ -167,7 +167,7 @@ function R-build-virtualenv {
 			read -p "Backup the old directory and proceed? (y/n) " yn
 			case $yn in
 				[yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d-%H%M%S"); break;;
-				[nN]* ) echo "Ok, bye."; exit;;
+				[nN]* ) echo "Okay, bye."; exit;;
 				* ) echo "Please, answer (y/n).";;
 			esac
 		done
@@ -227,8 +227,8 @@ function R-build-ask {
 	while true; do
 		read -p "Are you ready to start? (y/n) " yn
 		case $yn in
-			[yY]* ) echo -e "\n\e[32mOk, let's start...\e[0m"; break;;
-			[nN]* ) echo -e "\n\e[32mOk, bye.\e[0m"; exit;;
+			[yY]* ) echo -e "\n\e[32mOkay, let's go...\e[0m\n"; break;;
+			[nN]* ) echo -e "\n\e[32mOkay, bye.\e[0m\n"; exit;;
 			* ) echo "Please, answer (y/n).";;
 		esac
 	done
