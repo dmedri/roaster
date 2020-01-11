@@ -1,16 +1,22 @@
-CHANGES WITH v0.3 "Gelido Cryos"
+CHANGES WITH v0.4 "Sarsina"
+	* new --factory-reset option
+	* new --autoclean option
+	* docs: new build-standard-options
+	* docs: new build-virtualenv-options
+
+CHANGES WITH v0.3 "San Piero in Bagno"
 	* data: new templates and docs
 	* build-virtualenv: 
 	* build-standard: more system checks
 	* build-standard: reworked logic
 
-CHANGES WITH v0.2 "Tempesta di fuoco"
+CHANGES WITH v0.2 "Bagno di Romagna"
 	* reworked almost all the code for a better logic
 	* new ~/.roaster directory
 	* more checks and functionalities
 	* new --get-mirrors option
 
-CHANGES WITH V0.1 "Tzunami assassino"
+CHANGES WITH V0.1 "Verghereto"
 
 	* checks for latest R release;
 	* two build types available (standard, virtualenv);
