@@ -4,23 +4,24 @@ Check R updates and build sources
 
 ## Introduction
 
-This project is an attempt to design new deployments of R and
-add new admin utilities.
-
-Since the early bash prototypes there are some notable features:
+This project is an attempt to design new tools to help R users. 
+Since its early bash prototypes, basic features are:
 
 * get the latest R stable release;
-* show informations about local installation (standard);
-* get an updated MIRRORS list;
-* build R for your system (build-standard)
-* create a virtual environment (build-virtualenv)
+* proceed with a standard installation;
+* create virtual environments.
 
-## Guide / Help
+## Support
 
-Common uses:
+How to create virtual environments:
 
-* [standard build on your system](docs/build-standard.md)
-* [create a virtual environment](docs/build-virtualenv.md)
+* [Virtual environments in user space](docs/build-virtualenv.md)
+* [Customizable options](docs/build-virtualenv-options.md)
+
+How to make a standard installation:
+
+* [Standard installation in your system](docs/build-standard.md)
+* [Customizable options](docs/build-standard-options.md)
 
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
