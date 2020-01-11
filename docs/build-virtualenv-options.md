@@ -1,8 +1,8 @@
 # roaster
 
-## Create a Virtual Environment: custom options
+## Customizable options to create a R Virtual Environment
 
-In the build process of R, some options could be customized for your needs.
+You can change some options to build the source code.
 
 ```bash
 user@host:~$ vi ~/.roaster/config
@@ -11,22 +11,21 @@ The requested field is `OPTRVE`.
 
 ## Examples
 
-R releases come with some defaults. To fit those, the easiest way is
-set a null variable as follow:
+To fit the most common installation, the easiest way is the following:
 
 ```bash
 OPTRVE=""
 ```
 
-The `roaster` default take the recommended packages out. Those packages
-could be installed in a second stage. `Roaster` default settings are:
+In Roaster default settings, the recommended packages out
+since they can be installed later.
 
 ```bash
 OPTRVE="--without-recommended-packages"
 ```
 
-It seems to be a good setup for a general purpose solution, but
-you could strip down many other things. An example:
+It seems to be good setup for a system, great for a desktop, but many
+other things can be excluded. For example:
 
 ```bash
 OPTRVE="--without-recommended-packages --disable-nls --without-tcltk --without-x"
