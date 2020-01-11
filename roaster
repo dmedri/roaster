@@ -87,6 +87,13 @@ function check-status {
 	fi
 }
 
+# Autoclean option
+function roaster-autoclean {
+	if [[ -d $RCO ]]; then
+		rm -fr $RCO/{src,checks,infos,logs}/*
+	fi
+}
+
 # Build init
 function R-build-init {
 
@@ -236,6 +243,8 @@ function app-options {
 	 	echo -e "Informations:"
 		echo -e "\t--check-status   \tCheck available R releases."
 		echo -e "\t--get-mirrors    \tUpdate mirrors list."
+		echo -e "Administration"
+		echo -e "\t--autoclean      \tClean roaster directories."    
 	 	echo -e "\nBuild latest R release:"
 		echo -e "\t--build-standard  \tCommon installation in system."
 		echo -e "\t--build-virtualenv\tCreate a virtual environment."
@@ -254,6 +263,9 @@ while [[ -n "$1" ]]; do
 		;;
 	"--get-mirrors")
 		roaster-get-mirrors
+		;;
+	"--autoclean")
+		roaster-autoclean
 		;;
 	"--build-standard")
 		check-rstable-latest
