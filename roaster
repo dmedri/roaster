@@ -121,12 +121,12 @@ function R-build-init {
 	function check-packages {
 		if [[ ! -f $RCO/checks/required-packages ]]; then
 			if [[ "$DISTRO_OS" == "Debian GNU/Linux" ]]; then
-				echo -e "1) $DISTRO_OS: installing build dependencies...\n"
+				echo -e "1) $DISTRO_OS: installing dependencies...\n"
 				sudo apt-get build-dep r-base --yes --quiet
 				sudo apt-get install build-essential --yes --quiet
 				echo $(date) > $RCO/checks/required-packages
 			elif [[ "$DISTRO_OS" == "Red Hat Linux" ]]; then
-				echo -e "1) $DISTRO_OS: installing build dependencies...\n"
+				echo -e "1) $DISTRO_OS: installing dependencies...\n"
 				### need tests ###
 				yum-builddep R
 				##################
@@ -135,7 +135,7 @@ function R-build-init {
 				echo "1) Unknown Linux distribution."
 			fi
 		else
-			echo "1) Build dependencies satisfied."
+			echo "1) Dependencies satisfied."
 		fi
 	}
 
@@ -147,9 +147,9 @@ function R-build-init {
 				rm $SRCF
 			fi
 			wget $SRCU/$SRCF --quiet && tar zxf $SRCF
-			echo -e "2) Downloaded latest archive and prepared the source code."
+			echo -e "2) The source code is now available."
 		else
-			echo -e "2) Source code already available."
+			echo -e "2) The source code is already available."
 		fi
 	}
 
@@ -162,9 +162,9 @@ function R-build-init {
 function R-build-virtualenv {
 	# Create virtualenv directory
 	if [[ -d $RVE ]]; then
-		echo -e "\e[32mThe directory RVE already exist.\e[0m"
+		echo -e "\e[32mThe directory RVE already exists.\e[0m"
 		while true; do
-			read -p "Backup the old and go ahead with the new one? (y/n) " yn
+			read -p "Backup the old directory and proceed? (y/n) " yn
 			case $yn in
 				[yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d-%H%M%S"); break;;
 				[nN]* ) echo "Ok, bye."; exit;;
@@ -207,28 +207,28 @@ function R-build-standard {
 	cd $RCO/src/R-$VERLATEST && ./configure	$OPTSTD && make
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
 	while true; do
-		read -p "Build: 'make' done. Install now? (y/n) " yn
+		read -p "Build done. Install now? (y/n) " yn
 		case $yn in
 			[yY]* ) sudo make install && make clean; break;;
-			[nN]* ) echo -e "\nBrowse the code and 'sudo make install'.\n"; exit;;
+			[nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
 			* ) echo "Please, answer (y/n).";;
 		esac
 	done
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-	echo -e "\n\e[32mBuild: 'make install' done.\e[0m\n"
+	echo -e "\n\e[32mInstallation completed.\e[0m\n"
 }
 
 # Show build options
 function R-build-ask {
-	echo -e "You're installing R \e[32m$VERLATEST\e[0m on \e[32m$DISTRO_OS\e[0m\n"
-	echo -e "Build informations:"
+	echo -e "\nYou're installing R \e[32m$VERLATEST\e[0m on \e[32m$DISTRO_OS\e[0m\n"
+	echo -e "Summary:"
 	echo -e "\t$BTYPE"
 	echo -e "\t$BOPTS\n"
 	while true; do
 		read -p "Are you ready to start? (y/n) " yn
 		case $yn in
-			[yY]* ) echo "Ok, let's start..."; break;;
-			[nN]* ) echo "Ok, bye."; exit;;
+			[yY]* ) echo -e "\n\e[32mOk, let's start...\e[0m"; break;;
+			[nN]* ) echo -e "\n\e[32mOk, bye.\e[0m"; exit;;
 			* ) echo "Please, answer (y/n).";;
 		esac
 	done
