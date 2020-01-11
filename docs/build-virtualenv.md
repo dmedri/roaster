@@ -3,7 +3,7 @@
 ## Virtual Environment
 
 Roaster was born with a simple idea: create a RVE (R Virtual
-Environment), inspired by other existing solutions/scenarios.
+Environment), inspired by other existing solutions[^1] or scenarios[^2].
 
 Run the following command:
 
@@ -59,5 +59,8 @@ To leave that context, run `deactivate`:
 
 Everything will be restored to the previous setup.
 
+
+[^1]: Python virtualenv.
+[^2]: Containers or VMs.
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
