@@ -7,19 +7,22 @@ RRC=$(pwd)
 RVE="$HOME/RVE"
 RCO="$HOME/.roaster"
 
+# Create a new config file
+function roaster-new-config {
+	if [[ -f $RRC/data/tmpl.config ]]; then
+		cat $RRC/data/tmpl.config > $RCO/config
+	else
+		echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
+		echo "OPTSTD=\"\"" >> $RCO/config
+		echo "OPTRVE=\"\"" >> $RCO/config
+	fi
+}
+
 # Check roaster working directories
 function check-roaster-working-dirs {
 	if [[ ! -d $RCO ]]; then
 		mkdir -p $RCO/{src,logs,checks,infos}
-
-		# Create a new config file
-		if [[ -f $RRC/data/tmpl.config ]]; then
-			cat $RRC/data/tmpl.config > $RCO/config
-		else
-			echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
-			echo "OPTSTD=\"\"" >> $RCO/config
-			echo "OPTRVE=\"\"" >> $RCO/config
-		fi
+		roaster-new-config
 	fi
 
 	# Query available settings
@@ -92,6 +95,14 @@ function roaster-autoclean {
 	if [[ -d $RCO ]]; then
 		rm -fr $RCO/{src,checks,infos,logs}/*
 	fi
+}
+
+# Factory reset
+function roaster-factory-reset {
+	if [[ -f $RCO/config ]]; then
+		roaster-new-config
+	fi
+	roaster-autoclean
 }
 
 # Build init
@@ -244,7 +255,8 @@ function app-options {
 		echo -e "\t--check-status   \tCheck available R releases."
 		echo -e "\t--get-mirrors    \tUpdate mirrors list."
 		echo -e "Administration"
-		echo -e "\t--autoclean      \tClean roaster directories."    
+		echo -e "\t--autoclean      \tRemove unuseful files."    
+		echo -e "\t--factory-reset  \tFactory reset."    
 	 	echo -e "\nBuild latest R release:"
 		echo -e "\t--build-standard  \tCommon installation in system."
 		echo -e "\t--build-virtualenv\tCreate a virtual environment."
@@ -266,6 +278,9 @@ while [[ -n "$1" ]]; do
 		;;
 	"--autoclean")
 		roaster-autoclean
+		;;
+	"--factory-reset")
+		roaster-factory-reset
 		;;
 	"--build-standard")
 		check-rstable-latest
