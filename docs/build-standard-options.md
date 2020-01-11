@@ -1,8 +1,8 @@
 # roaster
 
-## A standard build: configure options
+## Customizable options for a standard installation
 
-In the build processo of R, some options could be customized for your needs.
+You can change some options to build the source code.
 
 ```bash
 user@host:~$ vi ~/.roaster/config
@@ -11,22 +11,21 @@ The requested field is `OPTSTD`.
 
 ## Examples
 
-R releases come with some defaults. To fit those, the easiest way is
-set a null variable as follow:
+To fit the most common installation, the easiest way is the following:
 
 ```bash
 OPTSTD=""
 ```
 
-The `roaster` default take the recommended packages out. Those packages
-could be installed in a second stage. `roaster` default settings are:
+In Roaster default settings, the recommended packages are out 
+since they can be installed later.
 
 ```bash
 OPTSTD="--without-recommended-packages"
 ```
 
-It seems to be a good setup for a system, especially for a desktop, but
-you could strip down many other things. An example:
+It seems to be a good setup for a system, great for a desktop, but many
+other things can be excluded. For example:
 
 ```bash
 OPTSTD="--without-recommended-packages --disable-nls --disable-java --without-tcltk --without-x"
