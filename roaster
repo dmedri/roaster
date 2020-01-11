@@ -278,9 +278,11 @@ while [[ -n "$1" ]]; do
 		;;
 	"--autoclean")
 		roaster-autoclean
+		echo "Auto-cleaning: done."
 		;;
 	"--factory-reset")
 		roaster-factory-reset
+		echo "Factory reset: done."
 		;;
 	"--build-standard")
 		check-rstable-latest
