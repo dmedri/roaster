@@ -22,5 +22,5 @@ Common uses:
 * [standard build on your system](docs/build-standard.md)
 * [create a virtual environment](docs/build-virtualenv.md)
 
---
+---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.

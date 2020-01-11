@@ -24,7 +24,7 @@ downloaded. The archive will be decompressed in the same place.
 
 3) the `./configure` step will append the available options. You can
 configure these settings editing `~/.roaster/config`. Every change
-made here will be available next times.
+here will be available next times.
 
 4) If everything goes fine, the new directory `~/RVE` is created with
 a set of infos and tools.
@@ -47,7 +47,7 @@ that you changed HOME with `~/RVE` and the PATH has the new
 
 In this new HOME, `bin/`, `lib/` and `share/` host what is needed by R
 to run. If you install new libraries, `lib/R/library/` will be the place.
-The `workspace/` directory are simple convention, there to collect your
+The `workspace/` directory is a simple convention, there to collect your
 code.
 
 Quitting the R session, the virtual environment is still there.
@@ -59,5 +59,5 @@ To leave that context, run `deactivate`:
 
 Everything will be restored to the previous setup.
 
---
+---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.

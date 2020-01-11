@@ -27,5 +27,5 @@ made here will be available next times.
 4) If everything goes fine -- at the end of the `make` step -- it's
 time to install. Roaster did some tests to avoid problems.
 
---
+---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
