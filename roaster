@@ -158,7 +158,7 @@ function R-build-init {
 			else
 				echo "1) Unknown Linux distribution."
 				echo "Please, install by-yourself all the needed packages."
-				break;
+				exit;
 			fi
 		else
 			echo "1) Dependencies satisfied."
