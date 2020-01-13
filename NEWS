@@ -1,3 +1,10 @@
+CHANGES WITH v0.6 "Borello"
+	* ...
+
+CHANGES WITH v0.5 "Mercato Saraceno"
+	* new build logger
+	* check-status: minor changes
+
 CHANGES WITH v0.4 "Sarsina"
 	* new --factory-reset option
 	* new --autoclean option
