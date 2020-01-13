@@ -17,7 +17,7 @@ What happens:
 1) first of all, `roaster` do some checks for build dependencies,
 in other terms install the needed packages for the task, for your
 specific Os. In some cases (eg. Debian GNU/Linux) is automatic. In
-other cases you need some hacks before. Any feedback is welcome.
+other cases you need some hacks before. 
 
 2) the second goal is prepare the source code of the latest stable
 R release. If not already available in `~/.roaster/src` it will be
