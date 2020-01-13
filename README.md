@@ -4,8 +4,10 @@
 
 ## Introduction
 
-This project is an attempt to design new tools to help R users. 
-Since its early bash prototypes, basic features are:
+This project is an attempt to design a new tiny tool to support 
+[R](http://www.r-project.org), its users (statisticians, data scientists) and sysadmins.
+
+Since its first bash prototypes, these are the basic features:
 
 * get the latest R stable release;
 * proceed with a standard installation;
