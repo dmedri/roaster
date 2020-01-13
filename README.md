@@ -14,8 +14,7 @@ Since its first bash prototypes, these are the basic features:
 * proceed with a standard installation;
 * create virtual environments.
 
-Virtual Environments are a new kind of R deployment,
-inspired by Python virtualenv and implemented *as close as we can*.
+Virtual Environments are a new kind of R deployment.
 
 ## Support
 
