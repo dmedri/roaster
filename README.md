@@ -1,6 +1,6 @@
 # roaster
 
-Check R updates and build sources
+![](images/roaster-logo.png)
 
 ## Introduction
 
