@@ -7,6 +7,21 @@ RRC=$(pwd)
 RVE="$HOME/RVE"
 RCO="$HOME/.roaster"
 
+# Logger settings
+# values: "file", "systemd", "syslog"
+LOG="file"
+
+# Logger
+function log {
+	if [[ $LOG=="file" ]]; then
+		echo "$(date +'%y/%d/%m-%H:%M:%S') $1" >> $RCO/logs/$$.build
+	elif [[ $lOG=="systemd" ]]; then
+		echo "$1" | systemd-cat -t roaster -p info	
+	elif [[ $LOG=="syslog" ]]; then
+		logger "roaster: $1"
+	fi
+}
+
 # Create a new config file
 function roaster-new-config {
 	if [[ -f $RRC/data/tmpl.config ]]; then
@@ -107,7 +122,6 @@ function roaster-factory-reset {
 
 # Build init
 function R-build-init {
-
 	# Check Linux distribution
 	function check-os-info {
 		if [[ -f /etc/os-release ]]; then
@@ -146,7 +160,10 @@ function R-build-init {
 			if [[ -f $RCO/src/$SRCF ]]; then
 				rm $SRCF
 			fi
-			wget $SRCU/$SRCF --quiet && tar zxf $SRCF
+			wget $SRCU/$SRCF --quiet \
+			&& log "downloaded $SRCU/$SRCF" \
+			&& tar zxf $SRCF \
+			&& log "decompressed $RCO/src/$SRCF" \
 			echo -e "2) The source code is now available."
 		else
 			echo -e "2) The source code is already available."
@@ -166,7 +183,7 @@ function R-build-virtualenv {
 		while true; do
 			read -p "Backup the old directory and proceed? (y/n) " yn
 			case $yn in
-				[yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d-%H%M%S"); break;;
+				[yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d%H%M"); break;;
 				[nN]* ) echo "Okay, bye."; exit;;
 				* ) echo "Please, answer (y/n).";;
 			esac
@@ -175,13 +192,20 @@ function R-build-virtualenv {
 	# Add the main directory
 	mkdir -p $RVE/workspace
 
-	cd $RCO/src/R-$VERLATEST && ./configure \
+	# build
+	cd $RCO/src/R-$VERLATEST \
+	&& log "build-virtualenv: configure" \
+	&& ./configure \
 		--prefix=$RVE \
 		--exec-prefix=$RVE \
-		--disable-rpath $OPTRVE && make \
+		--disable-rpath $OPTRVE \
+		&& log "build-virtualenv: make" \
+		&& make \
+		&& log "build-virtualenv: make install" \
 		&& make install \
-		&& make clean
-	echo -e "\n\e[32mBuild done.\e[0m\n"
+		&& log "build-virtualenv: make clean" \
+		&& make clean \
+		&& echo -e "\n\e[32mBuild done.\e[0m\n"
 
 	# add RVE/.Rprofile
 	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
@@ -204,12 +228,17 @@ function R-build-virtualenv {
 
 # Option --build-standard
 function R-build-standard {
-	cd $RCO/src/R-$VERLATEST && ./configure	$OPTSTD && make
+	# Build
+	cd $RCO/src/R-$VERLATEST && log "build-standard: configure" \
+	&& ./configure	$OPTSTD \
+	&& log "build-standard: make" &&  make
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+	log "build-standard: make install"
 	while true; do
 		read -p "Build done. Install now? (y/n) " yn
 		case $yn in
-			[yY]* ) sudo make install && make clean; break;;
+			[yY]* ) sudo make install && log "build-standard: make clean" \
+				&& make clean; break;;
 			[nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
 			* ) echo "Please, answer (y/n).";;
 		esac
@@ -224,6 +253,12 @@ function R-build-ask {
 	echo -e "Summary:"
 	echo -e "\t$BTYPE"
 	echo -e "\t$BOPTS\n"
+	echo -e "Log type:"
+	if [[ LOG=="file" ]]; then
+		echo -e "\t$LOG $RCO/logs/$$.build\n"
+	else
+		echo -e "\t$LOG\n"
+	fi
 	while true; do
 		read -p "Are you ready to start? (y/n) " yn
 		case $yn in
