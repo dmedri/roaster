@@ -90,18 +90,28 @@ function roaster-get-mirrors {
 
 # Check latest version
 function check-status {
+	local checkr
+	local verr
 	echo "Status of R versions:"
 
 	# check online
 	echo -e "\t\e[32m$VERLATEST\e[0m\tAvailable online"
 
 	# Check for R local
-	local checkr=$(command -v R)
+	checkr=$(command -v R)
 	if [[ $checkr != "" && -e $checkr ]]; then
-		local verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\tInstalled in $checkr"
+		verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$verr\e[0m\tInstalled in $checkr (in system)"
 	else
-		echo -e "\t\e[32mIt seems that R isn't available\e[0m"
+		echo -e "\t\e[32m-----\e[0\tIt seems that R isn't available. (in system)"
+	fi
+
+	# Check for an existing RVE
+	if [[ -f $RVE/bin/R ]]; then
+		verr=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$verr\e[0m\t in $RVE/bin/ (in user-space).\n"
+	else
+		echo -e "\t\e[32m-----\e[0m\tAny RVE available (in user-space).\n"
 	fi
 }
 
