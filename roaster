@@ -139,18 +139,18 @@ function R-build-init {
 		local pac=$(command -v pacman)
 
 		if [[ ! -f $RCO/checks/required-packages ]]; then
-			if [[ $apt=="/usr/bin/apt-get" ]]; then
+			if [[ -e $apt ]]; then
 				LNX="Debian derivatives (Debian, Ubuntu, Kali)"
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo apt-get build-dep r-base --yes --quiet \
 				&& sudo apt-get install build-essential --yes --quiet \
 				&& echo $(date) > $RCO/checks/required-packages
-			elif [[ $yum=="/usr/bin/yum-builddep" ]]; then
+			elif [[ -e $yum  ]]; then
 				LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo yum-builddep R \
 				&& echo $(date) > $RCO/checks/required-packages
-			elif [[ $pac=="/usr/bin/pacman" ]]; then
+			elif [[ -e $pac ]]; then
 				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
 				echo -e "1) $LNX installing dependencies...\n"
 				pacman -Ss r \
