@@ -154,6 +154,7 @@ function R-build-init {
 				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
 				echo -e "1) $LNX installing dependencies...\n"
 				pacman -S expac --noconfirm \
+				&& pacman -S gcc-fortran --noconfirm \
 				&& pacman -S $(expac -S "%E" r) --noconfirm \
 				&& echo $(date) > $RCO/checks/required-packages
 			else
