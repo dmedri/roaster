@@ -101,17 +101,17 @@ function check-status {
 	checkr=$(command -v R)
 	if [[ $checkr != "" && -e $checkr ]]; then
 		verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\tInstalled in $checkr (in system)"
+		echo -e "\t\e[32m$verr\e[0m\t$checkr (standard mode)"
 	else
-		echo -e "\t\e[32m-----\e[0m\tIt seems that R isn't available. (in system)"
+		echo -e "\t\e[32m-----\e[0m\tR is not available (standard mode)"
 	fi
 
 	# Check for an existing RVE
 	if [[ -f $RVE/bin/R ]]; then
 		verr=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\tIn $RVE/bin/ (in user-space).\n"
+		echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtual environment)\n"
 	else
-		echo -e "\t\e[32m-----\e[0m\tAny RVE available (in user-space).\n"
+		echo -e "\t\e[32m-----\e[0m\tRVE is not available (virtual environment)\n"
 	fi
 }
 
@@ -260,7 +260,7 @@ function R-build-standard {
 
 # Show build options
 function R-build-ask {
-	echo -e "\nInstalling R \e[32m$VERLATEST\e[0m on \e[32m$LNX\e[0m\n"
+	echo -e "\nInstalling R \e[32m$VERLATEST\e[0m.\n"
 	echo -e "Summary:"
 	echo -e "\t$BTYPE"
 	echo -e "\t$BOPTS\n"
