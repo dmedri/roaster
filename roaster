@@ -150,11 +150,11 @@ function R-build-init {
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo yum-builddep R \
 				&& echo $(date) > $RCO/checks/required-packages
-			elif [[ -e $pac ]]; then
-				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
-				echo -e "1) $LNX installing dependencies...\n"
-				pacman -Ss r \
-				&& echo $(date) > $RCO/checks/required-packages
+			#elif [[ -e $pac ]]; then
+			#	LNX="Arch derivatives (Arch, Manjaro, Antergos)"
+			#	echo -e "1) $LNX installing dependencies...\n"
+			#	pacman -Ss r \
+			#	&& echo $(date) > $RCO/checks/required-packages
 			else
 				echo "1) Unknown Linux distribution."
 				echo "Please, install by-yourself all the needed packages."
