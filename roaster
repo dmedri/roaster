@@ -132,29 +132,29 @@ function roaster-factory-reset {
 
 # Build init
 function R-build-init {
-	# Check Linux distribution
-	function check-os-info {
-		if [[ -f /etc/os-release ]]; then
-			DISTRO_OS=$(cat /etc/os-release| grep ^NAME= | awk -F'"' '{$0=$2}1')
-		else
-			echo "Can't find /etc/os-release."
-		fi
-	}
+	# Check OS infos and try to install dependencies
+	function check-os-deps {
+		local apt=$(command -v apt-get)
+		local yum=$(command -v yum-builddep)
+		local pac=$(command -v pacman)
 
-	# Checks and helpful tips about required packages
-	function check-packages {
 		if [[ ! -f $RCO/checks/required-packages ]]; then
-			if [[ "$DISTRO_OS" == "Debian GNU/Linux" ]]; then
-				echo -e "1) $DISTRO_OS: installing dependencies...\n"
-				sudo apt-get build-dep r-base --yes --quiet
-				sudo apt-get install build-essential --yes --quiet
-				echo $(date) > $RCO/checks/required-packages
-			elif [[ "$DISTRO_OS" == "Red Hat Linux" ]]; then
-				echo -e "1) $DISTRO_OS: installing dependencies...\n"
-				### need tests ###
-				yum-builddep R
-				##################
-				echo $(date) > $RCO/checks/required-packages
+			if [[ $apt=="/usr/bin/apt-get" || $apt!="" ]]; then
+				LNX="Debian derivatives (Debian, Ubuntu, Kali)"
+				echo -e "1) $LNX installing dependencies...\n"
+				sudo apt-get build-dep r-base --yes --quiet \
+				&& sudo apt-get install build-essential --yes --quiet \
+				&& echo $(date) > $RCO/checks/required-packages
+			elif [[ $yum=="/usr/bin/yum-builddep" || $yum!="" ]]; then
+				LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
+				echo -e "1) $LNX installing dependencies...\n"
+				sudo yum-builddep R \
+				&& echo $(date) > $RCO/checks/required-packages
+			elif [[ $pac=="/usr/bin/pacman" || $pac!="" ]]; then
+				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
+				echo -e "1) $LNX installing dependencies...\n"
+				pacman -Ss r \
+				&& echo $(date) > $RCO/checks/required-packages
 			else
 				echo "1) Unknown Linux distribution."
 				echo "Please, install by-yourself all the needed packages."
@@ -182,8 +182,7 @@ function R-build-init {
 		fi
 	}
 
-	check-os-info
-	check-packages
+	check-os-deps
 	download-latest-stable
 }
 
@@ -261,7 +260,7 @@ function R-build-standard {
 
 # Show build options
 function R-build-ask {
-	echo -e "\nYou're installing R \e[32m$VERLATEST\e[0m on \e[32m$DISTRO_OS\e[0m\n"
+	echo -e "\nYou're installing R \e[32m$VERLATEST\e[0m on \e[32m$OS\e[0m\n"
 	echo -e "Summary:"
 	echo -e "\t$BTYPE"
 	echo -e "\t$BOPTS\n"
@@ -290,7 +289,7 @@ function freemem {
 	unset BTYPE
 	unset BOPTS
 	unset VERLATEST
-	unset DISTRO_OS
+	unset OS
 	unset RCC
 	unset RCO
 	unset RVE
