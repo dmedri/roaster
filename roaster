@@ -139,18 +139,18 @@ function R-build-init {
 		local pac=$(command -v pacman)
 
 		if [[ ! -f $RCO/checks/required-packages ]]; then
-			if [[ $apt=="/usr/bin/apt-get" || $apt!="" ]]; then
+			if [[ $apt=="/usr/bin/apt-get" ]]; then
 				LNX="Debian derivatives (Debian, Ubuntu, Kali)"
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo apt-get build-dep r-base --yes --quiet \
 				&& sudo apt-get install build-essential --yes --quiet \
 				&& echo $(date) > $RCO/checks/required-packages
-			elif [[ $yum=="/usr/bin/yum-builddep" || $yum!="" ]]; then
+			elif [[ $yum=="/usr/bin/yum-builddep" ]]; then
 				LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo yum-builddep R \
 				&& echo $(date) > $RCO/checks/required-packages
-			elif [[ $pac=="/usr/bin/pacman" || $pac!="" ]]; then
+			elif [[ $pac=="/usr/bin/pacman" ]]; then
 				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
 				echo -e "1) $LNX installing dependencies...\n"
 				pacman -Ss r \
@@ -260,7 +260,7 @@ function R-build-standard {
 
 # Show build options
 function R-build-ask {
-	echo -e "\nYou're installing R \e[32m$VERLATEST\e[0m on \e[32m$OS\e[0m\n"
+	echo -e "\nInstalling R \e[32m$VERLATEST\e[0m on \e[32m$LNX\e[0m\n"
 	echo -e "Summary:"
 	echo -e "\t$BTYPE"
 	echo -e "\t$BOPTS\n"
@@ -289,7 +289,7 @@ function freemem {
 	unset BTYPE
 	unset BOPTS
 	unset VERLATEST
-	unset OS
+	unset LNX
 	unset RCC
 	unset RCO
 	unset RVE
