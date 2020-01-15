@@ -149,7 +149,7 @@ function R-build-init {
 				LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo yum builddep R -y \
-				&& sudo yum install make \
+				&& sudo yum install make -y \
 				&& echo $(date) > $RCO/checks/required-packages
 			elif [[ -e $pac ]]; then
 				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
@@ -216,6 +216,7 @@ function R-build-virtualenv {
 		--disable-rpath $OPTRVE \
 		&& log "build-virtualenv: make" \
 		&& make \
+		&& make check \
 		&& log "build-virtualenv: make install" \
 		&& make install \
 		&& log "build-virtualenv: make clean" \
@@ -246,7 +247,9 @@ function R-build-standard {
 	# Build
 	cd $RCO/src/R-$VERLATEST && log "build-standard: configure" \
 	&& ./configure	$OPTSTD \
-	&& log "build-standard: make" &&  make
+	&& log "build-standard: make" \
+	&& make \
+	&& make check
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
 	log "build-standard: make install"
 	while true; do
