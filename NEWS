@@ -1,5 +1,9 @@
 CHANGES WITH v0.6 "Borello"
-	* ...
+	* new check-os-deps function
+	* tested on Kali
+	* tested on Arch
+	* tested on Fedora
+	* added new templates
 
 CHANGES WITH v0.5 "Mercato Saraceno"
 	* new build logger
