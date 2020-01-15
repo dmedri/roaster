@@ -157,7 +157,8 @@ function R-build-init {
 				pacman -S expac --noconfirm \
 				&& pacman -S gcc-fortran --noconfirm \
 				&& pacman -S tk gsl nlopt --noconfirm \
-				$$ pacman -S texi2html texinfo --noconfirm \
+				$$ pacman -S texi2html --noconfirm \
+				$$ pacman -S base-devel --noconfirm \
 				&& pacman -S $(expac -S "%E" r) --noconfirm \
 				&& echo $(date) > $RCO/checks/required-packages
 			else
