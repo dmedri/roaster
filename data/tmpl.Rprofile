@@ -19,5 +19,5 @@ local({
 #options(stringAsFactors = TRUE)
 
 .First <- function() {
-	message("Welcome ", Sys.getenv("USER")))	
+	message("Welcome ", Sys.getenv("USER"))	
 }
