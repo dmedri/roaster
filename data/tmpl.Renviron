@@ -1,0 +1,4 @@
+R_HOME_USER = ~/RVE/workspace
+R_PROFILE_USER = ~/RVE/.Rprofile
+R_LIBS_USER = ~/RVE/lib/R/library
+R_HISTFILE = ~/RVE/.Rhistory
