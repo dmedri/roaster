@@ -149,6 +149,7 @@ function R-build-init {
 				LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo yum builddep R -y \
+				&& sudo yum install make \
 				&& echo $(date) > $RCO/checks/required-packages
 			elif [[ -e $pac ]]; then
 				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
