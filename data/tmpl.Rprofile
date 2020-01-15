@@ -17,3 +17,7 @@ local({
 
 # set default for strings
 #options(stringAsFactors = TRUE)
+
+.First <- function() {
+	message("Welcome ", Sys.getenv("USER")))	
+}
