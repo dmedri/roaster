@@ -1,4 +1,0 @@
-R_HOME_USER = ~/workspace
-R_PROFILE_USER = ~/.Rprofile
-R_LIBS_USER = ~/lib/R/library
-R_HISTFILE = ~/.Rhistory

@@ -6,6 +6,12 @@ if [[ "${BASH_SOURCE-}" = "$0" ]]; then
 	exit 33
 fi
 
+# update packages
+#rve-update-packages () {
+#	Rscript -e "update.packages()"
+#}
+
+# deactivate virtual environment settings
 deactivate () {
 	# reset old environment variables
 	if ! [[ -z "${ROASTER_SYS_PATH:+_}" ]]; then
@@ -34,8 +40,10 @@ deactivate () {
 	fi
 
 	unset ROASTER_RVE_ENV
-	#unset R_HOME
-	#unset R_ENVIRONMENT
+	unset R_HOME_USER
+	unset R_PROFILE_USER
+	unset R_LIBS_USER
+	unset R_HISTFILE
 
 	if [[ ! "${1-}" = "nondestructive" ]]; then
 		unset -f deactivate
@@ -48,14 +56,26 @@ deactivate nondestructive
 # set env variables
 ROASTER_RVE_ENV="$HOME/RVE"
 export ROASTER_RVE_ENV
+
 ROASTER_SYS_HOME="$HOME"
+
 HOME="$HOME/RVE"
 export HOME && cd
-#R_HOME="$ROASTER_RVE_ENV/workspace"
-#export R_HOME
-#R_ENVIRONMENT="$ROASTER_RVE_ENV"
-#export R_ENVIRONMENT
+
+R_HOME_USER="$HOME/workspace"
+export R_HOME_USER
+
+R_PROFILE_USER="$HOME/.Rprofile"
+export R_PROFILE_USER
+
+R_LIBS_USER="$HOME/lib/R/library"
+export R_LIBS_USER
+
+R_HISTFILE="$HOME/.Rhistory"
+export R_HISTFILE
+
 ROASTER_SYS_PATH="$PATH"
+
 PATH="$ROASTER_RVE_ENV/bin:$PATH"
 export PATH
 
@@ -72,6 +92,3 @@ export PS1
 if [[ -n "${BASH-}" ]]; then
 	hash -r 2>/dev/null
 fi
-
-# update packages
-Rscript -e "update.packages()"

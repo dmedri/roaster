@@ -1,6 +1,6 @@
 # Makevars
 # Need: ccache
-# Usually in ~/.R/Makevars
+# in ~/.R/Makevars
 VER=
 CCACHE=ccache
 CC=$(CCACHE) gcc$(VER)
