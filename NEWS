@@ -1,3 +1,7 @@
+CHANGES WITH v0.7 "Cesena"
+	* new RVE functions in tmpl.activate
+	* minor fixes
+
 CHANGES WITH v0.6 "Borello"
 	* new check-os-deps function
 	* tested on Kali
