@@ -6,25 +6,6 @@ if [[ "${BASH_SOURCE-}" = "$0" ]]; then
 	exit 33
 fi
 
-# update packages
-function rve-update {
-	Rscript -e "update.packages(ask=F)"
-}
-
-# freeze packages/libraries
-function rve-freeze {
-	Rscript -e "write(unname(installed.packages(.Library)[,1]),'~/requirements.txt')"
-}
-
-# install packages/libraries
-function rve-install {
-	if [[ -f "$1" ]]; then
-		Rscript -e "install.packages(pkgs=readLines('$1'), ask=F)"
-	else
-		echo "Use: rve-install requirements.txt"
-	fi
-}
-
 # deactivate virtual environment settings
 function deactivate {
 	# reset old environment variables
@@ -61,6 +42,25 @@ function deactivate {
 
 	if [[ ! "${1-}" = "nondestructive" ]]; then
 		unset -f deactivate
+	fi
+}
+
+# update packages
+function rve-update {
+	Rscript -e "update.packages(ask=F)"
+}
+
+# freeze packages/libraries
+function rve-freeze {
+	Rscript -e "write(unname(installed.packages(.Library)[,1]),'~/requirements.txt')"
+}
+
+# install packages/libraries
+function rve-install {
+	if [[ -f "$1" ]]; then
+		Rscript -e "install.packages(pkgs=readLines('$1'), ask=F)"
+	else
+		echo "Use: rve-install requirements.txt"
 	fi
 }
 
