@@ -28,6 +28,7 @@ function roaster-new-config {
 		cat $RRC/data/tmpl.config > $RCO/config
 	else
 		echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
+		echo "OPTSRV=\"\"" >> $RCO/config
 		echo "OPTSTD=\"\"" >> $RCO/config
 		echo "OPTRVE=\"\"" >> $RCO/config
 	fi
@@ -42,6 +43,7 @@ function check-roaster-working-dirs {
 
 	# Query available settings
 	MIRROR=$(cat $RCO/config | grep ^MIRROR | awk -F '"' '{print $2}')
+	OPTSRV=$(cat $RCO/config | grep ^OPTSRV | awk -F '"' '{print $2}')
 	OPTSTD=$(cat $RCO/config | grep ^OPTSTD | awk -F '"' '{print $2}')
 	OPTRVE=$(cat $RCO/config | grep ^OPTRVE | awk -F '"' '{print $2}')
 }
@@ -269,6 +271,32 @@ function R-build-standard {
 	echo -e "\n\e[32mInstallation completed.\e[0m\n"
 }
 
+# Option --build-server
+function R-build-server {
+	# Build
+	cd $RCO/src/R-$VERLATEST && log "build-server: configure" \
+	&& ./configure	\
+		--prefix=/opt/R/$(cat VERSION) \
+		--exec-prefix=/opt/R/$(cat VERSION) \
+		$OPTSRV \
+	&& log "build-server: make" \
+	&& make \
+	&& make check
+	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+	log "build-server: make install"
+	while true; do
+		read -p "Build done. Install now? (y/n) " yn
+		case $yn in
+			[yY]* ) sudo make install && log "build-server: make clean" \
+				&& make clean; break;;
+			[nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
+			* ) echo "Please, answer (y/n).";;
+		esac
+	done
+	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+	echo -e "\n\e[32mInstallation completed.\e[0m\n"
+}
+
 # Show build options
 function R-build-ask {
 	echo -e "\nInstalling R \e[32m$VERLATEST\e[0m.\n"
@@ -297,6 +325,7 @@ function freemem {
 	unset MIRROR
 	unset OPTSTD
 	unset OPTRVE
+	unset OPTSRV
 	unset BTYPE
 	unset BOPTS
 	unset VERLATEST
@@ -315,6 +344,7 @@ function app-options {
 		echo -e "\t--autoclean      \tRemove unuseful files."    
 		echo -e "\t--factory-reset  \tFactory reset."    
 	 	echo -e "\nBuild latest R release:"
+		echo -e "\t--build-server    \tConcurrent minimal versions in system."
 		echo -e "\t--build-standard  \tCommon installation in system."
 		echo -e "\t--build-virtualenv\tCreate a virtual environment."
 	 	echo -e "\nBuild options (in \e[32m$RCO/config\e[0m):"
@@ -340,6 +370,14 @@ while [[ -n "$1" ]]; do
 	"--factory-reset")
 		roaster-factory-reset
 		echo "Factory reset: done."
+		;;
+	"--build-server")
+		check-rstable-latest
+		BTYPE="Standard (in system)"
+		BOPTS="$OPTSRV"
+		R-build-init
+		R-build-ask
+		R-build-server
 		;;
 	"--build-standard")
 		check-rstable-latest
