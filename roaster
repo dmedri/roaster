@@ -349,6 +349,7 @@ function app-options {
 		echo -e "\t--build-virtualenv\tCreate a virtual environment."
 	 	echo -e "\nBuild options (in \e[32m$RCO/config\e[0m):"
 		echo -e "\t    mirror: $MIRROR"
+		echo -e "\t    server: $OPTSRV"
 		echo -e "\t  standard: $OPTSTD"
 		echo -e "\tvirtualenv: $OPTRVE"
 }
@@ -373,7 +374,7 @@ while [[ -n "$1" ]]; do
 		;;
 	"--build-server")
 		check-rstable-latest
-		BTYPE="Standard (in system)"
+		BTYPE="Server (in system)"
 		BOPTS="$OPTSRV"
 		R-build-init
 		R-build-ask
