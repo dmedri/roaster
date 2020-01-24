@@ -1,3 +1,7 @@
+CHANGES WITH v0.8 "Castiglione di Ravenna"
+	* new --build-server option
+	* minor fixes
+
 CHANGES WITH v0.7 "Cesena"
 	* new RVE functions in tmpl.activate
 	* minor fixes
