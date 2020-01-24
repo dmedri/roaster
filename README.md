@@ -12,6 +12,7 @@ Since its first bash prototypes, these are the basic features:
 
 * get the latest R stable release;
 * proceed with a standard installation;
+* prepare a server solution;
 * create virtual environments.
 
 Virtual Environments are a new kind of R deployment in user-space. For
@@ -20,20 +21,20 @@ replicate _as-close-as-we-can_ its main features.
 
 ## Support
 
-How to create virtual environments:
+How to create *virtual environments*:
 
 * [Virtual environments in user space](docs/build-virtualenv.md)
 * [Customizable options](docs/build-virtualenv-options.md)
 
-How to make a standard installation:
+How to make a *standard installation*:
 
 * [Standard installation in your system](docs/build-standard.md)
 * [Customizable options](docs/build-standard-options.md)
 
-How to make a server installation:
+How to prepare a *server solution*:
 
 * [Server installation in your system](docs/build-server.md)
 * [Customizable options](docs/build-server-options.md)
-*
+
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.

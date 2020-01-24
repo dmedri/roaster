@@ -29,7 +29,14 @@ customize these settings editing `~/.roaster/config`. Every change
 made here will be available next times.
 
 4) If everything goes fine -- at the end of the `make` step -- it's
-time to install. Every version will be installed in `/opt/R/`.
+time to install. Versions will be installed in the same directory
+(by default `/opt/R/`).
+
+```bash
+$ ls /opt/R/
+3.5.2
+3.6.2
+```
 
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
