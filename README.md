@@ -30,5 +30,10 @@ How to make a standard installation:
 * [Standard installation in your system](docs/build-standard.md)
 * [Customizable options](docs/build-standard-options.md)
 
+How to make a server installation:
+
+* [Server installation in your system](docs/build-server.md)
+* [Customizable options](docs/build-server-options.md)
+*
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
