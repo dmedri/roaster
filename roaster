@@ -61,13 +61,14 @@ echo -e "Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+"
 echo -e "Use 'roaster --help' for the available options.\n"
 
 # checks for needed programs
-command -v awk   >/dev/null 2>&1 || { echo >&2 "'awk'  (required)"; exit; }
-command -v cat   >/dev/null 2>&1 || { echo >&2 "'cat'  (required)"; exit; }
-command -v tar   >/dev/null 2>&1 || { echo >&2 "'tar'  (required)"; exit; }
-command -v pwd   >/dev/null 2>&1 || { echo >&2 "'pwd'  (required)"; exit; }
-command -v wget  >/dev/null 2>&1 || { echo >&2 "'wget' (required)"; exit; }
-command -v grep  >/dev/null 2>&1 || { echo >&2 "'grep' (required)"; exit; }
-command -v sudo  >/dev/null 2>&1 || { echo >&2 "'sudo' (required)"; exit; }
+function check-cmdreq {
+	while(($#)); do
+		command -v "$1"  >/dev/null 2>&1 \
+		|| { echo >&2 "Command '$1' is required."; exit; }
+		shift
+	done
+}
+check-cmdreq {awk,cat,tar,pwd,wget,grep,sudo}
 
 # Check latest R release
 function check-rstable-latest {
