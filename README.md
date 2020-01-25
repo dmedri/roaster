@@ -8,12 +8,12 @@ This project is an attempt to design a new tiny tool to support
 [**R**](http://www.r-project.org), its users (**statisticians**, **data
 scientists**) and **sysadmins**.
 
-Since its first bash prototypes, these are the basic features:
+Basic features:
 
 * get the latest R stable release;
-* proceed with a standard installation;
-* prepare a server solution;
-* create virtual environments.
+* proceed with a _standard installation_;
+* prepare a _server solution_;
+* create _virtual environments_.
 
 Virtual Environments are a new kind of R deployment in user-space. For
 this specific case, the reference is Python virtualenv, and our goal is
