@@ -338,21 +338,21 @@ function freemem {
 
 # Roaster options
 function app-options {
-	 	echo -e "Informations:"
-		echo -e "\t--check-status   \tCheck available R releases."
-		echo -e "\t--get-mirrors    \tUpdate mirrors list."
-		echo -e "Administration"
-		echo -e "\t--autoclean      \tRemove unuseful files."    
-		echo -e "\t--factory-reset  \tFactory reset."    
-	 	echo -e "\nBuild latest R release:"
-		echo -e "\t--build-server    \tConcurrent minimal versions in system."
-		echo -e "\t--build-standard  \tCommon installation in system."
-		echo -e "\t--build-virtualenv\tCreate a virtual environment."
-	 	echo -e "\nBuild options (in \e[32m$RCO/config\e[0m):"
-		echo -e "\t    mirror: $MIRROR"
-		echo -e "\t    server: $OPTSRV"
-		echo -e "\t  standard: $OPTSTD"
-		echo -e "\tvirtualenv: $OPTRVE"
+	echo -e "Informations:"
+	echo -e "\t--check-status   \tCheck available R releases."
+	echo -e "\t--get-mirrors    \tUpdate mirrors list."
+	echo -e "Administration"
+	echo -e "\t--autoclean      \tRemove unuseful files."    
+	echo -e "\t--factory-reset  \tFactory reset."    
+	echo -e "\nBuild latest R release:"
+	echo -e "\t--build-server    \tConcurrent minimal versions in system."
+	echo -e "\t--build-standard  \tCommon installation in system."
+	echo -e "\t--build-virtualenv\tCreate a virtual environment."
+	echo -e "\nBuild options (in \e[32m$RCO/config\e[0m):"
+	echo -e "\t    mirror: $MIRROR"
+	echo -e "\t    server: $OPTSRV"
+	echo -e "\t  standard: $OPTSTD"
+	echo -e "\tvirtualenv: $OPTRVE"
 }
 
 # Help menu
