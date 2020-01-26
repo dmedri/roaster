@@ -61,7 +61,7 @@ echo -e "\e[32mRoaster\e[0m - Check R updates and build sources."
 echo -e "Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+"
 echo -e "Use 'roaster --help' for the available options.\n"
 
-# checks for needed programs
+# Checks for needed programs
 function check-cmdreq {
 	while(($#)); do
 		command -v "$1"  >/dev/null 2>&1 \
@@ -92,16 +92,18 @@ function roaster-get-mirrors {
 	done
 }
 
-# Check latest version
+# Check latest release
 function check-status {
 	local checkr
 	local verr
+	local srvr
+
 	echo "Status of R versions:"
 
-	# check online
+	# Check online
 	echo -e "\t\e[32m$VERLATEST\e[0m\tAvailable online"
 
-	# Check for R local
+	# Check for local R (standard)
 	checkr=$(command -v R)
 	if [[ $checkr != "" && -e $checkr ]]; then
 		verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
@@ -113,10 +115,16 @@ function check-status {
 	# Check for an existing RVE
 	if [[ -f $RVE/bin/R ]]; then
 		verr=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtual environment)\n"
+		echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtual environment)"
 	else
-		echo -e "\t\e[32m-----\e[0m\tRVE is not available (virtual environment)\n"
+		echo -e "\t\e[32m-----\e[0m\tRVE is not available (virtual environment)"
 	fi
+
+	# Check for local R (server)
+	for i in `ls -d $SRV/*/`; do
+		srvr=$($i/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
+		echo -e "\t\e[32m$srvr\e[0m\t$i (server)";
+	done
 }
 
 # Autoclean option
