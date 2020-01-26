@@ -6,6 +6,7 @@
 RRC=$(pwd)
 RVE="$HOME/RVE"
 RCO="$HOME/.roaster"
+SRV="/opt/R"
 
 # Logger settings
 # values: "file", "systemd", "syslog"
@@ -274,28 +275,29 @@ function R-build-standard {
 
 # Option --build-server
 function R-build-server {
-	# Build
-	cd $RCO/src/R-$VERLATEST && log "build-server: configure" \
-	&& ./configure	\
-		--prefix=/opt/R/$(cat VERSION) \
-		--exec-prefix=/opt/R/$(cat VERSION) \
-		$OPTSRV \
-	&& log "build-server: make" \
-	&& make \
-	&& make check
-	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-	log "build-server: make install"
-	while true; do
-		read -p "Build done. Install now? (y/n) " yn
-		case $yn in
-			[yY]* ) sudo make install && log "build-server: make clean" \
-				&& make clean; break;;
-			[nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
-			* ) echo "Please, answer (y/n).";;
-		esac
-	done
-	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-	echo -e "\n\e[32mInstallation completed.\e[0m\n"
+	if [[ ! -d $SRV/$VERLATEST ]]; then
+		# Build
+		cd $RCO/src/R-$VERLATEST && log "build-server: configure" \
+		&& ./configure	\
+			--prefix=$SRV/$VERLATEST \
+			--exec-prefix=$SRV/$VERLATEST \
+			$OPTSRV \
+		&& log "build-server: make" \
+		&& make \
+		&& make check
+		echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+		log "build-server: make install"
+		sudo make install \
+		&& log "build-server: make clean" \
+		&& make clean
+		echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+		echo -e "\n\e[32mInstallation completed.\e[0m\n"
+		# save options
+		echo $OPTSRV > $SRV/$VERLATEST/configure.options
+	else
+		echo -e "\e[32mDirectory $SRV/$VERLATEST already exists.\e[0m"
+		echo -e "Please, remove it for a new build of that release."
+	fi
 }
 
 # Show build options
