@@ -103,31 +103,43 @@ function roaster-get-mirrors {
 
 # Check latest release
 function check-status {
-	local checkr
-	local verr
-	local srvr
-
-	echo "Status of R versions:"
+	echo "R - Check status"
 
 	# Check online
-	echo -e "\t\e[32m$VERLATEST\e[0m\tAvailable online"
+	echo -e "\n\tSource code available online:\n"
+	echo -e "\t\e[32m$VERLATEST\e[0m\t${SRCU}$SRCF"
 
 	# Check for local R (standard)
-	checkr=$(command -v R)
+	echo -e "\n\tLocal:\n"
+	local checkr=$(command -v R)
 	if [[ $checkr != "" && -e $checkr ]]; then
 		verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\t$checkr (standard mode)"
+		echo -e "\t\e[32m$verr\e[0m\t$checkr (standard)"
 	else
-		echo -e "\t\e[32m-----\e[0m\tR is not available (standard mode)"
+		echo -e "\t\e[32m-----\e[0m\tNot available (standard)"
 	fi
 
 	# Check for an existing RVE
+	local verr
 	if [[ -f $RVE/bin/R ]]; then
 		verr=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtual environment)"
+		echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtualenv)"
 	else
-		echo -e "\t\e[32m-----\e[0m\tRVE is not available (virtual environment)"
+		echo -e "\t\e[32m-----\e[0m\tNot available (virtualenv)"
 	fi
+
+	# R server farm
+	echo -e "\n\tServer farm:\n"
+	local lsadir=$(ls -A $SRV 2>/dev/null)
+	if [[ -n "$lsadir" ]]; then
+		for i in $lsadir; do
+			local srvr=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
+			echo -e "\t\e[32m$srvr\e[0m\t$SRV/$i/bin/R (server)";
+		done
+	else
+		echo -e "\t\e[32m-----\e[0m\tNot available (server)"
+	fi
+	echo -e ""
 }
 
 # Autoclean option
