@@ -364,21 +364,33 @@ function freemem {
 
 # Roaster options
 function app-options {
-	echo -e "Informations:"
+
+	# function args-wrap
+	function args-wrap {
+		while(($#)); do
+			echo -e "\t\t$1"
+			shift
+		done
+	}
+
+	echo -e "Get informations about R and mirrors:"
 	echo -e "\t--check-status   \tCheck available R releases."
-	echo -e "\t--get-mirrors    \tUpdate mirrors list."
-	echo -e "Administration"
+	echo -e "\t--get-mirrors    \tUpdate mirrors list.\n"
+	echo -e "Basic administration:"
 	echo -e "\t--autoclean      \tRemove unuseful files."    
-	echo -e "\t--factory-reset  \tFactory reset."    
-	echo -e "\nBuild latest R release:"
+	echo -e "\t--factory-reset  \tFactory reset.\n"
+	echo -e "Build source code:"
 	echo -e "\t--build-server    \tConcurrent minimal versions in system."
 	echo -e "\t--build-standard  \tCommon installation in system."
-	echo -e "\t--build-virtualenv\tCreate a virtual environment."
-	echo -e "\nBuild options (in \e[32m$RCO/config\e[0m):"
-	echo -e "\t    mirror: $MIRROR"
-	echo -e "\t    server: $OPTSRV"
-	echo -e "\t  standard: $OPTSTD"
-	echo -e "\tvirtualenv: $OPTRVE"
+	echo -e "\t--build-virtualenv\tCreate a virtual environment.\n"
+	echo -e "Settings in $RCO/config:"
+	echo -e "\tmirror site: $MIRROR"
+	echo -e "\tbuild-server options:"
+	args-wrap $OPTSRV
+	echo -e "\tbuild-standard options:"
+	args-wrap $OPTSTD
+	echo -e "\tbuild-virtualenv options:"
+	args-wrap $OPTRVE
 }
 
 # Help menu
