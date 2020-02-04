@@ -76,7 +76,7 @@ function check-cmdreq {
 		shift
 	done
 }
-check-cmdreq {awk,cat,cut,tar,pwd,wget,grep,sudo}
+check-cmdreq {bash,awk,cat,cut,tar,pwd,wget,grep,sudo}
 
 # Check latest R release
 function check-rstable-latest {
@@ -113,7 +113,7 @@ function check-status {
 	echo -e "\t\e[32m$VERLATEST\e[0m\t${SRCU}$SRCF"
 
 	# Check for local R (standard)
-	echo -e "\n\tLocal:\n"
+	echo -e "\n\tLocal installations:\n"
 	local checkr=$(command -v R)
 	if [[ $checkr != "" && -e $checkr ]]; then
 		verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
