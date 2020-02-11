@@ -1,3 +1,11 @@
+CHANGES WITH v0.9 "Lido di Savio"
+	* check-status reworked
+	* check-roaster-working-dirs reworked
+	* check-rstable-latest reworked
+	* build-server reworked
+	* new check-reqcmd function
+	* minor fixes
+
 CHANGES WITH v0.8 "Castiglione di Ravenna"
 	* new --build-server option
 	* minor fixes
