@@ -10,7 +10,7 @@ work.
 Run the following command to start:
 
 ```bash
-$ roaster --build-server
+$ ./roaster --build-server
 ```
 
 What happens:
@@ -34,8 +34,8 @@ time to install. Versions will be installed in the same directory
 
 ```bash
 $ ls /opt/R/
-3.5.2
 3.6.2
+3.6.3
 ```
 
 ---

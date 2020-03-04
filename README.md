@@ -19,6 +19,40 @@ Virtual Environments are a new kind of R deployment in user-space. For
 this specific case, the reference is Python virtualenv, and our goal is
 replicate _as-close-as-we-can_ its main features.
 
+## Basic usage
+
+Installation:
+
+```bash
+$ git clone https://github.com/dmedri/roaster/
+$ cd roaster/
+$ ./roaster --help
+
+Roaster - Check R updates and build sources.
+Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+
+Use 'roaster --help' for the available options.
+
+Get informations about R and mirrors:
+	--check-status   	Check available R releases.
+	--get-mirrors    	Update mirrors list.
+
+Basic administration:
+	--autoclean      	Remove unuseful files.
+	--factory-reset  	Factory reset.
+	--settings       	Show settings.
+
+Build source code:
+	--build-server    	Concurrent minimal versions in system.
+	--build-standard  	Common installation in system.
+	--build-virtualenv	Create a virtual environment.
+```
+To build a Virtual Environment:
+
+```bash
+$ ./roaster --build-virtualenv
+```
+Easy.
+
 ## Support
 
 How to create *virtual environments*:

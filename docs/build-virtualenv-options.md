@@ -11,21 +11,21 @@ The requested field is `OPTRVE`.
 
 ## Examples
 
-To fit the most common installation, the easiest way is the following:
+To fit the common installation (with its defaults) set this:
 
 ```bash
 OPTRVE=""
 ```
 
-In Roaster default settings, the recommended packages out
-since they can be installed later.
+Roaster defaults leave out the recommended packages, always
+available for the installation. It seems to be a good setup
+for a desktop use. Options:
 
 ```bash
 OPTRVE="--without-recommended-packages"
 ```
 
-It seems to be good setup for a system, great for a desktop, but many
-other things can be excluded. For example:
+To downsize the build for a cli use or container, a setup could be:
 
 ```bash
 OPTRVE="--without-recommended-packages --disable-nls --without-tcltk --without-x"

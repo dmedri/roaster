@@ -24,8 +24,11 @@ downloaded. The archive will be decompressed in the same place.
 customize these settings editing `~/.roaster/config`. Every change
 made here will be available next times.
 
-4) If everything goes fine -- at the end of the `make` step -- it's
-time to install. Roaster did some tests to avoid problems.
+4) The default destination will be `/usr/local`.
+
+5) if everything goes fine -- at the end of the `make` step -- it's
+time to install. Roaster did some tests to avoid problems and will
+ask you to procede or not in this step.
 
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.

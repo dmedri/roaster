@@ -11,13 +11,14 @@ The requested field is `OPTSRV`.
 
 ## Examples
 
-To fit the most common installation, the easiest way is the following:
+To fit the most common installation (with its defaults) set this:
 
 ```bash
 OPTSRV=""
 ```
 
-The following example, options should fit for a minimal server solution:
+Roaster defaults leave out the recommended packages, and other unuseful options
+for a cli use as a server.
 
 ```bash
 OPTSRV="--without-recommended-packages --disable-nls --without-tcltk --without-x"
