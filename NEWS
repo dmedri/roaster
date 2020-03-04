@@ -1,3 +1,7 @@
+CHANGES WITH v0.10 "Cervia"
+	* added --enable-R-shlib in build confs
+	* minor revisions in docs
+
 CHANGES WITH v0.9 "Lido di Savio"
 	* check-status reworked
 	* check-roaster-working-dirs reworked
