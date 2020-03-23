@@ -8,6 +8,9 @@ RVE="$HOME/RVE"
 RCO="$HOME/.roaster"
 SRV="/opt/R"
 
+# Build standard: ask before 'make install'
+BSTDASK=true
+
 # Logger settings
 # values: "file", "systemd", "syslog"
 LOG="file"
@@ -286,15 +289,20 @@ function R-build-standard {
 	&& make check
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
 	log "build-standard: make install"
-	while true; do
-		read -p "Build done. Install now? (y/n) " yn
-		case $yn in
-			[yY]* ) sudo make install && log "build-standard: make clean" \
-				&& make clean; break;;
-			[nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
-			* ) echo "Please, answer (y/n).";;
-		esac
-	done
+	if [[ $BSTDASK==true ]]; then
+		while true; do
+			read -p "Build done. Install now? (y/n) " yn
+			case $yn in
+				[yY]* ) sudo make install && log "build-standard: make clean" \
+					&& make clean; break;;
+				[nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
+				* ) echo "Please, answer (y/n).";;
+			esac
+		done
+	else
+		sudo make install && log "build-standard: make clean" \
+		make clean
+	fi
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
 	echo -e "\n\e[32mInstallation completed.\e[0m\n"
 }
