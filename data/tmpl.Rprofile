@@ -19,5 +19,9 @@ options(show.signif.starts = TRUE)
 #options(stringAsFactors = TRUE)
 
 #.First <- function() {
-#	message("Welcome ", Sys.getenv("USER"))	
+# message("Welcome ", Sys.getenv("USER"))	
 #}
+
+loaded.packages <- function() {
+  (.packages())	
+}
