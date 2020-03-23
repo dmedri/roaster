@@ -1,3 +1,7 @@
+CHANGES WITH v0.11 "Cesenatico"
+	* new internal switch for standard build
+	* new loaded.packages function in tmpl.Rprofile
+
 CHANGES WITH v0.10 "Cervia"
 	* added --enable-R-shlib in build confs
 	* minor revisions in docs
