@@ -9,7 +9,7 @@ RCO="$HOME/.roaster"
 SRV="/opt/R"
 
 # Build standard: ask before 'make install'
-BSTDASK=true
+BSTDASK=false
 
 # Logger settings
 # values: "file", "systemd", "syslog"
@@ -260,7 +260,7 @@ function R-build-virtualenv {
 		&& make clean \
 		&& echo -e "\n\e[32mBuild done.\e[0m\n"
 
-	# add RVE/.Rprofile
+	# RVE/.Rprofile
 	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
 		cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
 	fi
@@ -303,6 +303,12 @@ function R-build-standard {
 		sudo make install && log "build-standard: make clean" \
 		make clean
 	fi
+	
+	# RVE/.Rprofile
+	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
+		cat $RRC/data/tmpl.Rprofile > $HOME/new.Rprofile
+	fi
+
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
 	echo -e "\n\e[32mInstallation completed.\e[0m\n"
 }
