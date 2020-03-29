@@ -70,5 +70,12 @@ How to prepare a *server solution*:
 * [Server installation in your system](docs/build-server.md)
 * [Customizable options](docs/build-server-options.md)
 
+## For developers only
+
+Since release v0.12 is now possible to fetch r-devel from svn server and build the
+unstable branch. In your `~/.roaster/config` file set `RBTYPE="rdevel"` (the
+default case is `RBTYPE="stable"`). From now on, you'll use the `roaster` with
+the same options.
+
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
