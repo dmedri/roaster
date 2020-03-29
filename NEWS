@@ -1,3 +1,8 @@
+CHANGES WITH v0.12 "Gatteo"
+	* "rdevel" config option to build R from svn
+	* build-standard: add new.Rprofile in user HOME
+	* many minor fixes all over
+
 CHANGES WITH v0.11 "Cesenatico"
 	* new internal switch for standard build
 	* new loaded.packages function in tmpl.Rprofile
