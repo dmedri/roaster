@@ -23,7 +23,7 @@ replicate _as-close-as-we-can_ its main features.
 
 Installation:
 
-```bash
+```
 $ git clone https://github.com/dmedri/roaster/
 $ cd roaster/
 $ ./roaster --help
@@ -48,7 +48,7 @@ Build source code:
 ```
 To build a Virtual Environment:
 
-```bash
+```
 $ ./roaster --build-virtualenv
 ```
 Easy.
