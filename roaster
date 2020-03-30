@@ -28,7 +28,7 @@ function roaster-new-config {
 		cat $RRC/data/tmpl.config > $RCO/config
 	else
 		echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
-		echo "LOG=\"file\" >> $RCO/config
+		echo "LOG=\"file\"" >> $RCO/config
 		echo "SVNSRV=\"https://svn.r-project.org/R/trunk\"" >> $RCO/config
 		echo "RBTYPE=\"stable" >> $RCO/config
 		echo "OPTSRV=\"\"" >> $RCO/config
@@ -50,6 +50,7 @@ function check-roaster-working-dirs {
 
 	# Query available settings
 	MIRROR=$(get-value MIRROR)
+	LOG=$(get-value LOG)
 	SVNSRV=$(get-value SVNSRV)
 	RBTYPE=$(get-value RBTYPE)
 	OPTSRV=$(get-value OPTSRV)
