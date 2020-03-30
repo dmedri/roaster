@@ -172,6 +172,8 @@ function roaster-factory-reset {
 
 # Build init
 function R-build-init {
+	log "Building R ($RBTYPE - $BTYPE)"
+
 	# Check OS infos and try to install dependencies
 	function check-os-deps {
 		local apt=$(command -v apt-get)
