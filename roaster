@@ -179,6 +179,7 @@ function R-build-init {
 		local pac=$(command -v pacman)
 
 		if [[ ! -f $RCO/checks/required-packages ]]; then
+			log "Installing required dependencies"
 			if [[ -e $apt ]]; then
 				LNX="Debian derivatives (Debian, Ubuntu, Kali)"
 				echo -e "1) $LNX installing dependencies...\n"
@@ -209,7 +210,8 @@ function R-build-init {
 				exit;
 			fi
 		else
-			echo "1) Dependencies satisfied."
+			log "Dependencies already available"
+			echo "1) Dependencies already available."
 		fi
 	}
 
@@ -235,7 +237,7 @@ function R-build-init {
 		cd $RCO/src
 		if [[ ! -d "R-DEVEL" ]]; then
 			svn co $SVNSRV R-DEVEL \
-			&& log "svn checkout" \
+			&& log "svn co $SVNSRV R-DEVEL" \
 			echo -e "2) The source code is now available."
 		else
 			cd R-DEVEL
@@ -309,6 +311,9 @@ function R-build-virtualenv {
 			echo -e " enable: \$ source $RVE/bin/activate"
 			echo -e "disable: \$ deactivate\n"
 		fi
+	else
+		echo -e "Something goes wrong..."
+		echo -e "Please, remove the RVE directory."
 	fi
 }
 
