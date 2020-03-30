@@ -11,10 +11,6 @@ SRV="/opt/R"
 # Build standard: ask before 'make install'
 BSTDASK=false
 
-# Logger settings
-# values: "file", "systemd", "syslog"
-LOG="file"
-
 # Logger
 function log {
 	if [[ $LOG = "file" ]]; then
@@ -32,6 +28,7 @@ function roaster-new-config {
 		cat $RRC/data/tmpl.config > $RCO/config
 	else
 		echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
+		echo "LOG=\"file\" >> $RCO/config
 		echo "SVNSRV=\"https://svn.r-project.org/R/trunk\"" >> $RCO/config
 		echo "RBTYPE=\"stable" >> $RCO/config
 		echo "OPTSRV=\"\"" >> $RCO/config
