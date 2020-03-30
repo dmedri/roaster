@@ -304,11 +304,13 @@ function R-build-virtualenv {
 	fi
 	
 	# add RVE/bin/activate
-	if [[ -f $RRC/data/tmpl.activate ]]; then
-		echo -e "\e[32mR Virtual Environment\e[0m"
-		cat $RRC/data/tmpl.activate > $RVE/bin/activate
-		echo -e " enable: \$ source $RVE/bin/activate"
-		echo -e "disable: \$ deactivate\n"
+	if [[ -d $RRC/bin ]]; then
+		if [[ -f $RRC/data/tmpl.activate ]]; then
+			echo -e "\e[32mR Virtual Environment\e[0m"
+			cat $RRC/data/tmpl.activate > $RVE/bin/activate
+			echo -e " enable: \$ source $RVE/bin/activate"
+			echo -e "disable: \$ deactivate\n"
+		fi
 	fi
 }
 
@@ -390,15 +392,15 @@ function R-build-server {
 
 # Show build options
 function R-build-ask {
-	echo -e "\nInstalling R \e[32m$RBTYPE\e[0m.\n"
+	echo -e "\nInstalling R (\e[32m$RBTYPE\e[0m).\n"
 	echo -e "Summary:"
-	echo -e "\t$BTYPE"
-	echo -e "\t$BOPTS\n"
+	echo -e "\t\e[32m$BTYPE\e[0m"
+	echo -e "\t\e[32m$BOPTS\e[0m\n"
 	echo -e "Log type:"
 	if [[ $LOG = "file" ]]; then
-		echo -e "\t$LOG $RCO/logs/$$.build\n"
+		echo -e "\t\e[32m$LOG $RCO/logs/$$.build\e[0m\n"
 	else
-		echo -e "\t$LOG\n"
+		echo -e "\t\e[32m$LOG\e[0m\n"
 	fi
 	while true; do
 		read -p "Are you ready to start? (y/n) " yn
