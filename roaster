@@ -198,13 +198,8 @@ function R-build-init {
 				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
 				echo -e "1) $LNX installing dependencies...\n"
 				pacman -S expac --noconfirm \
-				&& pacman -S gcc-fortran --noconfirm \
-				&& pacman -S tk --noconfirm \
-				&& pacman -S gsl --noconfirm \
-				&& pacman -S nlopt --noconfirm \
-				&& pacman -S texi2html --noconfirm \
-				&& pacman -S base-devel --noconfirm \
 				&& pacman -S $(expac -S "%E" r) --noconfirm \
+				&& pacman -S --needed - < data/pkgs.arch --noconfirm \
 				&& echo $(date) > $RCO/checks/required-packages
 			else
 				echo "1) Unknown Linux distribution."
