@@ -291,17 +291,21 @@ function R-build-virtualenv {
 		&& echo -e "\n\e[32mBuild done.\e[0m\n"
 
 	# RVE/.Rprofile
-	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
-		cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
+	if [[ -d $RVE ]]; then
+		if [[ -f $RRC/data/tmpl.Rprofile ]]; then
+			cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
+		fi
 	fi
 
 	# add RVE/README
-	if [[ -f $RRC/data/tmpl.README ]]; then
-		cat $RRC/data/tmpl.README > $RVE/README
+	if [[ -d $RVE ]]; then
+		if [[ -f $RRC/data/tmpl.README ]]; then
+			cat $RRC/data/tmpl.README > $RVE/README
+		fi
 	fi
-	
+
 	# add RVE/bin/activate
-	if [[ -d $RRC/bin ]]; then
+	if [[ -d $RVE/bin ]]; then
 		if [[ -f $RRC/data/tmpl.activate ]]; then
 			echo -e "\e[32mR Virtual Environment\e[0m"
 			cat $RRC/data/tmpl.activate > $RVE/bin/activate
@@ -349,8 +353,12 @@ function R-build-standard {
 	fi
 	
 	# RVE/.Rprofile
+	if [[ -f $HOME/.Rprofile ]]; then
+		sed -e 's/^/#/' .Rprofile > .Rprofile.backup
+		echo -e "The existing .Rprofile is now .Rprofile.backup"
+	fi
 	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
-		cat $RRC/data/tmpl.Rprofile > $HOME/new.Rprofile
+		cat $RRC/data/tmpl.Rprofile > $HOME/.Rprofile
 	fi
 
 	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
