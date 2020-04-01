@@ -197,9 +197,8 @@ function R-build-init {
 			elif [[ -e $pac ]]; then
 				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
 				echo -e "1) $LNX installing dependencies...\n"
-				pacman -S expac --noconfirm \
+				pacman -S --needed - < data/pkgs.arch --noconfirm \
 				&& pacman -S $(expac -S "%E" r) --noconfirm \
-				&& pacman -S --needed - < data/pkgs.arch --noconfirm \
 				&& echo $(date) > $RCO/checks/required-packages
 			else
 				echo "1) Unknown Linux distribution."

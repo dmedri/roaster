@@ -5,3 +5,5 @@ gsl
 nlopt
 texi2html
 base-devel
+git
+svn
