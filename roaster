@@ -186,7 +186,7 @@ function R-build-init {
 				LNX="Debian derivatives (Debian, Ubuntu, Kali)"
 				echo -e "1) $LNX installing dependencies...\n"
 				sudo apt-get build-dep r-base --yes --quiet \
-				&& sudo apt-get install build-essential --yes --quiet \
+				&& sudo apt-get install $(cat data/pkgs.debian) --yes --quiet \
 				&& echo $(date) > $RCO/checks/required-packages
 			elif [[ -e $yum  ]]; then
 				LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
