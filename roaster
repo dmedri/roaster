@@ -11,6 +11,7 @@ SRV="/opt/R"
 # Build standard: ask before 'make install'
 BSTDASK=false
 
+
 # Logger
 function log {
 	if [[ $LOG = "file" ]]; then
@@ -29,7 +30,7 @@ function roaster-new-config {
 	else
 		echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
 		echo "LOG=\"file\"" >> $RCO/config
-		echo "SVNSRV=\"https://svn.r-project.org/R/trunk\"" >> $RCO/config
+		echo "SVNSRV=\"https://svn.r-project.org/\"" >> $RCO/config
 		echo "RBTYPE=\"stable" >> $RCO/config
 		echo "OPTSRV=\"\"" >> $RCO/config
 		echo "OPTSTD=\"\"" >> $RCO/config
@@ -84,9 +85,10 @@ function check-cmdreq {
 
 # Checks for needed tools
 check-cmdreq {bash,awk,cat,cut,tar,pwd,wget,grep,sudo}
-if [[ $RBTYPE = "rdevel" ]]; then
+if [[ $RBTYPE = "branch" || $RBTYPE = "trunk" ]]; then
 	check-cmdreq {svn,git}
 fi
+
 
 # Check latest R release
 function check-rstable-latest {
@@ -95,6 +97,19 @@ function check-rstable-latest {
 		echo "Problems with online resources. Please, try later." && exit
 	else
 		echo -e "Contacting online resources...\n"
+	fi
+}
+
+# Check svn branch
+function check-svn-branch {
+	BRANNM=$(echo $VERLATEST|sed -e "s/\./-/g;s/-[0-9]$//g")
+	cb=$(svn ls $SVNSRV/R/branches/ --verbose|awk '{print $6}'|grep "R-$BRANNM-branch")	
+	if [[ $cb="R-$BRANNM-branch" ]]; then
+		echo -e "Branch R-$BRANNM-branch available."
+		BRANDIR="R-$BRANNM-BRANCH"
+		echo -e "Local directory: $BRANDIR."
+	else
+		exit
 	fi
 }
 
@@ -212,7 +227,7 @@ function R-build-init {
 	}
 
 	# Check latest stable release and download it
-	function download-latest-stable {
+	function download-wget-stable {
 		cd $RCO/src
 		if [[ ! -d "R-$VERLATEST" ]]; then
 			if [[ -f $RCO/src/$SRCF ]]; then
@@ -229,14 +244,30 @@ function R-build-init {
 	}
 
 	# Check svn repository and checkout from master
-	function download-latest-rdevel {
+	function download-svn-branch {
+		check-svn-branch
 		cd $RCO/src
-		if [[ ! -d "R-DEVEL" ]]; then
-			svn co $SVNSRV R-DEVEL \
-			&& log "svn co $SVNSRV R-DEVEL" \
+		if [[ ! -d $BRANDIR ]]; then
+			svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR \
+			&& log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR" \
 			echo -e "2) The source code is now available."
 		else
-			cd R-DEVEL
+			cd $BRANDIR
+			svn up \
+			&& log "svn up" \
+			echo -e "2) The source code is now updated."
+		fi
+	}
+
+	# Check svn repository and checkout from master
+	function download-svn-trunk {
+		cd $RCO/src
+		if [[ ! -d "R-TRUNK" ]]; then
+			svn co $SVNSRV/R/trunk R-TRUNK \
+			&& log "svn co $SVNSRV/R/trunk R-TRUNK" \
+			echo -e "2) The source code is now available."
+		else
+			cd R-TRUNK
 			svn up \
 			&& log "svn up" \
 			echo -e "2) The source code is now updated."
@@ -244,9 +275,11 @@ function R-build-init {
 	}
 	check-os-deps
 	if [[ $RBTYPE = "stable" ]]; then
-		download-latest-stable
-	elif [[ $RBTYPE = "rdevel" ]]; then
-		download-latest-rdevel
+		download-wget-stable
+	elif [[ $RBTYPE = "branch" ]]; then
+		download-svn-branch
+	elif [[ $RBTYPE = "trunk" ]]; then
+		download-svn-trunk
 	fi
 }
 
@@ -270,8 +303,10 @@ function R-build-virtualenv {
 	# build
 	if [[ $RBTYPE = "stable" ]]; then
 		cd $RCO/src/R-$VERLATEST
-	elif [[ $RBTYPE = "rdevel" ]]; then
-		cd $RCO/src/R-DEVEL
+	elif [[ $RBTYPE = "branch" ]]; then
+		cd $RCO/src/$BRANDIR
+	elif [[ $RBTYPE = "trunk" ]]; then
+		cd $RCO/src/R-TRUNK
 	fi
 	log "build-virtualenv: configure" \
 	&& ./configure \
@@ -322,8 +357,10 @@ function R-build-standard {
 	# Build
 	if [[ $RBTYPE = "stable" ]]; then
 		cd $RCO/src/R-$VERLATEST
-	elif [[ $RBTYPE = "rdevel" ]]; then
-		cd $RCO/src/R-DEVEL
+	elif [[ $RBTYPE = "branch" ]]; then
+		cd $RCO/src/$BRANDIR
+	elif [[ $RBTYPE = "trunk" ]]; then
+		cd $RCO/src/R-TRUNK
 	fi
 	log "build-standard: configure" \
 	&& ./configure	$OPTSTD \
@@ -368,8 +405,10 @@ function R-build-standard {
 function R-build-server {
 	if [[ $RBTYPE = "stable" ]]; then
 		srvver=$VERLATEST
-	elif [[ $RBTYPE = "rdevel" ]]; then
-		srvver="DEVEL"
+	elif [[ $RBTYPE = "branch" ]]; then
+		srvver="$BRANNM-BRANCH"
+	elif [[ $RBTYPE = "trunk" ]]; then
+		srvver="TRUNK"
 	fi
 	if [[ ! -d $SRV/$srvver ]]; then
 		# Build
@@ -423,6 +462,12 @@ function R-build-ask {
 function freemem {
 	# unsetting vars
 	unset MIRROR
+	unset SVNSRV
+	if [[ $RBTYPE="branch" || $RBTYPE="trunk" ]]; then
+		unset BRANNM
+		unset BRANDIR
+	fi
+	unset RBTYPE
 	unset OPTSTD
 	unset OPTRVE
 	unset OPTSRV
@@ -433,6 +478,7 @@ function freemem {
 	unset RCC
 	unset RCO
 	unset RVE
+	unset LOG
 }
 
 # Roaster options
