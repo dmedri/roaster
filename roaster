@@ -404,15 +404,15 @@ function R-build-standard {
 # Option --build-server
 function R-build-server {
 	if [[ $RBTYPE = "stable" ]]; then
-		srvver=$VERLATEST
+		srvver="R-$VERLATEST"
 	elif [[ $RBTYPE = "branch" ]]; then
-		srvver="$BRANNM-BRANCH"
+		srvver="$BRANDIR"
 	elif [[ $RBTYPE = "trunk" ]]; then
-		srvver="TRUNK"
+		srvver="R-TRUNK"
 	fi
 	if [[ ! -d $SRV/$srvver ]]; then
 		# Build
-		cd $RCO/src/R-$srvver && log "build-server: configure" \
+		cd $RCO/src/$srvver && log "build-server: configure" \
 		&& ./configure	\
 			--prefix=$SRV/$srvver \
 			--exec-prefix=$SRV/$srvver \
@@ -430,9 +430,17 @@ function R-build-server {
 		&& make clean
 		echo -e "\n\e[32m--------------------------------------------\e[0m\n"
 		echo -e "\n\e[32mInstallation completed.\e[0m\n"
+		if [[ $RBTYPE = "branch" || $RBTYPE = "trunk" ]]; then
+			echo -e "\n\e[32mCopying the source tree in the same directory...\e[0m\n"
+			sudo cp -a $RCO/src/$srvver $SRV/$srvver/src/
+			echo -e "\e[32mTo update:\e[0m"
+			echo -e "\e[32m $ cd $SRV/$srvver/src/\e[0m"
+			echo -e "\e[32m $ svn up\e[0m"
+			echo -e "\e[32m $ make && make install && make clean\e[0m\n"
+		fi
 	else
 		echo -e "\e[32mDirectory $SRV/$srvver already exists.\e[0m"
-		echo -e "Please, remove it for a new build of that release."
+		echo -e "Please, remove it for a fresh build."
 	fi
 }
 
@@ -463,10 +471,10 @@ function freemem {
 	# unsetting vars
 	unset MIRROR
 	unset SVNSRV
-	if [[ $RBTYPE="branch" || $RBTYPE="trunk" ]]; then
-		unset BRANNM
-		unset BRANDIR
-	fi
+#	if [[ $RBTYPE="branch" || $RBTYPE="trunk" ]]; then
+#		unset BRANNM
+#		unset BRANDIR
+#	fi
 	unset RBTYPE
 	unset OPTSTD
 	unset OPTRVE
@@ -505,8 +513,11 @@ function app-settings {
 		done
 	}
 	echo -e "\e[1mSettings in $RCO/config:\e[0m"
-	echo -e "\tmirror site: \e[34m$MIRROR\e[0m"
-	echo -e "\tbuild-server options:"
+	echo -e "\n\tmirror site: \e[34m$MIRROR\e[0m"
+	echo -e "\t build type: \e[34m$RBTYPE\e[0m"
+	echo -e "\t svn server: \e[34m$SVNSRV\e[0m"
+	echo -e "\t   log type: \e[34m$LOG\e[0m"
+	echo -e "\n\tbuild-server options:"
 	args-wrap $OPTSRV
 	echo -e "\tbuild-standard options:"
 	args-wrap $OPTSTD
