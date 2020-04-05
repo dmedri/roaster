@@ -1,0 +1,24 @@
+#
+# R SERVER INSTALLATION
+#
+
+At build time, the source tree was copied under the
+directory ./src with the same 'configure' options.
+
+ $ cd /opt/src/<your-directory>/src/
+
+SVN RBTYPE ("branch", "trunk") can receive updates:
+
+ $ svn up
+
+All RBTYPE ("stable", "branch", "trunk") can be re-builded:
+
+ $ make
+ $ make check
+ $ sudo make install
+ $ make clean
+
+To run:
+
+ $ export PATH=/opt/R/<your-directory>/bin:$PATH
+ $ R
