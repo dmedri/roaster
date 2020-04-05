@@ -1,7 +1,22 @@
-CHANGES WITH v0.12 "Gatteo"
+CHANGES WITH v0.13 "Bellaria Igea Marina"
+	* RBTYPE reworked with a new logic:
+	  - "stable"
+	  - "branch" (svn: stable + patches)
+	  - "trunk" (svn: trunk, ex-rdevel)
+	* Logs:
+	  - now with its own option in config
+	  - more messages on build
+	* Required dependencies in external files:
+	  - data/pkgs.arch
+	  - data/pkgs.debian
+	  - data/pkgs.redhat
+	* build-server: now with its own README
+	* minor fixes all over
+
+CHANGES WITH v0.12 "Gatteo a Mare"
 	* "rdevel" config option to build R from svn
 	* build-standard: add new.Rprofile in user HOME
-	* many minor fixes all over
+	* minor fixes all over
 
 CHANGES WITH v0.11 "Cesenatico"
 	* new internal switch for standard build
