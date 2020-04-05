@@ -91,12 +91,10 @@ Local directory: R-3-6-BRANCH.
 ```
 With SVN repositories, either "branch" or "trunk", the first run is a `svn checkout`, you 
 fetch all the sources available. Next times, with new builds, the local repositories will 
-be updated (see. `svn up`).
+be updated.
 
 ## Notes for italian end-users
 
-The `roaster` is used to test the italian translation repository, 
-see. [R-italian-lang](https://github.com/dmedri/R-italian-lang). Use 
-both repositories for your activities.
----
-Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
+This project is used to test the italian translation repository, see. 
+[R-italian-lang](https://github.com/dmedri/R-italian-lang). Use both repositories for your 
+activities.
