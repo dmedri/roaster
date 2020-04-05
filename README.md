@@ -72,10 +72,31 @@ How to prepare a *server solution*:
 
 ## For developers only
 
-Since release v0.12 is now possible to fetch r-devel from svn server and build the
-unstable branch. In your `~/.roaster/config` file set `RBTYPE="rdevel"` (the
-default case is `RBTYPE="stable"`). From now on, you'll use the `roaster` with
-the same options.
+*Since the release v0.13* you can handle SVN repositories. It's actually a "hidden" feature,
+ there's no command line argument, just set an option in `~/.roaster/config` file.
+ 
+ * with `RBTYPE="stable"` you get latest stable release (e.g. "R-3.6.3");
+ * with `RBTYPE="branch"` you get the stable svn branch (e.g. "R-3-6-branch", stable + patches);
+ * with `RBTYPE="trunk"` you get the trunk svn repository.
 
+To use these features, please remove the `~/roaster` directory before the first run.
+
+```
+$ ./roaster-build-virtualenv
+
+...
+Branch R-3-6-branch available.
+Local directory: R-3-6-BRANCH.
+...
+```
+With SVN repositories, either "branch" or "trunk", the first run is a `svn checkout`, you 
+fetch all the sources available. Next times, with new builds, the local repositories will 
+be updated (see. `svn up`).
+
+## Notes for italian end-users
+
+The `roaster` is used to test the italian translation repository, 
+see. [R-italian-lang](https://github.com/dmedri/R-italian-lang). Use 
+both repositories for your activities.
 ---
 Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
