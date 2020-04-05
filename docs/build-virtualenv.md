@@ -8,7 +8,7 @@ virtualenv) and/or scenarios (eg. containers and VMs).
 
 Run the following command:
 
-```bash
+```
 $ ./roaster --build-virtualenv
 ```
 
@@ -32,14 +32,18 @@ a set of infos and tools.
 
 To enable it:
 
-```bash
+```
 $ source RVE/bin/activate
 ```
 
 The first visible change is the prompt:
 
-```bash
+```
 (RVE) user@host:~$
+```
+Now run:
+```
+(RVE) user@host:~$ R
 ```
 
 It means that you "enabled" the virtual environment, or in other terms
@@ -54,11 +58,8 @@ code.
 Quitting the R session, the virtual environment is still there.
 To leave that context, run `deactivate`:
 
-```bash
+```
 (RVE) user@host:~$ deactivate
 ```
 
 Everything will be restored to the previous setup.
-
----
-Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.

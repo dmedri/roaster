@@ -9,7 +9,7 @@ work.
 
 Run the following command to start:
 
-```bash
+```
 $ ./roaster --build-server
 ```
 
@@ -32,11 +32,8 @@ made here will be available next times.
 time to install. Versions will be installed in the same directory
 (by default `/opt/R/`).
 
-```bash
+```
 $ ls /opt/R/
 3.6.2
 3.6.3
 ```
-
----
-Tested on Debian GNU/Linux 10. Fill issues for bugs or new features.
