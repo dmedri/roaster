@@ -34,7 +34,8 @@ Use 'roaster --help' for the available options.
 
 Get informations about R and mirrors:
 	--check-status   	Check available R releases.
-	--get-mirrors    	Update mirrors list.
+	--mirrors    		View MIRRORS file.
+	--mirrors-update    	Update mirrors list.
 
 Basic administration:
 	--autoclean      	Remove unuseful files.
@@ -79,7 +80,7 @@ How to prepare a *server solution*:
  * with `RBTYPE="branch"` you get the stable svn branch (e.g. "R-3-6-branch", stable + patches);
  * with `RBTYPE="trunk"` you get the trunk svn repository.
 
-To use these features, please remove the `~/roaster` directory before the first run.
+To use these features, please remove the `~/.roaster` directory before the first run.
 
 ```
 $ ./roaster-build-virtualenv
@@ -93,8 +94,28 @@ With SVN repositories, either "branch" or "trunk", the first run is a `svn check
 fetch all the sources available. Next times, with new builds, the local repositories will 
 be updated.
 
+## Supported platforms
+
+The `roaster` is text file that run on `bash`, the default shell on every
+GNU/Linux distribution, and even the external commands used are tipically existing 
+in Unix-like systems. Another good reason, is the needed software for our tasks.
+
+When you try to build a mid-size project like R, your system is under pressure
+and your CPUs will warm up like never before. This is why, ironically, we give this name 
+to the project. The main `roaster` focus is get, configure and build source code, so all 
+the necessary tools are required. If you care about performance, this is the *way*.
+
+Summary:
+* Debian-derivatives (*tested*). Main development is on Debian 10;
+* RedHat-derivatives (*tested*, need help from its user-base);
+* Arch-derivatives (*tested*, need help from its user-base);
+* Other Linux distribution, need help from its user-base;
+* FreeBSD is a good candidate with the "ports" system;
+* MacOS is a good candidate with the "brew" system;
+* MS-Windows, by-design really far.
+
 ## Notes for italian end-users
 
-This project is used to test the italian translation repository, see. 
+The `roaster` is used to test the R italian translation project, see. 
 [R-italian-lang](https://github.com/dmedri/R-italian-lang). Use both repositories for your 
 activities.
