@@ -1,9 +1,10 @@
-# Makevars
-# Need: ccache
+# Roaster - 'ccache' configuration
 # in ~/.R/Makevars
+
+CXX_STD = CXX14
 VER=
 CCACHE=ccache
-CC=$(CCACHE) gcc$(VER)
+CC=$(CCACHE) gcc$(VER) -std=gnu99
 CXX=$(CCACHE) g++$(VER)
 C11=$(CCACHE) g++$(VER)
 C14=$(CCACHE) g++$(VER)
