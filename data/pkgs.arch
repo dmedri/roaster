@@ -7,3 +7,4 @@ texi2html
 base-devel
 git
 svn
+ccache
