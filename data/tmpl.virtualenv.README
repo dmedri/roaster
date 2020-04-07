@@ -9,8 +9,10 @@
 - PATH changed, you should run a fresh `R` command;
 - A basic `.Rprofile` is now in your HOME;
 - R has its own directories: `bin/`, `lib/` and `share/`;
-- The "workspace/" directory should be used to store code.
-
+- The "workspace/" directory should be used to store code;
+- ccache in the system and all needed configurations here:
+  * RVE/.R/Makevars
+  * RVE/.ccache/ccache.conf
 2) run "deactivate"
 
 - Everything will be restored to the previous setup.
