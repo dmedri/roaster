@@ -22,3 +22,9 @@ To run:
 
  $ export PATH=/opt/R/<your-directory>/bin:$PATH
  $ R
+
+ Note: ccache is installed in your system and the needed
+ configurations are here:
+ * ~/.R/Makevars
+ * ~/.ccache/ccache.conf
+ ("~" the home directory of your user)
