@@ -1,63 +1,32 @@
 #!/usr/bin/env bash
+# This file is part of the Roaster project 
+# https://github.com/dmedri/roaster/
+# Copyright (c) 2019-2020 Daniele Medri.
+# 
+# This program is free software: you can redistribute it and/or modify  
+# it under the terms of the GNU General Public License as published by  
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License 
+# along with this program. If not, see <http://www.gnu.org/licenses/>.                                
 
-########## don't change anything below this line ##########
 
 # Roaster base settings
 RRC=$(pwd)
 RVE="$HOME/RVE"
 RCO="$HOME/.roaster"
 SRV="/opt/R"
-
-# Build standard: ask before 'make install'
 BSTDASK=false
 
+# Libraries
+source lib/libroaster.sh
 
-# Logger
-function log {
-	if [[ $LOG = "file" ]]; then
-		echo "$(date +'%y/%d/%m-%H:%M:%S') $1" >> $RCO/logs/$$.build
-	elif [[ $lOG = "systemd" ]]; then
-		echo "$1" | systemd-cat -t roaster -p info	
-	elif [[ $LOG = "syslog" ]]; then
-		logger "roaster: $1"
-	fi
-}
-
-# Create a new config file
-function roaster-new-config {
-	if [[ -f $RRC/data/tmpl.config ]]; then
-		cat $RRC/data/tmpl.config > $RCO/config
-	else
-		echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
-		echo "LOG=\"file\"" >> $RCO/config
-		echo "SVNSRV=\"https://svn.r-project.org/\"" >> $RCO/config
-		echo "RBTYPE=\"stable" >> $RCO/config
-		echo "OPTSRV=\"\"" >> $RCO/config
-		echo "OPTSTD=\"\"" >> $RCO/config
-		echo "OPTRVE=\"\"" >> $RCO/config
-	fi
-}
-
-# Check roaster working directories
-function check-roaster-working-dirs {
-	if [[ ! -d $RCO ]]; then
-		mkdir -p $RCO/{src,logs,checks,infos}
-		roaster-new-config
-	fi
-
-	function get-value {
-		cat $RCO/config | grep "^$1" | awk -F '"' '{print $2}'
-	}
-
-	# Query available settings
-	MIRROR=$(get-value MIRROR)
-	LOG=$(get-value LOG)
-	SVNSRV=$(get-value SVNSRV)
-	RBTYPE=$(get-value RBTYPE)
-	OPTSRV=$(get-value OPTSRV)
-	OPTSTD=$(get-value OPTSTD)
-	OPTRVE=$(get-value OPTRVE)
-}
+# Start here
 check-roaster-working-dirs
 
 # Roaster build settings
@@ -67,466 +36,13 @@ SRCD="VERSION-INFO.dcf"
 CRANM="CRAN_mirrors.csv"
 
 # Header
-function roaster-header {
-	echo -e "\e[32mRoaster\e[0m - Check R updates and build sources."
-	echo -e "Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+"
-	echo -e "Use 'roaster --help' for the available options.\n"
-}
 roaster-header
 
-# Checks for needed programs
-function check-cmdreq {
-	while(($#)); do
-		command -v "$1"  >/dev/null 2>&1 \
-		|| { echo >&2 "Command '$1' is required."; exit; }
-		shift
-	done
-}
-
-# Checks for needed tools
+# Commands: evaluate status
 check-cmdreq {bash,awk,cat,cut,tar,pwd,wget,grep,sudo}
 if [[ $RBTYPE = "branch" || $RBTYPE = "trunk" ]]; then
 	check-cmdreq {svn,git}
 fi
-
-
-# Check latest R release
-function check-rstable-latest {
-	VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
-	if ! [[ $VERLATEST =~ ^[0-9]+(\.[0-9]+){2,3}$ ]]; then
-		echo "Problems with online resources. Please, try later." && exit
-	else
-		echo -e "Contacting online resources...\n"
-	fi
-}
-
-# Check svn branch
-function check-svn-branch {
-	BRANNM=$(echo $VERLATEST|sed -e "s/\./-/g;s/-[0-9]$//g")
-	cb=$(svn ls $SVNSRV/R/branches/ --verbose|awk '{print $6}'|grep "R-$BRANNM-branch")	
-	if [[ $cb="R-$BRANNM-branch" ]]; then
-		echo -e "Branch R-$BRANNM-branch available."
-		BRANDIR="R-$BRANNM-BRANCH"
-		echo -e "Local directory: $BRANDIR."
-	else
-		exit
-	fi
-}
-
-# Create an updated mirrors file
-function roaster-get-mirrors {
-	if [[ -d $RCO/infos ]]; then
-		wget -O- -q $MIRROR/$CRANM | awk -F "\"*,\"*" '{print $2,$4}' | sort | uniq > $RCO/infos/MIRRORS
-		echo "File $RCO/infos/MIRRORS updated."
-	fi
-	while true; do
-		read -p "Do you want to see its content? (y/n) " yn
-		case $yn in
-			[yY]* ) more $RCO/infos/MIRRORS; break;;
-			[nN]* ) exit;;
-			* ) echo "Please, answer y/n.";;
-		esac
-	done
-}
-
-# Check latest release
-function check-status {
-	echo "R - Check status"
-
-	# Check online
-	echo -e "\n\tSource code available online:\n"
-	echo -e "\t\e[32m$VERLATEST\e[0m\t${SRCU}$SRCF"
-
-	# Check for local R (standard)
-	echo -e "\n\tLocal installations:\n"
-	local checkr=$(command -v R)
-	if [[ $checkr != "" && -e $checkr ]]; then
-		verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\t$checkr (standard)"
-	else
-		echo -e "\t\e[32m-----\e[0m\tNot available (standard)"
-	fi
-
-	# Check for an existing RVE
-	local verr
-	if [[ -f $RVE/bin/R ]]; then
-		verr=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-		echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtualenv)"
-	else
-		echo -e "\t\e[32m-----\e[0m\tNot available (virtualenv)"
-	fi
-
-	# R server farm
-	echo -e "\n\tServer farm:\n"
-	local lsadir=$(ls -A $SRV 2>/dev/null)
-	if [[ -n "$lsadir" ]]; then
-		for i in $lsadir; do
-			local srvr=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-			echo -e "\t\e[32m$srvr\e[0m\t$SRV/$i/bin/R (server)";
-		done
-	else
-		echo -e "\t\e[32m-----\e[0m\tNot available (server)"
-	fi
-	echo -e ""
-}
-
-# Autoclean option
-function roaster-autoclean {
-	if [[ -d $RCO ]]; then
-		rm -fr $RCO/{src,checks,infos,logs}/*
-	fi
-}
-
-# Factory reset
-function roaster-factory-reset {
-	if [[ -f $RCO/config ]]; then
-		roaster-new-config
-	fi
-	roaster-autoclean
-}
-
-# Build init
-function R-build-init {
-	log "Building R ($RBTYPE - $BTYPE)"
-
-	# Check OS infos and try to install dependencies
-	function check-os-deps {
-		local apt=$(command -v apt-get)
-		local yum=$(command -v yum)
-		local pac=$(command -v pacman)
-
-		if [[ ! -f $RCO/checks/required-packages ]]; then
-			log "Installing required dependencies"
-			if [[ -e $apt ]]; then
-				LNX="Debian derivatives (Debian, Ubuntu, Kali)"
-				echo -e "1) $LNX installing dependencies...\n"
-				sudo apt-get build-dep r-base --yes --quiet \
-				&& sudo apt-get install $(cat data/pkgs.debian) --yes --quiet \
-				&& echo $(date) > $RCO/checks/required-packages
-			elif [[ -e $yum  ]]; then
-				LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
-				echo -e "1) $LNX installing dependencies...\n"
-				sudo yum builddep R -y \
-				&& sudo yum install $(cat data/pkgs.redhat) -y \
-				&& echo $(date) > $RCO/checks/required-packages
-			elif [[ -e $pac ]]; then
-				LNX="Arch derivatives (Arch, Manjaro, Antergos)"
-				echo -e "1) $LNX installing dependencies...\n"
-				pacman -S --needed - < data/pkgs.arch --noconfirm \
-				&& pacman -S $(expac -S "%E" r) --noconfirm \
-				&& echo $(date) > $RCO/checks/required-packages
-			else
-				echo "1) Unknown Linux distribution."
-				echo "Please, install by-yourself all the needed packages."
-				exit;
-			fi
-		else
-			log "Dependencies already available"
-			echo "1) Dependencies already available."
-		fi
-	}
-
-	# Check latest stable release and download it
-	function download-wget-stable {
-		cd $RCO/src
-		if [[ ! -d "R-$VERLATEST" ]]; then
-			if [[ -f $RCO/src/$SRCF ]]; then
-				rm $SRCF
-			fi
-			wget $SRCU/$SRCF --quiet \
-			&& log "downloaded $SRCU/$SRCF" \
-			&& tar zxf $SRCF \
-			&& log "decompressed $RCO/src/$SRCF" \
-			echo -e "2) The source code is now available."
-		else
-			echo -e "2) The source code is already available."
-		fi
-	}
-
-	# Check svn repository and checkout from master
-	function download-svn-branch {
-		check-svn-branch
-		cd $RCO/src
-		if [[ ! -d $BRANDIR ]]; then
-			svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR \
-			&& log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR" \
-			echo -e "2) The source code is now available."
-		else
-			cd $BRANDIR
-			svn up \
-			&& log "svn up" \
-			echo -e "2) The source code is now updated."
-		fi
-	}
-
-	# Check svn repository and checkout from master
-	function download-svn-trunk {
-		cd $RCO/src
-		if [[ ! -d "R-TRUNK" ]]; then
-			svn co $SVNSRV/R/trunk R-TRUNK \
-			&& log "svn co $SVNSRV/R/trunk R-TRUNK" \
-			echo -e "2) The source code is now available."
-		else
-			cd R-TRUNK
-			svn up \
-			&& log "svn up" \
-			echo -e "2) The source code is now updated."
-		fi
-	}
-	check-os-deps
-	if [[ $RBTYPE = "stable" ]]; then
-		download-wget-stable
-	elif [[ $RBTYPE = "branch" ]]; then
-		download-svn-branch
-	elif [[ $RBTYPE = "trunk" ]]; then
-		download-svn-trunk
-	fi
-}
-
-# Option --build-virtualenv
-function R-build-virtualenv {
-	# Create virtualenv directory
-	if [[ -d $RVE ]]; then
-		echo -e "\e[32mThe directory RVE already exists.\e[0m"
-		while true; do
-			read -p "Backup the old directory and proceed? (y/n) " yn
-			case $yn in
-				[yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d%H%M"); break;;
-				[nN]* ) echo "Okay, bye."; exit;;
-				* ) echo "Please, answer (y/n).";;
-			esac
-		done
-	fi
-	# Add the main directory
-	mkdir -p $RVE/workspace
-
-	# build
-	if [[ $RBTYPE = "stable" ]]; then
-		cd $RCO/src/R-$VERLATEST
-	elif [[ $RBTYPE = "branch" ]]; then
-		cd $RCO/src/$BRANDIR
-	elif [[ $RBTYPE = "trunk" ]]; then
-		cd $RCO/src/R-TRUNK
-	fi
-	log "build-virtualenv: configure" \
-	&& ./configure \
-		--prefix=$RVE \
-		--exec-prefix=$RVE \
-		--disable-rpath $OPTRVE \
-		&& log "build-virtualenv: make clean (1)" \
-		&& make clean \
-		&& log "build-virtualenv: make" \
-		&& make \
-		&& make check \
-		&& log "build-virtualenv: make install" \
-		&& make install \
-		&& log "build-virtualenv: make clean (2)" \
-		&& make clean \
-		&& echo -e "\n\e[32mBuild done.\e[0m\n"
-
-	# RVE/.Rprofile
-	if [[ -d $RVE ]]; then
-		if [[ -f $RRC/data/tmpl.Rprofile ]]; then
-			cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
-		fi
-	fi
-
-	# add RVE/README
-	if [[ -d $RVE ]]; then
-		if [[ -f $RRC/data/tmpl.virtualenv.README ]]; then
-			cat $RRC/data/tmpl.virtualenv.README > $RVE/README
-		fi
-	fi
-
-	# add RVE/bin/activate
-	if [[ -d $RVE/bin ]]; then
-		if [[ -f $RRC/data/tmpl.activate ]]; then
-			echo -e "\e[32mR Virtual Environment\e[0m"
-			cat $RRC/data/tmpl.activate > $RVE/bin/activate
-			echo -e " enable: \$ source $RVE/bin/activate"
-			echo -e "disable: \$ deactivate\n"
-		fi
-	else
-		echo -e "Something goes wrong..."
-		echo -e "Please, remove the RVE directory."
-	fi
-}
-
-# Option --build-standard
-function R-build-standard {
-	# Build
-	if [[ $RBTYPE = "stable" ]]; then
-		cd $RCO/src/R-$VERLATEST
-	elif [[ $RBTYPE = "branch" ]]; then
-		cd $RCO/src/$BRANDIR
-	elif [[ $RBTYPE = "trunk" ]]; then
-		cd $RCO/src/R-TRUNK
-	fi
-	log "build-standard: configure" \
-	&& ./configure	$OPTSTD \
-	&& log "build-standard: make clean (1)" \
-	&& make clean \
-	&& log "build-standard: make" \
-	&& make \
-	&& log "build-standard: make check" \
-	&& make check
-	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-	log "build-standard: make install"
-	if [[ $BSTDASK==true ]]; then
-		while true; do
-			read -p "Build done. Install now? (y/n) " yn
-			case $yn in
-				[yY]* ) sudo make install \
-					&& log "build-standard: make clean (2)" \
-					&& make clean; break;;
-				[nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
-				* ) echo "Please, answer (y/n).";;
-			esac
-		done
-	else
-		sudo make install && log "build-standard: make clean (2)" \
-		&& make clean
-	fi
-	
-	# RVE/.Rprofile
-	if [[ -f $HOME/.Rprofile ]]; then
-		sed -e 's/^/#/' .Rprofile > .Rprofile.backup
-		echo -e "The existing .Rprofile is now .Rprofile.backup"
-	fi
-	if [[ -f $RRC/data/tmpl.Rprofile ]]; then
-		cat $RRC/data/tmpl.Rprofile > $HOME/.Rprofile
-	fi
-
-	echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-	echo -e "\n\e[32mInstallation completed.\e[0m\n"
-}
-
-# Option --build-server
-function R-build-server {
-	if [[ $RBTYPE = "stable" ]]; then
-		srvver="R-$VERLATEST"
-	elif [[ $RBTYPE = "branch" ]]; then
-		srvver="$BRANDIR"
-	elif [[ $RBTYPE = "trunk" ]]; then
-		srvver="R-TRUNK"
-	fi
-	if [[ ! -d $SRV/$srvver ]]; then
-		# Build
-		cd $RCO/src/$srvver && log "build-server: configure" \
-		&& ./configure	\
-			--prefix=$SRV/$srvver \
-			--exec-prefix=$SRV/$srvver \
-			$OPTSRV \
-		&& log "build-server: make clean (1)" \
-		&& make clean \
-		&& log "build-server: make" \
-		&& make \
-		&& log "build-server: make check" \
-		&& make check
-		echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-		log "build-server: make install"
-		sudo make install \
-		&& log "build-server: make clean (2)" \
-		&& make clean
-		echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-		echo -e "\n\e[32mInstallation completed.\e[0m\n"
-		
-		# Add a copy of the source tree
-		echo -e "\e[32mCopying the source tree in the same directory...\e[0m\n"
-		sudo cp -a $RCO/src/$srvver $SRV/$srvver/src/
-		echo -e "\e[32mDone.\e[0m\n"
-		
-		# add server/README
-		if [[ -f $RRC/data/tmpl.server.README ]]; then
-			sudo cat $RRC/data/tmpl.server.README > $RCO/src/$srvver/README
-		fi
-	else
-		echo -e "\e[32mDirectory $SRV/$srvver already exists.\e[0m"
-		echo -e "Please, remove it for a fresh build."
-	fi
-}
-
-# Show build options
-function R-build-ask {
-	echo -e "\nInstalling R (\e[32m$RBTYPE\e[0m).\n"
-	echo -e "Summary:"
-	echo -e "\t\e[32m$BTYPE\e[0m"
-	echo -e "\t\e[32m$BOPTS\e[0m\n"
-	echo -e "Log type:"
-	if [[ $LOG = "file" ]]; then
-		echo -e "\t\e[32m$LOG $RCO/logs/$$.build\e[0m\n"
-	else
-		echo -e "\t\e[32m$LOG\e[0m\n"
-	fi
-	while true; do
-		read -p "Are you ready to start? (y/n) " yn
-		case $yn in
-			[yY]* ) echo -e "\n\e[32mOkay, let's go...\e[0m\n"; break;;
-			[nN]* ) echo -e "\n\e[32mOkay, bye.\e[0m\n"; exit;;
-			* ) echo "Please, answer (y/n).";;
-		esac
-	done
-}
-
-# Unsetting variables
-function freemem {
-	# unsetting vars
-	unset MIRROR
-	unset SVNSRV
-#	if [[ $RBTYPE="branch" || $RBTYPE="trunk" ]]; then
-#		unset BRANNM
-#		unset BRANDIR
-#	fi
-	unset RBTYPE
-	unset OPTSTD
-	unset OPTRVE
-	unset OPTSRV
-	unset BTYPE
-	unset BOPTS
-	unset VERLATEST
-	unset LNX
-	unset RCC
-	unset RCO
-	unset RVE
-	unset LOG
-}
-
-# Roaster options
-function app-options {
-	echo -e "\e[1mGet informations about R and mirrors:\e[0m"
-	echo -e "\t\e[34m--check-status\e[0m   \tCheck available R releases."
-	echo -e "\t\e[34m--get-mirrors\e[0m    \tUpdate mirrors list.\n"
-	echo -e "\e[1mBasic administration:\e[0m"
-	echo -e "\t\e[34m--autoclean\e[0m      \tRemove unuseful files."    
-	echo -e "\t\e[34m--factory-reset\e[0m  \tFactory reset."
-	echo -e "\t\e[34m--settings\e[0m       \tShow settings.\n"
-	echo -e "\e[1mBuild source code:\e[0m"
-	echo -e "\t\e[34m--build-server\e[0m    \tConcurrent minimal versions in system."
-	echo -e "\t\e[34m--build-standard\e[0m  \tCommon installation in system."
-	echo -e "\t\e[34m--build-virtualenv\e[0m\tCreate a virtual environment.\n"
-}
-
-function app-settings {
-	# function args-wrap
-	function args-wrap {
-		while(($#)); do
-			echo -e "\t\t\e[34m$1\e[0m"
-			shift
-		done
-	}
-	echo -e "\e[1mSettings in $RCO/config:\e[0m"
-	echo -e "\n\tmirror site: \e[34m$MIRROR\e[0m"
-	echo -e "\t build type: \e[34m$RBTYPE\e[0m"
-	echo -e "\t svn server: \e[34m$SVNSRV\e[0m"
-	echo -e "\t   log type: \e[34m$LOG\e[0m"
-	echo -e "\n\tbuild-server options:"
-	args-wrap $OPTSRV
-	echo -e "\tbuild-standard options:"
-	args-wrap $OPTSTD
-	echo -e "\tbuild-virtualenv options:"
-	args-wrap $OPTRVE
-	echo ""
-}
 
 # Help menu
 while [[ -n "$1" ]]; do
@@ -535,19 +51,23 @@ while [[ -n "$1" ]]; do
 		check-rstable-latest
 		check-status
 		;;
-	"--get-mirrors")
-		roaster-get-mirrors
+	"--mirrors")
+		roaster-mirrors-list
 		;;
 	"--autoclean")
 		roaster-autoclean
-		echo "Auto-cleaning: done."
 		;;
 	"--factory-reset")
 		roaster-factory-reset
-		echo "Factory reset: done."
 		;;
 	"--settings")
 		app-settings
+		;;
+	"--svn-repo-update-all")
+		svn-repo-update-all
+		;;
+	"--svn-repo-fetch-all")
+		svn-repo-fetch-all
 		;;
 	"--build-server")
 		check-rstable-latest
