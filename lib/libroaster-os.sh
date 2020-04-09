@@ -26,5 +26,11 @@ source lib/libroaster-os-windows.sh
 # call: os-info-retrieve
 #
 function os-info-retrieve {
-	check-os-linux-deps
+	osinfo=$(uname)
+	echo -e "Running $osinfo."
+	if [[ $osinfo = "Linux" ]]; then
+		check-os-linux-deps
+	else [[ $osinfo = "FreeBSD" ]];
+		check-os-freebsd-deps
+	fi
 }
