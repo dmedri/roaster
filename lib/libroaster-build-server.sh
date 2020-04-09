@@ -28,6 +28,8 @@ function R-build-server {
                 srvver="R-$VERLATEST"
         elif [[ $RBTYPE = "branch" ]]; then
                 srvver="$BRANDIR"
+		unset $BRANNM
+		unset $BRANDIR
         elif [[ $RBTYPE = "trunk" ]]; then
                 srvver="R-TRUNK"
         fi

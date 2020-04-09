@@ -43,6 +43,8 @@ function R-build-virtualenv {
                 cd $RCO/src/R-$VERLATEST
         elif [[ $RBTYPE = "branch" ]]; then
                 cd $RCO/src/$BRANDIR
+		unset $BRANNM
+		unset $BRANDIR
         elif [[ $RBTYPE = "trunk" ]]; then
                 cd $RCO/src/R-TRUNK
         fi
