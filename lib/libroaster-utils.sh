@@ -63,6 +63,22 @@ function check-rstable-latest {
         fi
 }
 
+#
+# Download a file from the web
+# call: file-web-get URL
+#
+function file-web-get {
+        wget "$1" --quiet
+}
+
+#
+# Decompress a file archive
+# call: file-untar FILE
+#
+function file-untar {
+        tar zxf "$1" 
+}
+
 # 
 # Free Memory: unsetting variables
 # call: freemem
