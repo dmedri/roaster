@@ -35,10 +35,20 @@ function R-build-virtualenv {
         # Add the main directory
         mkdir -p $RVE/workspace
 
-        # Install ccache
+        # Install ccache in ~/RVE
         ccache-rve-install
 
-        # build
+        # Add ~/RVE/.Rprofile
+	rprofile-rve-install
+
+        # Add ~/RVE/README
+        if [[ -d $RVE ]]; then
+                if [[ -f $RRC/data/tmpl.virtualenv.README ]]; then
+                        cat $RRC/data/tmpl.virtualenv.README > $RVE/README
+                fi
+        fi
+
+        # Build
         if [[ $RBTYPE = "stable" ]]; then
                 cd $RCO/src/R-$VERLATEST
         elif [[ $RBTYPE = "branch" ]]; then
@@ -64,17 +74,8 @@ function R-build-virtualenv {
                 && make clean \
                 && echo -e "\n\e[32mBuild done.\e[0m\n"
 
-        # add ~/RVE/.Rprofile
-	rprofile-rve-install
 
-        # add RVE/README
-        if [[ -d $RVE ]]; then
-                if [[ -f $RRC/data/tmpl.virtualenv.README ]]; then
-                        cat $RRC/data/tmpl.virtualenv.README > $RVE/README
-                fi
-        fi
-
-        # add RVE/bin/activate
+        # Add RVE/bin/activate
         if [[ -d $RVE/bin ]]; then
                 if [[ -f $RRC/data/tmpl.activate ]]; then
                         echo -e "\e[32mR Virtual Environment\e[0m"
@@ -83,8 +84,8 @@ function R-build-virtualenv {
                         echo -e "disable: \$ deactivate\n"
                 fi
         else
-                echo -e "Something goes wrong..."
-                echo -e "Please, remove the RVE directory."
+                echo -e "\e[32mSomething goes wrong...\e[0m"
+                echo -e "\e[32mPlease, remove the RVE directory.\e[0m"
         fi
 }
 
