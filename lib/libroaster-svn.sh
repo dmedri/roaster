@@ -17,10 +17,10 @@
 
 # 
 # SVN: in "branch" mode, it check for the stable-branch name
-# call: check-svn-branch
+# call: check-svn-branch 'R-3.6.3'
 #
 function check-svn-branch {
-        BRANNM=$(echo $VERLATEST|sed -e "s/\./-/g;s/-[0-9]$//g")
+        BRANNM=$(echo $1 | sed -e "s/\./-/g;s/-[0-9]$//g")
         cb=$(svn ls $SVNSRV/R/branches/ --verbose|awk '{print $6}'|grep "R-$BRANNM-branch")
         if [[ $cb="R-$BRANNM-branch" ]]; then
                 echo -e "Branch R-$BRANNM-branch available."
@@ -33,7 +33,7 @@ function check-svn-branch {
 
 #
 # SVN: update all local repositories
-# call: svn-repo-update
+# call: svn-repo-update-all
 #
 function svn-repo-update-all {
 	cd $RCO/src
@@ -48,17 +48,53 @@ function svn-repo-update-all {
 }
 
 #
-# SVN: get a defined list of repo
-# call: svn-repo-fetch
+# SVN: fetch only one repo (branch) with checks
+# call svn-repo-fetch-branch 'R-3.6.3'
+#
+function svn-repo-fetch-branch {
+	check-svn-branch $1
+	cd $RCO/src
+	if [[ ! -d $BRANDIR ]]; then
+		svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR \
+		&& log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR" \
+		echo -e "2) The source code is now available."
+	else
+		cd $BRANDIR
+		svn up \
+		&& log "svn up" \
+		echo -e "2) The source code is now updated."
+	fi
+}
+
+#
+# SVN: fetch only one repo (trunk) with checks
+# call: svn-repo-fetch-trunk
+#
+function svn-repo-fetch-trunk {
+	cd $RCO/src
+	echo -e "Local directory: R-TRUNK."
+	if [[ ! -d "R-TRUNK" ]]; then
+		svn co $SVNSRV/R/trunk R-TRUNK \
+		&& log "svn co $SVNSRV/R/trunk R-TRUNK" \
+		echo -e "2) The source code is now available."
+	else
+		cd R-TRUNK
+		svn up \
+		&& log "svn up" \
+		echo -e "2) The source code is now updated."
+	fi
+}
+
+#
+# SVN: fetch a defined list of repo
+# call: svn-repo-fetch-all
 #
 function svn-repo-fetch-all {
 	cd $RCO/src
-	for i in "R-3-6-BRANCH" "R-4-0-BRANCH" "R-TRUNK"; do
-		if [[ -d $i ]]; then
-			echo -e "\e[32m$i: already available.\e[0m\n"
-		else
-			echo -e "\e[32m$i: fetching...\e[0m"
-			# need work
-		fi
+	# R-*.*-BRANCH
+	for i in "3.6.0" "4.0.0"; do
+		svn-repo-fetch-branch $i
 	done;
+	# R-TRUNK
+	svn-repo-fetch-trunk
 }

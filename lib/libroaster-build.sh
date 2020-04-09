@@ -84,43 +84,13 @@ function R-build-init {
                 fi
         }
 
-        # Check svn repository and checkout from master
-        function download-svn-branch {
-                check-svn-branch
-                cd $RCO/src
-                if [[ ! -d $BRANDIR ]]; then
-                        svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR \
-                        && log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR" \
-                        echo -e "2) The source code is now available."
-                else
-                        cd $BRANDIR
-                        svn up \
-                        && log "svn up" \
-                        echo -e "2) The source code is now updated."
-                fi
-        }
-
-        # Check svn repository and checkout from master
-        function download-svn-trunk {
-                cd $RCO/src
-                if [[ ! -d "R-TRUNK" ]]; then
-                        svn co $SVNSRV/R/trunk R-TRUNK \
-                        && log "svn co $SVNSRV/R/trunk R-TRUNK" \
-                        echo -e "2) The source code is now available."
-                else
-                        cd R-TRUNK
-                        svn up \
-                        && log "svn up" \
-                        echo -e "2) The source code is now updated."
-                fi
-        }
-        check-os-deps
+	check-os-deps
         if [[ $RBTYPE = "stable" ]]; then
                 download-wget-stable
         elif [[ $RBTYPE = "branch" ]]; then
-                download-svn-branch
+                svn-repo-fetch-branch $VERLATEST
         elif [[ $RBTYPE = "trunk" ]]; then
-                download-svn-trunk
+                svn-repo-fetch-trunk
         fi
 }
 

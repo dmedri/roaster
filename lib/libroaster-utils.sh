@@ -71,8 +71,6 @@ function freemem {
         # unsetting vars
         unset MIRROR
         unset SVNSRV
-        unset BRANNM
-        unset BRANDIR
         unset RBTYPE
         unset OPTSTD
         unset OPTRVE

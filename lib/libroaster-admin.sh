@@ -97,4 +97,3 @@ function roaster-factory-reset {
 		echo "Factory reset: done."
 	fi
 }
-
