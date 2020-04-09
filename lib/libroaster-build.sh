@@ -22,6 +22,7 @@ source lib/libroaster-build-server.sh
 source lib/libroaster-build-ccache.sh
 source lib/libroaster-rprofile.sh
 source lib/libroaster-svn.sh
+source lib/libroaster-web.sh
 
 # 
 # Build: init actions to start the task
@@ -30,63 +31,12 @@ source lib/libroaster-svn.sh
 function R-build-init {
         log "Building R ($RBTYPE - $BTYPE)"
 
-        # Check OS infos and try to install dependencies
-        function check-os-deps {
-                local apt=$(command -v apt-get)
-                local yum=$(command -v yum)
-                local pac=$(command -v pacman)
+	# Evaluate OS for needed actions
+	os-info-retrieve
 
-                if [[ ! -f $RCO/checks/required-packages ]]; then
-                        log "Installing required dependencies"
-                        if [[ -e $apt ]]; then
-                                LNX="Debian derivatives (Debian, Ubuntu, Kali)"
-                                echo -e "1) $LNX installing dependencies...\n"
-                                sudo apt-get build-dep r-base --yes --quiet \
-                                && sudo apt-get install $(cat data/pkgs.debian) --yes --quiet \
-                                && echo $(date) > $RCO/checks/required-packages
-                        elif [[ -e $yum  ]]; then
-                                LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
-                                echo -e "1) $LNX installing dependencies...\n"
-                                sudo yum builddep R -y \
-                                && sudo yum install $(cat data/pkgs.redhat) -y \
-                                && echo $(date) > $RCO/checks/required-packages
-                        elif [[ -e $pac ]]; then
-                                LNX="Arch derivatives (Arch, Manjaro, Antergos)"
-                                echo -e "1) $LNX installing dependencies...\n"
-                                pacman -S --needed - < data/pkgs.arch --noconfirm \
-                                && pacman -S $(expac -S "%E" r) --noconfirm \
-                                && echo $(date) > $RCO/checks/required-packages
-                        else
-                                echo "1) Unknown Linux distribution."
-                                echo "Please, install by-yourself all the needed packages."
-                                exit;
-                        fi
-                else
-                        log "Dependencies already available"
-                        echo "1) Dependencies already available."
-                fi
-        }
-
-        # Check latest stable release and download it
-        function download-wget-stable {
-                cd $RCO/src
-                if [[ ! -d "R-$VERLATEST" ]]; then
-                        if [[ -f $RCO/src/$SRCF ]]; then
-                                rm $SRCF
-                        fi
-                        wget $SRCU/$SRCF --quiet \
-                        && log "downloaded $SRCU/$SRCF" \
-                        && tar zxf $SRCF \
-                        && log "decompressed $RCO/src/$SRCF" \
-                        echo -e "2) The source code is now available."
-                else
-                        echo -e "2) The source code is already available."
-                fi
-        }
-
-	check-os-deps
-        if [[ $RBTYPE = "stable" ]]; then
-                download-wget-stable
+	# Action on RBTYPE
+	if [[ $RBTYPE = "stable" ]]; then
+		web-file-fetch-stable
         elif [[ $RBTYPE = "branch" ]]; then
                 svn-repo-fetch-branch $VERLATEST
         elif [[ $RBTYPE = "trunk" ]]; then

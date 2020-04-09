@@ -16,6 +16,7 @@
 
 
 # Libraries
+source lib/libroaster-os.sh
 source lib/libroaster-admin.sh
 source lib/libroaster-build.sh
 
