@@ -20,5 +20,6 @@
 # call: check-os-qnx-deps
 #
 function check-os-qnx-deps {
-	echo "QNX"
+	echo "Not yet supported"
+	exit
 }

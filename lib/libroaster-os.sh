@@ -21,6 +21,7 @@ source lib/os/libroaster-os-freebsd.sh
 source lib/os/libroaster-os-openbsd.sh
 source lib/os/libroaster-os-netbsd.sh
 source lib/os/libroaster-os-macos.sh
+source lib/os/libroaster-os-minix.sh
 source lib/os/libroaster-os-irix.sh
 source lib/os/libroaster-os-qnx.sh
 source lib/os/libroaster-os-solaris.sh
@@ -43,6 +44,8 @@ function os-info-retrieve {
 		check-os-netbsd-deps
 	else [[ $osinfo = "Darwin" ]];
 		check-os-macos-deps
+	else [[ $osinfo = "MINIX" ]];
+		check-os-minix-deps
 	else [[ $osinfo = "IRIX" ]];
 		check-os-irix-deps
 	else [[ $osinfo = "QNX" ]];

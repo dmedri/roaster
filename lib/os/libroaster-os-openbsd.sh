@@ -20,5 +20,6 @@
 # call: check-os-openbsd-deps
 #
 function check-os-openbsd-deps {
-	echo "OpenBSD"
+	echo "Not yet supported."
+	exit
 }

@@ -20,5 +20,6 @@
 # call: check-os-qnx-deps
 #
 function check-os-irix-deps {
-	echo "IRIX"
+	echo "Not yet supported."
+	exit
 }

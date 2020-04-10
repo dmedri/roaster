@@ -20,5 +20,6 @@
 # call: check-os-netbsd-deps
 #
 function check-os-netbsd-deps {
-	echo "NetBSD"
+	echo "Not yet supported."
+	exit
 }

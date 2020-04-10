@@ -20,5 +20,6 @@
 # call: check-os-windows-deps
 #
 function check-os-minix-deps {
-	echo "MINIX"
+	echo "Not yet supported."
+	exit
 }

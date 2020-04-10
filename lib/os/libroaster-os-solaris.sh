@@ -20,5 +20,6 @@
 # call: check-os-solaris-deps
 #
 function check-os-solaris-deps {
-	echo "SunOS"
+	echo "Not yet supported."
+	exit
 }

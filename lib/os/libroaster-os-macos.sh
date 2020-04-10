@@ -20,5 +20,6 @@
 # call: check-os-macos-deps
 #
 function check-os-macos-deps {
-	echo "MacOs"
+	echo "Not yet supported."
+	exit
 }

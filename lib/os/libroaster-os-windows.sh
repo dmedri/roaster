@@ -20,5 +20,6 @@
 # call: check-os-windows-deps
 #
 function check-os-windows-deps {
-	echo "Windows"
+	echo "Not yet supported."
+	exit
 }
