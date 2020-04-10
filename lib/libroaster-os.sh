@@ -36,21 +36,21 @@ function os-info-retrieve {
 	echo -e "Running $osinfo."
 	if [[ $osinfo = "Linux" ]]; then
 		check-os-linux-deps
-	elif [[ $osinfo = "FreeBSD" ]];
+	elif [[ $osinfo = "FreeBSD" ]]; then
 		check-os-freebsd-deps
-	elif [[ $osinfo = "OpenBSD" ]];
+	elif [[ $osinfo = "OpenBSD" ]]; then
 		check-os-openbsd-deps
-	elif [[ $osinfo = "NetBSD" ]];
+	elif [[ $osinfo = "NetBSD" ]]; then
 		check-os-netbsd-deps
-	elif [[ $osinfo = "Darwin" ]];
+	elif [[ $osinfo = "Darwin" ]]; then
 		check-os-macos-deps
-	elif [[ $osinfo = "MINIX" ]];
+	elif [[ $osinfo = "MINIX" ]]; then
 		check-os-minix-deps
-	elif [[ $osinfo = "IRIX" ]];
+	elif [[ $osinfo = "IRIX" ]]; then
 		check-os-irix-deps
-	elif [[ $osinfo = "QNX" ]];
+	elif [[ $osinfo = "QNX" ]]; then
 		check-os-qnx-deps
-	elif [[ $osinfo = "SunOS" ]];
+	elif [[ $osinfo = "SunOS" ]]; then
 		check-os-solaris-deps
 	else
 		check-os-windows-deps
