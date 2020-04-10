@@ -32,5 +32,9 @@ function os-info-retrieve {
 		check-os-linux-deps
 	else [[ $osinfo = "FreeBSD" ]];
 		check-os-freebsd-deps
+	else [[ $osinfo = "Darwin" ]];
+		check-os-macos-deps
+	else
+		check-os-windows-deps
 	fi
 }
