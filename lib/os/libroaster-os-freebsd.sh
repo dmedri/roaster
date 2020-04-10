@@ -20,7 +20,16 @@
 # call: check-os-freebsd-deps
 #
 function check-os-freebsd-deps {
-	echo "FreeBSD"
-	sudo pkg install gcc texinfo texi2dvi htmlxref help2man \
-		gettext gettext-tools libtextstyle
+	if [[ ! -f $RCO/checks/required-packages ]]; then
+		log "Installing required dependencies"
+		# pkg info -qd R > pkgs.freebsd
+		# cat pkgs.freebsd | xargs sudo pkg install --yes
+		echo "FreeBSD: partial support, trying to solve dependencies..."
+		sudo pkg info -qd | xargs sudo pkg install --yes \
+		&& sudo pkg install $(cat data/pkgs.freebsd) --yes \
+		&& echo $(date) > $RCO/checks/required-packages
+	else
+		log "Dependencies already available"
+		echo "1) Dependencies already available."
+	fi
 }
