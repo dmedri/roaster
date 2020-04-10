@@ -16,10 +16,15 @@
 
 
 # Libraries
-source lib/libroaster-os-linux.sh
-source lib/libroaster-os-freebsd.sh
-source lib/libroaster-os-macos.sh
-source lib/libroaster-os-windows.sh
+source lib/os/libroaster-os-linux.sh
+source lib/os/libroaster-os-freebsd.sh
+source lib/os/libroaster-os-openbsd.sh
+source lib/os/libroaster-os-netbsd.sh
+source lib/os/libroaster-os-macos.sh
+source lib/os/libroaster-os-irix.sh
+source lib/os/libroaster-os-qnx.sh
+source lib/os/libroaster-os-solaris.sh
+source lib/os/libroaster-os-windows.sh
 
 #
 # Retrieve OS informations
@@ -32,8 +37,18 @@ function os-info-retrieve {
 		check-os-linux-deps
 	else [[ $osinfo = "FreeBSD" ]];
 		check-os-freebsd-deps
+	else [[ $osinfo = "OpenBSD" ]];
+		check-os-openbsd-deps
+	else [[ $osinfo = "NetBSD" ]];
+		check-os-netbsd-deps
 	else [[ $osinfo = "Darwin" ]];
 		check-os-macos-deps
+	else [[ $osinfo = "IRIX" ]];
+		check-os-irix-deps
+	else [[ $osinfo = "QNX" ]];
+		check-os-qnx-deps
+	else [[ $osinfo = "SunOS" ]];
+		check-os-solaris-deps
 	else
 		check-os-windows-deps
 	fi

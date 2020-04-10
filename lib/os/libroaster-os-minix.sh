@@ -16,9 +16,9 @@
 
 
 #
-# FreeBSD: try to install dependencies
-# call: check-os-freebsd-deps
+# MS-Windows: try to install dependencies
+# call: check-os-windows-deps
 #
-function check-os-freebsd-deps {
-	echo "FreeBSD"
+function check-os-minix-deps {
+	echo "MINIX"
 }
