@@ -16,10 +16,10 @@
 
 
 # Libraries
-source lib/libroaster-build-virtualenv.sh
-source lib/libroaster-build-standard.sh
-source lib/libroaster-build-server.sh
-source lib/libroaster-build-ccache.sh
+source lib/build/virtualenv.sh
+source lib/build/standard.sh
+source lib/build/server.sh
+source lib/build/ccache.sh
 source lib/libroaster-rprofile.sh
 source lib/libroaster-svn.sh
 source lib/libroaster-web.sh
