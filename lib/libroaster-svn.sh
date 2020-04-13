@@ -27,7 +27,8 @@ function check-svn-branch {
                 BRANDIR="R-$BRANNM-BRANCH"
                 echo -e "Local directory: $BRANDIR."
         else
-                exit
+                echo -e "Problem with the branch name."
+		exit
         fi
 }
 
@@ -91,8 +92,10 @@ function svn-repo-fetch-trunk {
 #
 function svn-repo-fetch-all {
 	cd $RCO/src
-	# R-*.*-BRANCH
-	for i in "3.6.0" "4.0.0"; do
+	# latest n branches
+	n=2
+	br=$(svn ls $SVNSRV/R/branches|grep branch|sed -e "s/^R-//g;s/-branch\/$/.0/g;s/-/./g"|tail -n $n)
+	for i in $br; do
 		svn-repo-fetch-branch $i
 	done;
 	# R-TRUNK
