@@ -79,6 +79,14 @@ function file-untar {
         tar zxf "$1" 
 }
 
+#
+# Edit roaster config file
+# call: roaster-setup
+#
+function roaster-setup {
+	vi $RCO/config
+}
+
 # 
 # Free Memory: unsetting variables
 # call: freemem

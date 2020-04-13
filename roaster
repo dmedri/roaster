@@ -63,6 +63,9 @@ while [[ -n "$1" ]]; do
 	"--settings")
 		app-settings
 		;;
+	"--setup")
+		roaster-setup
+		;;
 	"--svn-repo-update-all")
 		svn-repo-update-all
 		;;
