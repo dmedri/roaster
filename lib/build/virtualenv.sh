@@ -32,7 +32,7 @@ function R-build-virtualenv {
                         esac
                 done
         fi
-        # Add the main directory
+        # Add the workspace directory
         mkdir -p $RVE/workspace
 
         # Install ccache in ~/RVE
@@ -53,8 +53,8 @@ function R-build-virtualenv {
                 cd $RCO/src/R-$VERLATEST
         elif [[ $RBTYPE = "branch" ]]; then
                 cd $RCO/src/$BRANDIR
-		unset $BRANNM
-		unset $BRANDIR
+		unset BRANNM
+		unset BRANDIR
         elif [[ $RBTYPE = "trunk" ]]; then
                 cd $RCO/src/R-TRUNK
         fi
@@ -67,6 +67,7 @@ function R-build-virtualenv {
                 && make clean \
                 && log "build-virtualenv: make" \
                 && make \
+                && log "build-virtualenv: make check-all" \
                 && make check \
                 && log "build-virtualenv: make install" \
                 && make install \

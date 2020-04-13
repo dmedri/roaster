@@ -28,8 +28,8 @@ function R-build-standard {
                 cd $RCO/src/R-$VERLATEST
         elif [[ $RBTYPE = "branch" ]]; then
                 cd $RCO/src/$BRANDIR
-		unset $BRANNM
-		unset $BRANDIR
+		unset BRANNM
+		unset BRANDIR
         elif [[ $RBTYPE = "trunk" ]]; then
                 cd $RCO/src/R-TRUNK
         fi
@@ -39,7 +39,7 @@ function R-build-standard {
         && make clean \
         && log "build-standard: make" \
         && make \
-        && log "build-standard: make check" \
+        && log "build-standard: make check-all" \
         && make check
         echo -e "\n\e[32m--------------------------------------------\e[0m\n"
         log "build-standard: make install"

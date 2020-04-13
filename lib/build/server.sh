@@ -28,8 +28,8 @@ function R-build-server {
                 srvver="R-$VERLATEST"
         elif [[ $RBTYPE = "branch" ]]; then
                 srvver="$BRANDIR"
-		unset $BRANNM
-		unset $BRANDIR
+		unset BRANNM
+		unset BRANDIR
         elif [[ $RBTYPE = "trunk" ]]; then
                 srvver="R-TRUNK"
         fi
@@ -44,7 +44,7 @@ function R-build-server {
                 && make clean \
                 && log "build-server: make" \
                 && make \
-                && log "build-server: make check" \
+                && log "build-server: make check-all" \
                 && make check
                 echo -e "\n\e[32m--------------------------------------------\e[0m\n"
                 log "build-server: make install"
