@@ -30,23 +30,24 @@ function check-os-linux-deps {
 			LNX="Debian derivatives (Debian, Ubuntu, Kali)"
 			echo -e "1) $LNX installing dependencies...\n"
 			sudo apt-get build-dep r-base --yes --quiet \
-			&& sudo apt-get install $(cat data/pkgs.debian) --yes --quiet \
+			&& sudo apt-get install $(cat data/deps/deps.debian) --yes --quiet \
 			&& echo $(date) > $RCO/checks/required-packages
 		elif [[ -e $yum  ]]; then
 			LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
 			echo -e "1) $LNX installing dependencies...\n"
 			sudo yum builddep R -y \
-			&& sudo yum install $(cat data/pkgs.redhat) -y \
+			&& sudo yum install $(cat data/deps/deps.fedora) -y \
 			&& echo $(date) > $RCO/checks/required-packages
 		elif [[ -e $pac ]]; then
 			LNX="Arch derivatives (Arch, Manjaro, Antergos)"
 			echo -e "1) $LNX installing dependencies...\n"
-			pacman -S --needed - < data/pkgs.arch --noconfirm \
+			pacman -S --needed - < data/deps/deps.arch --noconfirm \
 			&& pacman -S $(expac -S "%E" r) --noconfirm \
 			&& echo $(date) > $RCO/checks/required-packages
 		else
 			echo "1) Unknown Linux distribution."
 			echo "Please, install by-yourself all the needed packages."
+			echo "(examples: files in 'data/deps/' directory)"
 			exit;
 		fi
 	else
