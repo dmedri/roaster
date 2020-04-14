@@ -20,6 +20,7 @@ source lib/build/virtualenv.sh
 source lib/build/standard.sh
 source lib/build/server.sh
 source lib/build/ccache.sh
+source lib/build/make.sh
 source lib/libroaster-rprofile.sh
 source lib/libroaster-svn.sh
 source lib/libroaster-web.sh
@@ -49,16 +50,25 @@ function R-build-init {
 # call: R-build-ask
 #
 function R-build-ask {
-        echo -e "\nInstalling R (\e[32m$RBTYPE\e[0m).\n"
-        echo -e "Summary:"
-        echo -e "\t\e[32m$BTYPE\e[0m"
-        echo -e "\t\e[32m$BOPTS\e[0m\n"
-        echo -e "Log type:"
+	if [[ $RBTYPE = "stable" ]]; then
+        	echo -e "\t   Type: \e[32m$RBTYPE ($VERLATEST)\e[0m"
+        	echo -e "\tSources: \e[32m$RCO/src/R-$VERLATEST\e[0m"
+	elif [[ $RBTYPE = "branch" ]]; then
+        	echo -e "\t   Type: \e[32m$RBTYPE (R-$BRANNM-branch)\e[0m"
+        	echo -e "\tSources: \e[32m$RCO/src/$BRANDIR\e[0m"
+	elif [[ $RBTYPE = "trunk" ]]; then
+        	echo -e "\t   Type: \e[32m$RBTYPE (trunk)\e[0m"
+        	echo -e "\tSources: \e[32m$RCO/src/R-TRUNK\e[0m"
+	fi
+        echo -e "\t  Build: \e[32m$BTYPE\e[0m"
+        echo -e "\t  Tests: \e[32m$MCHECK\e[0m"
         if [[ $LOG = "file" ]]; then
-                echo -e "\t\e[32m$LOG $RCO/logs/$$.build\e[0m\n"
+		echo -e "\t   Logs: \e[32m$RCO/logs/$$.build ($LOG)\e[0m"
         else
-                echo -e "\t\e[32m$LOG\e[0m\n"
+        	echo -e "\t   Logs: \e[32m$LOG\e[0m"
         fi
+        echo -e "\tOptions:"
+	args-wrap $BOPTS
         while true; do
                 read -p "Are you ready to start? (y/n) " yn
                 case $yn in
