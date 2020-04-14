@@ -76,7 +76,7 @@ function file-web-get {
 # call: file-untar FILE
 #
 function file-untar {
-        tar zxf "$1" 
+        tar zxf "$1"
 }
 
 #
@@ -97,6 +97,15 @@ function args-wrap {
 		shift
 	done
 } 
+
+#
+# Separating line
+# call: sepline
+#
+
+function sepline {
+	echo -e "\n\e[32m--------------------------------------------------\e[0m\n"
+}
 
 # 
 # Free Memory: unsetting variables

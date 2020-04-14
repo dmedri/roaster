@@ -65,16 +65,16 @@ function R-build-virtualenv {
                 --disable-rpath $OPTRVE \
                 && log "build-virtualenv: make clean (1)" \
                 && make clean \
-                && log "build-virtualenv: make" \
-                && make \
+                && log "build-virtualenv: make $OPTMAK" \
+                && roaster-build-make \
                 && log "build-virtualenv: make $MCHECK" \
-                && roaster-build-checks \
+                && roaster-build-check \
                 && log "build-virtualenv: make install" \
                 && make install \
                 && log "build-virtualenv: make clean (2)" \
                 && make clean \
                 && echo -e "\n\e[32mBuild done.\e[0m\n"
-
+		sepline
 
         # Add RVE/bin/activate
         if [[ -d $RVE/bin ]]; then

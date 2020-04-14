@@ -37,12 +37,12 @@ function R-build-standard {
         && ./configure  $OPTSTD \
         && log "build-standard: make clean (1)" \
         && make clean \
-        && log "build-standard: make" \
-        && make \
+        && log "build-standard: make $OPTMAK" \
+        && roaster-build-make \
         && log "build-standard: make $MCHECK" \
-        && roaster-build-checks
-        echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-        log "build-standard: make install"
+        && roaster-build-check
+        sepline
+	log "build-standard: make install"
         if [[ $BSTDASK==true ]]; then
                 while true; do
                         read -p "Build done. Install now? (y/n) " yn
@@ -61,7 +61,7 @@ function R-build-standard {
 
 	rprofile-sys-install
 
-        echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-        echo -e "\n\e[32mInstallation completed.\e[0m\n"
+        sepline
+	echo -e "Installation completed."
 }
 

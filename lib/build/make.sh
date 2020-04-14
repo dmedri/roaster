@@ -19,17 +19,54 @@
 # Setup for 'make check'
 # call: roaster-build-checks
 #
-function roaster-build-checks {
+function roaster-build-check {
 	if [[ $MCHECK = "check-all" ]]; then
-		echo -e "\n\e[32mBuild tests: 'make check-all'.\e[0m\n"
+		sepline
+		echo "Build tests: 'make check-all'."
+		sepline
 		make check-all
 	elif [[ $MCHECK = "check-devel" ]]; then
-		echo -e "\n\e[32mBuild tests: 'make check-devel'.\e[0m\n"
+		sepline
+		echo "Build tests: 'make check-devel'."
+		sepline
 		make check-devel
 	elif [[ $MCHECK = "none" ]]; then
-		echo -e "\n\e[32mNo build checks.\e[0m\n"
+		sepline
+		echo "No build checks."
+		sepline
 	else
-		echo -e "\n\e[32mBuild tests: 'make check'.\e[0m\n"
+		sepline
+		echo "Build tests: 'make check'."
+		sepline
 		make check
+	fi
+}
+
+#
+# Setup for 'make'
+# call: roaster-build-make
+#
+
+function roaster-build-make {
+	if [[ $OPTMAK = "j2Os" ]]; then
+		sepline
+		echo "Building with 'make -j 2 -O -s' (2 jobs, silent)."
+		sepline
+		make -j 2 -O -s
+	elif [[ $OPTMAK = "j4Os" ]]; then
+		sepline
+		echo "Building with 'make -j 4 -O -s' (4 jobs, silent)."
+		sepline
+		make -j 4 -O -s
+	elif [[ $OPTMAK = "j8Os" ]]; then
+		sepline
+		echo "Building with 'make -j 8 -O -s' (8 jobs, silent)."
+		sepline
+		make -j 8 -O -s
+	else
+		sepline
+		echo "Building with 'make' (standard)."
+		sepline
+		make
 	fi
 }

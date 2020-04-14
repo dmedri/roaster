@@ -21,6 +21,7 @@
 #
 function ccache-rve-install {
         if [[ -f $RRC/data/tmpl.ccache.Makevars ]] && [[ -f $RRC/data/tmpl.ccache.conf ]]; then
+		sepline
                 # ~/RVE/.R/Makevars
                 echo -e "Installing ~/RVE/.R/Makevars ..."
                 mkdir -p $RVE/.R
@@ -32,10 +33,15 @@ function ccache-rve-install {
                 mkdir -p $RVE/.ccache
                 cat $RRC/data/tmpl.ccache.conf > $RVE/.ccache/ccache.conf
                 echo -e "Done.\n"
+		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
+		sepline
                 echo -e "Can't find 'data/tmpl.ccache.Makevars' file."
+		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.conf ]]; then
+		sepline
                 echo -e "Can't find 'data/tmpl.ccache.conf' file."
+		sepline
         fi
 }
 
@@ -45,7 +51,8 @@ function ccache-rve-install {
 #
 function ccache-sys-install {
         if [[ -f $RRC/data/tmpl.ccache.Makevars ]] && [[ -f $RRC/data/tmpl.ccache.conf ]]; then
-                # .R/Makevars
+                sepline
+		# .R/Makevars
                 echo -e "Installing ~/.R/Makevars ..."
                 if [[ ! -f $HOME/.R/Makevars ]]; then
                         mkdir -p $HOME/.R
@@ -68,9 +75,14 @@ function ccache-sys-install {
                         echo -e " - New file: $HOME/.ccache/ccache.conf"
                 fi
                 echo -e "Done.\n"
+		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
-                echo -e "Can't find 'data/tmpl.ccache.Makevars' file."
+                sepline
+		echo -e "Can't find 'data/tmpl.ccache.Makevars' file."
+		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.conf ]]; then
+		sepline
                 echo -e "Can't find 'data/tmpl.ccache.conf' file."
+		sepline
         fi
 }

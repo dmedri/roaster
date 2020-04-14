@@ -42,17 +42,17 @@ function R-build-server {
                         $OPTSRV \
                 && log "build-server: make clean (1)" \
                 && make clean \
-                && log "build-server: make" \
-                && make \
+                && log "build-server: make $OPTMAK" \
+                && roaster-build-make \
                 && log "build-server: make $MCHECK" \
-                && roaster-build-checks
-                echo -e "\n\e[32m--------------------------------------------\e[0m\n"
+                && roaster-build-check
+                sepline
                 log "build-server: make install"
                 sudo make install \
                 && log "build-server: make clean (2)" \
                 && make clean
-                echo -e "\n\e[32m--------------------------------------------\e[0m\n"
-                echo -e "\n\e[32mInstallation completed.\e[0m\n"
+                sepline
+		echo -e "Installation completed."
 
                 # Add a copy of the source tree
                 echo -e "\e[32mCopying the source tree in the same directory...\e[0m\n"
@@ -65,6 +65,7 @@ function R-build-server {
                 fi
 
                 rprofile-sys-install
+
 
         else
                 echo -e "\e[32mDirectory $SRV/$srvver already exists.\e[0m"
