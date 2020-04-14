@@ -87,6 +87,17 @@ function roaster-setup {
 	vi $RCO/config
 }
 
+#
+# Wrap words in a string
+# call: args-wrap "a string to split"
+#
+function args-wrap {
+	while(($#)); do
+		echo -e "\t\t\e[34m$1\e[0m"
+		shift
+	done
+} 
+
 # 
 # Free Memory: unsetting variables
 # call: freemem
