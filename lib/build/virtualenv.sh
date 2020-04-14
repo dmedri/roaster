@@ -67,8 +67,8 @@ function R-build-virtualenv {
                 && make clean \
                 && log "build-virtualenv: make" \
                 && make \
-                && log "build-virtualenv: make check-all" \
-                && make check \
+                && log "build-virtualenv: make $MCHECK" \
+                && roaster-build-checks \
                 && log "build-virtualenv: make install" \
                 && make install \
                 && log "build-virtualenv: make clean (2)" \

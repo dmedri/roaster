@@ -39,8 +39,8 @@ function R-build-standard {
         && make clean \
         && log "build-standard: make" \
         && make \
-        && log "build-standard: make check-all" \
-        && make check
+        && log "build-standard: make $MCHECK" \
+        && roaster-build-checks
         echo -e "\n\e[32m--------------------------------------------\e[0m\n"
         log "build-standard: make install"
         if [[ $BSTDASK==true ]]; then

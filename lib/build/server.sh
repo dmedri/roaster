@@ -44,8 +44,8 @@ function R-build-server {
                 && make clean \
                 && log "build-server: make" \
                 && make \
-                && log "build-server: make check-all" \
-                && make check
+                && log "build-server: make $MCHECK" \
+                && roaster-build-checks
                 echo -e "\n\e[32m--------------------------------------------\e[0m\n"
                 log "build-server: make install"
                 sudo make install \
