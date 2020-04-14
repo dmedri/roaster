@@ -24,6 +24,7 @@ function roaster-mirrors-update {
 	if [[ -d $RCO/infos ]]; then
                 wget -O- -q $MIRROR/$CRANM | awk -F "\"*,\"*" '{print $2,$4}' | sort | uniq > $RCO/infos/MIRRORS
                 echo "File $RCO/infos/MIRRORS updated."
+		sepline
         fi
 }
 

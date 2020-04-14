@@ -40,6 +40,7 @@ function rprofile-rve-install {
 function rprofile-sys-install {
         # ~/.Rprofile
         if [[ -f $RRC/data/tmpl.Rprofile ]]; then
+		sepline
                 echo -e "\nInstalling a pre-defined configuration ..."
                 if [[ -f $HOME/.Rprofile ]]; then
                         mv $HOME/.Rprofile $HOME/.Rprofile.old
@@ -48,7 +49,10 @@ function rprofile-sys-install {
                 cat $RRC/data/tmpl.Rprofile > $HOME/.Rprofile
                 echo -e " - New file: $HOME/.Rprofile"
                 echo -e "Done.\n"
+		sepline
         else
-                echo -e "\nCan't find $RRC/data/tmpl.Rprofile\n"
+                sepline
+		echo -e "\nCan't find $RRC/data/tmpl.Rprofile\n"
+		sepline
         fi
 }
