@@ -45,6 +45,7 @@ function roaster-new-config {
                 echo "OPTSRV=\"\"" >> $RCO/config
                 echo "OPTSTD=\"\"" >> $RCO/config
                 echo "OPTRVE=\"\"" >> $RCO/config
+                echo "MCHECK=\"check\"" >> $RCO/config
         fi
 }
 
@@ -66,6 +67,7 @@ function check-roaster-working-dirs {
         OPTSRV=$(get-value OPTSRV)
         OPTSTD=$(get-value OPTSTD)
         OPTRVE=$(get-value OPTRVE)
+        MCHECK=$(get-value MCHECK)
         LOG=$(get-value LOG)
 }
 
@@ -89,19 +91,13 @@ function app-options {
 
 #
 # Roaster: summary of settings before the build stage
-# call app-settings
+# call: app-settings
 #
 function app-settings {
-        # function args-wrap
-        function args-wrap {
-                while(($#)); do
-                        echo -e "\t\t\e[34m$1\e[0m"
-                        shift
-                done
-        }
         echo -e "\e[1mSettings in $RCO/config:\e[0m"
         echo -e "\n\tmirror site: \e[34m$MIRROR\e[0m"
         echo -e "\t build type: \e[34m$RBTYPE\e[0m"
+        echo -e "\t make tests: \e[34m$MCHECK\e[0m"
         echo -e "\t svn server: \e[34m$SVNSRV\e[0m"
         echo -e "\t   log type: \e[34m$LOG\e[0m"
         echo -e "\n\tbuild-server options:"
@@ -112,4 +108,3 @@ function app-settings {
         args-wrap $OPTRVE
         echo ""
 }
-
