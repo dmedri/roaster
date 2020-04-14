@@ -57,12 +57,12 @@ function svn-repo-fetch-branch {
 	cd $RCO/src
 	if [[ ! -d $BRANDIR ]]; then
 		svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR \
-		&& log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR" \
+		&& log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR"
 		echo -e "2) The source code is now available."
 	else
 		cd $BRANDIR
 		svn up \
-		&& log "svn up" \
+		&& log "svn up"
 		echo -e "2) The source code is now updated."
 	fi
 }
@@ -76,12 +76,12 @@ function svn-repo-fetch-trunk {
 	echo -e "Local directory: R-TRUNK."
 	if [[ ! -d "R-TRUNK" ]]; then
 		svn co $SVNSRV/R/trunk R-TRUNK \
-		&& log "svn co $SVNSRV/R/trunk R-TRUNK" \
+		&& log "svn co $SVNSRV/R/trunk R-TRUNK"
 		echo -e "2) The source code is now available."
 	else
 		cd R-TRUNK
 		svn up \
-		&& log "svn up" \
+		&& log "svn up"
 		echo -e "2) The source code is now updated."
 	fi
 }

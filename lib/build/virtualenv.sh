@@ -89,4 +89,3 @@ function R-build-virtualenv {
                 echo -e "\e[32mPlease, remove the RVE directory.\e[0m"
         fi
 }
-

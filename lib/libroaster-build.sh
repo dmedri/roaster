@@ -69,6 +69,7 @@ function R-build-ask {
         fi
         echo -e "\tOptions:"
 	args-wrap $BOPTS
+	echo -e "\n"
         while true; do
                 read -p "Are you ready to start? (y/n) " yn
                 case $yn in
