@@ -39,7 +39,7 @@ function check-svn-branch {
 function svn-repo-update-all {
 	cd $RCO/src
 	echo -e "\e[32mSVN local repositories:\e[0m"
-	for i in `ls -d {R*-B*,R-TRUNK}`; do
+	for i in `ls -d {R*-B*,R-TRUNK} 2>/dev/null`; do
 		cd $i
 		echo -e "\n\e[32m$i: updating...\e[0m"
 		svn up
