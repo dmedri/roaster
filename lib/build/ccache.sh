@@ -32,7 +32,7 @@ function ccache-rve-install {
                 echo -e "Installing ~/RVE/.ccache/ccache.conf ..."
                 mkdir -p $RVE/.ccache
                 cat $RRC/data/tmpl.ccache.conf > $RVE/.ccache/ccache.conf
-                echo -e "Done.\n"
+                echo -e "Done."
 		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
 		sepline
@@ -74,7 +74,7 @@ function ccache-sys-install {
                         echo -e " - Old file: $HOME/.ccache/ccache.conf.old"
                         echo -e " - New file: $HOME/.ccache/ccache.conf"
                 fi
-                echo -e "Done.\n"
+                echo -e "Done."
 		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
                 sepline
