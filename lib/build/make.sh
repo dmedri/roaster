@@ -50,23 +50,44 @@ function roaster-build-check {
 function roaster-build-make {
 	if [[ $OPTMAK = "j2Os" ]]; then
 		sepline
-		echo "Building with 'make -j 2 -O -s' (2 jobs, silent)."
+		echo "Building with 'make -j2 -O -s' (2 jobs, silent)."
 		sepline
-		make -j 2 -O -s
+		make -j2 -O -s
 	elif [[ $OPTMAK = "j4Os" ]]; then
 		sepline
-		echo "Building with 'make -j 4 -O -s' (4 jobs, silent)."
+		echo "Building with 'make -j4 -O -s' (4 jobs, silent)."
 		sepline
-		make -j 4 -O -s
+		make -j4 -O -s
 	elif [[ $OPTMAK = "j8Os" ]]; then
 		sepline
-		echo "Building with 'make -j 8 -O -s' (8 jobs, silent)."
+		echo "Building with 'make -j8 -O -s' (8 jobs, silent)."
 		sepline
-		make -j 8 -O -s
+		make -j8 -O -s
+	elif [[ $OPTMAK = "j4" ]]; then
+		sepline
+		echo "Building with 'make -j4' (4 jobs)."
+		sepline
+		make -j4
 	else
 		sepline
 		echo "Building with 'make' (standard)."
 		sepline
 		make
+	fi
+}
+
+#
+# Configure
+# call: roaster-build-configure
+#
+function roaster-build-configure {
+	if [[]]; then
+		echo "virtualenv"
+	elif [[]]; then
+		echo "standard"
+	elif [[]]; then
+		echo "server"
+	else
+		echo ""
 	fi
 }
