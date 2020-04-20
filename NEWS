@@ -1,92 +1,93 @@
-CHANGES WITH v0.14 "Rimini"
-	* functions relocation:
-	  - roaster script is now minimal
-	  - lib/ directory populated with small files
-	  - reworked/renamed/updated functions
-	* ccache:
-	  - updated data/pkgs.{arc,debian,redhat}
-	  - configurations for every BTYPE
-	* build check setups:
-	  - new option MCHECK for fine tuning
-	* build make setups:
-	  - new option OPTMAK for fine tuning
-	* minor fixes all over
+Roaster
+
+CHANGES WITH v0.14 (04/21/2020) "Rimini XLVI"
+ * functions relocation:
+   - roaster script is now minimal
+   - lib/ directory populated with small files
+   - reworked/renamed/updated functions
+ * ccache:
+   - updated data/pkgs.{arc,debian,redhat}
+   - configurations for every BTYPE
+ * build check setups:
+   - new option MCHECK for fine tuning
+ * build make setups:
+   - new option OPTMAK for fine tuning
+ * minor fixes all over
 
 CHANGES WITH v0.13 "Bellaria Igea Marina"
-	* RBTYPE reworked with a new logic:
-	  - "stable"
-	  - "branch" (svn: stable + patches)
-	  - "trunk" (svn: trunk, ex-rdevel)
-	* Logs:
-	  - now with its own option in config
-	  - more messages on build
-	* Required dependencies in external files:
-	  - data/pkgs.arch
-	  - data/pkgs.debian
-	  - data/pkgs.redhat
-	* build-server: now with its own README
-	* minor fixes all over
+ * RBTYPE reworked with a new logic:
+   - "stable"
+   - "branch" (svn: stable + patches)
+   - "trunk" (svn: trunk, ex-rdevel)
+ * Logs:
+   - now with its own option in config
+   - more messages on build
+ * Required dependencies in external files:
+   - data/pkgs.arch
+   - data/pkgs.debian
+   - data/pkgs.redhat
+ * build-server: now with its own README
+   - minor fixes all over
 
 CHANGES WITH v0.12 "Gatteo a Mare"
-	* "rdevel" config option to build R from svn
-	* build-standard: add new.Rprofile in user HOME
-	* minor fixes all over
+ * "rdevel" config option to build R from svn
+ * build-standard: add new.Rprofile in user HOME
+ * minor fixes all over
 
 CHANGES WITH v0.11 "Cesenatico"
-	* new internal switch for standard build
-	* new loaded.packages function in tmpl.Rprofile
+ * new internal switch for standard build
+ * new loaded.packages function in tmpl.Rprofile
 
 CHANGES WITH v0.10 "Cervia"
-	* added --enable-R-shlib in build confs
-	* minor revisions in docs
+ * added --enable-R-shlib in build confs
+ * minor revisions in docs
 
 CHANGES WITH v0.9 "Lido di Savio"
-	* check-status reworked
-	* check-roaster-working-dirs reworked
-	* check-rstable-latest reworked
-	* build-server reworked
-	* new check-reqcmd function
-	* minor fixes
+ * check-status reworked
+ * check-roaster-working-dirs reworked
+ * check-rstable-latest reworked
+ * build-server reworked
+ * new check-reqcmd function
+ * minor fixes
 
 CHANGES WITH v0.8 "Castiglione di Ravenna"
-	* new --build-server option
-	* minor fixes
+ * new --build-server option
+ * minor fixes
 
 CHANGES WITH v0.7 "Cesena"
-	* new RVE functions in tmpl.activate
-	* minor fixes
+ * new RVE functions in tmpl.activate
+ * minor fixes
 
 CHANGES WITH v0.6 "Borello"
-	* new check-os-deps function
-	* tested on Kali
-	* tested on Arch
-	* tested on Fedora
-	* added new templates
+ * new check-os-deps function
+ * tested on Kali
+ * tested on Arch
+ * tested on Fedora
+ * added new templates
 
 CHANGES WITH v0.5 "Mercato Saraceno"
-	* new build logger
-	* check-status: minor changes
+ * new build logger
+ * check-status: minor changes
 
 CHANGES WITH v0.4 "Sarsina"
-	* new --factory-reset option
-	* new --autoclean option
-	* docs: new build-standard-options
-	* docs: new build-virtualenv-options
+ * new --factory-reset option
+ * new --autoclean option
+ * docs: new build-standard-options
+ * docs: new build-virtualenv-options
 
 CHANGES WITH v0.3 "San Piero in Bagno"
-	* data: new templates and docs
-	* build-virtualenv: 
-	* build-standard: more system checks
-	* build-standard: reworked logic
+ * data: new templates and docs
+ * build-virtualenv: 
+ * build-standard: more system checks
+ * build-standard: reworked logic
 
 CHANGES WITH v0.2 "Bagno di Romagna"
-	* reworked almost all the code for a better logic
-	* new ~/.roaster directory
-	* more checks and functionalities
-	* new --get-mirrors option
+ * reworked almost all the code for a better logic
+ * new ~/.roaster directory
+ * more checks and functionalities
+ * new --get-mirrors option
 
 CHANGES WITH V0.1 "Verghereto"
-
-	* checks for latest R release;
-	* two build types available (standard, virtualenv);
-	* custom fields to setup your build
+ * checks for latest R release;
+ * two build types available (standard, virtualenv);
+ * custom fields to setup your build
