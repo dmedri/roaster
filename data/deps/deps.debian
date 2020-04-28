@@ -1,4 +1,5 @@
 build-essential
+libpcre2-dev
 git
 subversion
 ccache
