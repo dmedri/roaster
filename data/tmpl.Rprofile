@@ -32,8 +32,7 @@ loaded.packages <- function() {
 #
 # detach a library previously loaded
 #
-unlibrary <- function(pkg, character.only = FALSE)
-{
+unlibrary <- function(pkg, character.only = FALSE) {
   if(!character.only)
   {
     pkg <- deparse(substitute(pkg))
