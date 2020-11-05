@@ -36,27 +36,34 @@ function check-status {
         local checkr=$(command -v R)
         if [[ $checkr != "" && -e $checkr ]]; then
                 verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-                echo -e "\t\e[32m$verr\e[0m\t$checkr (standard)"
+		verp=$(R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "patched (svn " $6}')
+                echo -e "\t\e[32m$verr\e[0m\t$checkr (standard) $verp"
         else
                 echo -e "\t\e[32m-----\e[0m\tNot available (standard)"
         fi
 
         # Check for an existing RVE
         local verr
+	local verp
         if [[ -f $RVE/bin/R ]]; then
                 verr=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-                echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtualenv)"
+		verp=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "patched (svn " $6}')
+                echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtualenv) $verp"
         else
                 echo -e "\t\e[32m-----\e[0m\tNot available (virtualenv)"
         fi
 
         # R server farm
+	local lsadir
+	local srvr
+	local srvp
         echo -e "\n\tServer farm:\n"
-        local lsadir=$(ls -A $SRV 2>/dev/null)
+        lsadir=$(ls -A $SRV 2>/dev/null)
         if [[ -n "$lsadir" ]]; then
                 for i in $lsadir; do
-                        local srvr=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-                        echo -e "\t\e[32m$srvr\e[0m\t$SRV/$i/bin/R (server)";
+                        srvr=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
+                        srvp=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "patched (svn " $6}')
+                        echo -e "\t\e[32m$srvr\e[0m\t$SRV/$i/bin/R (server) $srvp";
                 done
         else
                 echo -e "\t\e[32m-----\e[0m\tNot available (server)"
