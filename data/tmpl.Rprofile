@@ -6,6 +6,12 @@ local({
 	options(repos = r)
 })
 
+# set locale (if not available or want to switch)
+# Sys.setenv(LANGUAGE = "it")
+# Sys.setenv(LANGUAGE = "de")
+# Sys.setenv(LANGUAGE = "fr")
+# Sys.setenv(LANGUAGE = "es")
+
 # set prompt
 #options(prompt = "RVE> ")
 
