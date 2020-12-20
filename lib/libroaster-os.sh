@@ -33,7 +33,7 @@ source lib/os/libroaster-os-windows.sh
 #
 function os-info-retrieve {
 	osinfo=$(uname)
-	echo -e "Running $osinfo."
+	echo -e "\e[32mRunning $osinfo.\e[0m\n"
 	if [[ $osinfo = "Linux" ]]; then
 		check-os-linux-deps
 	elif [[ $osinfo = "FreeBSD" ]]; then

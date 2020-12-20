@@ -45,7 +45,7 @@ function get-value {
 function check-cmdreq {
         while(($#)); do
                 command -v "$1"  >/dev/null 2>&1 \
-                || { echo >&2 "Command '$1' is required."; exit; }
+                || { echo -e >&2 "\e[31mCommand '$1' is required.\e[0m"; exit; }
                 shift
         done
 }
@@ -57,9 +57,9 @@ function check-cmdreq {
 function check-rstable-latest {
         VERLATEST=$(wget -O- -q $SRCU/$SRCD | awk '$1 == "Release:" {print $2}')
         if ! [[ $VERLATEST =~ ^[0-9]+(\.[0-9]+){2,3}$ ]]; then
-                echo "Problems with online resources. Please, try later." && exit
+                echo -e "\e[31mProblems with online resources. Please, try later.\e[0m" && exit
         else
-                echo -e "Contacting online resources...\n"
+                echo -e "\e[32mContacting online resources...\e[0m\n"
         fi
 }
 

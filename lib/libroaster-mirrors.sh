@@ -23,7 +23,7 @@ function roaster-mirrors-update {
 	# The Roaster 'infos' directory exists?
 	if [[ -d $RCO/infos ]]; then
                 wget -O- -q $MIRROR/$CRANM | awk -F "\"*,\"*" '{print $2,$4}' | sort | uniq > $RCO/infos/MIRRORS
-                echo "File $RCO/infos/MIRRORS updated."
+                echo -e "\e[32mFile $RCO/infos/MIRRORS updated.\e[0m"
 		sepline
         fi
 }
@@ -42,7 +42,7 @@ function roaster-mirrors-list {
 				[yY]* ) roaster-mirrors-update; break;;
 #				[nN]* ) exit;;
 				[nN]* ) break;;
-				* ) echo "Please, answer y/n.";;
+				* ) echo -e "\e[32mPlease, answer y/n.\e[0m";;
 			esac
 		done
 	fi
