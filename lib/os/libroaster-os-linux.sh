@@ -28,30 +28,48 @@ function check-os-linux-deps {
 		log "Installing required dependencies"
 		if [[ -e $apt ]]; then
 			LNX="Debian derivatives (Debian, Ubuntu, Kali)"
-			echo -e "1) $LNX installing dependencies...\n"
+			echo -e "\e[1m1) $LNX installing dependencies...\e[0m\n"
 			sudo apt-get build-dep r-base --yes --quiet \
 			&& sudo apt-get install $(cat data/deps/deps.debian) --yes --quiet \
 			&& echo $(date) > $RCO/checks/required-packages
 		elif [[ -e $yum  ]]; then
 			LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
-			echo -e "1) $LNX installing dependencies...\n"
+			echo -e "\e[1m1) $LNX installing dependencies...\e[0m\n"
 			sudo yum builddep R -y \
 			&& sudo yum install $(cat data/deps/deps.fedora) -y \
 			&& echo $(date) > $RCO/checks/required-packages
 		elif [[ -e $pac ]]; then
 			LNX="Arch derivatives (Arch, Manjaro, Antergos)"
-			echo -e "1) $LNX installing dependencies...\n"
-			pacman -S --needed - < data/deps/deps.arch --noconfirm \
-			&& pacman -S $(expac -S "%E" r) --noconfirm \
+			echo -e "\e[1m1) $LNX installing dependencies...\e[0m\n"
+			sudo pacman -S --needed - < data/deps/deps.arch --noconfirm \
+			&& sudo pacman -S $(expac -S "%E" r) --noconfirm \
 			&& echo $(date) > $RCO/checks/required-packages
 		else
-			echo "1) Unknown Linux distribution."
+			echo -e "\e[1m1) Unknown Linux distribution.\e[0m"
 			echo "Please, install by-yourself all the needed packages."
 			echo "(examples: files in 'data/deps/' directory)"
 			exit;
 		fi
 	else
 		log "Dependencies already available"
-		echo "1) Dependencies already available."
+		echo -e "\e[1m1) Dependencies already available.\e[0m"
 	fi
 }
+
+
+#
+# Linux: show the number of available CPUs
+# call: check-os-macos-ncpu
+#
+#function check-os-linux-ncpu {
+#        # number of cpu
+#        local $ncpu = $(grep -c processor /proc/cpuinfo)
+#
+#        echo -e "Linux - CPUs\n"
+#        echo -e "  Number: $ncpu\n"
+#	echo -e $(cat /proc/cpuinfo)
+#        if [[ $ncpu > 1 ]]; then
+#                echo -e "\nTry the 'parallel' package for better performance."
+#        fi
+#        exit
+#}
