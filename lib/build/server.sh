@@ -51,13 +51,13 @@ function R-build-server {
                 sudo make install \
                 && log "build-server: make clean (2)" \
                 && make clean
-                sepline
-		echo -e "Installation completed."
 
                 # Add a copy of the source tree
-                echo -e "\e[32mCopying the source tree in the same directory...\e[0m\n"
+		sepline
+                echo -e "\e[1mCopying the source tree in the same directory...\e[0m"
                 sudo cp -a $RCO/src/$srvver $SRV/$srvver/src/
-                echo -e "\e[32mDone.\e[0m\n"
+                echo -e "\e[1mDone.\e[0m"
+		sepline
 
                 # add server/README
                 if [[ -f $RRC/data/tmpl.server.README ]]; then
@@ -65,10 +65,11 @@ function R-build-server {
                 fi
 
                 rprofile-sys-install
+		echo -e "\n\e[1mInstallation completed.\e[0m\n"
 
 
         else
-                echo -e "\e[32mDirectory $SRV/$srvver already exists.\e[0m"
-                echo -e "Please, remove it for a fresh build."
+                echo -e "\e[31mDirectory $SRV/$srvver already exists.\e[0m"
+                echo -e "\e[31mPlease, remove it for a fresh build.\e[0m"
         fi
 }

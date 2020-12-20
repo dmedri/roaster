@@ -27,8 +27,8 @@ function R-build-virtualenv {
                         read -p "Backup the old directory and proceed? (y/n) " yn
                         case $yn in
                                 [yY]* ) mv ~/RVE ~/RVE.backup-$(date +"%y%m%d%H%M"); break;;
-                                [nN]* ) echo "Okay, bye."; exit;;
-                                * ) echo "Please, answer (y/n).";;
+                                [nN]* ) echo -e "\e[31mOkay, bye.\e[0"; exit;;
+                                * ) echo -e "\e[32mPlease, answer (y/n).\e[0m";;
                         esac
                 done
         fi
@@ -72,20 +72,20 @@ function R-build-virtualenv {
                 && log "build-virtualenv: make install" \
                 && make install \
                 && log "build-virtualenv: make clean (2)" \
-                && make clean \
-                && echo -e "\n\e[32mBuild done.\e[0m\n"
+                && make clean 
 		sepline
 
         # Add RVE/bin/activate
         if [[ -d $RVE/bin ]]; then
                 if [[ -f $RRC/data/tmpl.activate ]]; then
+			echo -e "\n\e[1mInstallation completed.\e[0m\n\n"
                         echo -e "\e[32mR Virtual Environment\e[0m"
                         cat $RRC/data/tmpl.activate > $RVE/bin/activate
-                        echo -e " enable: \$ source $RVE/bin/activate"
-                        echo -e "disable: \$ deactivate\n"
+                        echo -e "\e[32m enable: \$ source $RVE/bin/activate\e[0m"
+                        echo -e "\e[32mdisable: \$ deactivate\e[0m\n"
                 fi
         else
-                echo -e "\e[32mSomething goes wrong...\e[0m"
-                echo -e "\e[32mPlease, remove the RVE directory.\e[0m"
+                echo -e "\e[31mSomething goes wrong...\e[0m"
+                echo -e "\e[31mPlease, remove the ~/RVE directory.\e[0m"
         fi
 }

@@ -50,8 +50,8 @@ function R-build-standard {
                                 [yY]* ) sudo make install \
                                         && log "build-standard: make clean (2)" \
                                         && make clean; break;;
-                                [nN]* ) echo -e "\nNotice: installation can proceed with 'make install'.\n"; exit;;
-                                * ) echo "Please, answer (y/n).";;
+                                [nN]* ) echo -e "\n\e[32mNotice: installation can proceed with 'make install'.\e[0m\n"; exit;;
+                                * ) echo -e "\e[32mPlease, answer (y/n).\e[0m";;
                         esac
                 done
         else
@@ -61,7 +61,6 @@ function R-build-standard {
 
 	rprofile-sys-install
 
-        sepline
-	echo -e "Installation completed."
+	echo -e "\n\e[1mInstallation completed.\e[0m\n"
 }
 

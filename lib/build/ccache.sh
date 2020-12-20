@@ -23,24 +23,24 @@ function ccache-rve-install {
         if [[ -f $RRC/data/tmpl.ccache.Makevars ]] && [[ -f $RRC/data/tmpl.ccache.conf ]]; then
 		sepline
                 # ~/RVE/.R/Makevars
-                echo -e "Installing ~/RVE/.R/Makevars ..."
+                echo -e "\e[1mInstalling ~/RVE/.R/Makevars ...\e[0m"
                 mkdir -p $RVE/.R
                 cat $RRC/data/tmpl.ccache.Makevars > $RVE/.R/Makevars
-                echo -e "Done.\n"
+                echo -e "\e[1mDone.\e[0m\n"
 
                 # ~/RVE/.ccache/ccache.conf
-                echo -e "Installing ~/RVE/.ccache/ccache.conf ..."
+                echo -e "\e[1mInstalling ~/RVE/.ccache/ccache.conf ...\e[0m"
                 mkdir -p $RVE/.ccache
                 cat $RRC/data/tmpl.ccache.conf > $RVE/.ccache/ccache.conf
-                echo -e "Done."
+                echo -e "\e[1mDone.\e[0m"
 		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
 		sepline
-                echo -e "Can't find 'data/tmpl.ccache.Makevars' file."
+                echo -e "\e[31mCan't find 'data/tmpl.ccache.Makevars' file.\e[0m"
 		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.conf ]]; then
 		sepline
-                echo -e "Can't find 'data/tmpl.ccache.conf' file."
+                echo -e "\e[31mCan't find 'data/tmpl.ccache.conf' file.\e[0m"
 		sepline
         fi
 }
@@ -53,36 +53,36 @@ function ccache-sys-install {
         if [[ -f $RRC/data/tmpl.ccache.Makevars ]] && [[ -f $RRC/data/tmpl.ccache.conf ]]; then
                 sepline
 		# .R/Makevars
-                echo -e "Installing ~/.R/Makevars ..."
+                echo -e "\e[1mInstalling ~/.R/Makevars ...\e[0m"
                 if [[ ! -f $HOME/.R/Makevars ]]; then
                         mkdir -p $HOME/.R
                         cat $RRC/data/tmpl.ccache.Makevars > $HOME/.R/Makevars
                 else
                         mv $HOME/.R/Makevars $HOME/.R/Makevars.old
                         cat $RRC/data/tmpl.ccache.Makevars > $HOME/.R/Makevars
-                        echo -e " - Old file: $HOME/.R/Makevars.old"
-                        echo -e " - New file: $HOME/.R/Makevars"
+                        echo -e "\e[32m - Old file: $HOME/.R/Makevars.old\e[0m"
+                        echo -e "\e[32m - New file: $HOME/.R/Makevars\e[0m"
                 fi
-                echo -e "Done.\n"
+                echo -e "\e[1mDone.\e[0m\n"
 
                 # .ccache/ccache.conf
-                echo -e "Installing ~/.ccache/ccache.conf ..."
+                echo -e "\e[1mInstalling ~/.ccache/ccache.conf ...\e[0m"
                 if [[ ! -f $HOME/.ccache/ccache.conf ]]; then
                         mkdir -p $HOME/.ccache
                         cat $RRC/data/tmpl.ccache.conf > $HOME/.ccache/ccache.conf
                 else
-                        echo -e " - Old file: $HOME/.ccache/ccache.conf.old"
-                        echo -e " - New file: $HOME/.ccache/ccache.conf"
+                        echo -e "\e[32m - Old file: $HOME/.ccache/ccache.conf.old\e[0m"
+                        echo -e "\e[32m - New file: $HOME/.ccache/ccache.conf\e[0m"
                 fi
-                echo -e "Done."
+                echo -e "\e[1mDone.\e[0m"
 		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
                 sepline
-		echo -e "Can't find 'data/tmpl.ccache.Makevars' file."
+		echo -e "\e[31mCan't find 'data/tmpl.ccache.Makevars' file.\e[0m"
 		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.conf ]]; then
 		sepline
-                echo -e "Can't find 'data/tmpl.ccache.conf' file."
+                echo -e "\e[31mCan't find 'data/tmpl.ccache.conf' file.\e[0m"
 		sepline
         fi
 }
