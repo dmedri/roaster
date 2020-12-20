@@ -79,9 +79,9 @@ function roaster-autoclean {
 	# Remove check files and logs
         if [[ -d $RCO ]]; then
                 rm -fr $RCO/{checks,logs}/*
-		echo "Autoclean: done."
+		echo -e "\e[32mAutoclean: done.\e[0m"
 	else
-		echo "The directory $RCO is missing."
+		echo -e "\e[31mThe directory $RCO is missing.\e[0m"
 	fi
 }
 
@@ -101,6 +101,6 @@ function roaster-factory-reset {
 	# Remove all files, reporitories and source code directories
 	if [[ -d $RCO ]]; then
 		rm -fr $RCO/{src,infos}/*
-		echo "Factory reset: done."
+		echo -e "\e[32mFactory reset: done.\e[0m"
 	fi
 }

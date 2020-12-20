@@ -23,11 +23,11 @@ function check-svn-branch {
         BRANNM=$(echo $1 | sed -e "s/\./-/g;s/-[0-9]$//g")
         cb=$(svn ls $SVNSRV/R/branches/ --verbose|awk '{print $6}'|grep "R-$BRANNM-branch")
         if [[ $cb="R-$BRANNM-branch" ]]; then
-                echo -e "Branch R-$BRANNM-branch available."
+                echo -e "\e[32mBranch R-$BRANNM-branch available.\e[0m"
                 BRANDIR="R-$BRANNM-BRANCH"
-                echo -e "Local directory: $BRANDIR."
+                echo -e "\e[32mLocal directory: $BRANDIR.\e[0m"
         else
-                echo -e "Problem with the branch name."
+                echo -e "\e[31mSomething goes wrong with the branch name.\e[0m"
 		exit
         fi
 }
@@ -45,7 +45,7 @@ function svn-repo-update-all {
 		svn up
 		cd ..
 	done;
-	echo -e "Done.\n"
+	echo -e "\e[32mDone.\e[0m\n"
 }
 
 #
@@ -58,12 +58,12 @@ function svn-repo-fetch-branch {
 	if [[ ! -d $BRANDIR ]]; then
 		svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR \
 		&& log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR"
-		echo -e "2) The source code is now available."
+		echo -e "\e[1m2) The source code is now available.\e[0m"
 	else
 		cd $BRANDIR
 		svn up \
 		&& log "svn up"
-		echo -e "2) The source code is now updated."
+		echo -e "\e[1m2) The source code is now updated.\e[0m"
 	fi
 }
 
@@ -77,12 +77,12 @@ function svn-repo-fetch-trunk {
 	if [[ ! -d "R-TRUNK" ]]; then
 		svn co $SVNSRV/R/trunk R-TRUNK \
 		&& log "svn co $SVNSRV/R/trunk R-TRUNK"
-		echo -e "2) The source code is now available."
+		echo -e "\e[1m2) The source code is now available.\e[0m"
 	else
 		cd R-TRUNK
 		svn up \
 		&& log "svn up"
-		echo -e "2) The source code is now updated."
+		echo -e "\e[1m2) The source code is now updated.\e[0m"
 	fi
 }
 

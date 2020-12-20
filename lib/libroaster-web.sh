@@ -30,9 +30,9 @@ function web-file-fetch-stable {
 		&& log "downloaded $SRCU/$SRCF" \
 		&& echo "Decompressing archive..." \
 		&& file-untar $SRCF \
-		&& log "decompressed $RCO/src/$SRCF" \
-		echo -e "2) The source code is now available."
+		&& log "decompressed $RCO/src/$SRCF"
+		echo -e "\e[1m2) The source code is now available.\e[0m"
 	else
-		echo -e "2) The source code is already available."
+		echo -e "\e[1m2) The source code is already available.\e[0m"
 	fi
 }
