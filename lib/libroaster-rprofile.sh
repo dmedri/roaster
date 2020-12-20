@@ -23,13 +23,15 @@ function rprofile-rve-install {
         # ~/RVE/.Rprofile
         if [[ -f $RRC/data/tmpl.Rprofile ]]; then
                 if [[ -d $RVE ]]; then
-                        echo -e "\nInstalling a pre-defined configuration ..."
+                        echo -e "\e[1mInstalling a pre-defined configuration ...\e[0m"
                         cat $RRC/data/tmpl.Rprofile > $RVE/.Rprofile
-			echo -e " - New file: $RVE/.Rprofile"
-                        echo -e "Done.\n"
+			echo -e "\e[32m - New file: $RVE/.Rprofile\e[0m"
+                        echo -e "\e[1mDone.\e[0m"
                 fi
         else
-                echo -e "\nCan't find $RRC/data/tmpl.Rprofile\n"
+		sepline
+                echo -e "\e[31mCan't find $RRC/data/tmpl.Rprofile\e[0m"
+		sepline
         fi
 }
 
@@ -41,18 +43,18 @@ function rprofile-sys-install {
         # ~/.Rprofile
         if [[ -f $RRC/data/tmpl.Rprofile ]]; then
 		sepline
-                echo -e "\nInstalling a pre-defined configuration ..."
+                echo -e "\e[1mInstalling a pre-defined configuration ...\e[0m"
                 if [[ -f $HOME/.Rprofile ]]; then
                         mv $HOME/.Rprofile $HOME/.Rprofile.old
-                        echo -e " - Old file: $HOME/.Rprofile.old"
+                        echo -e "\e[32m - Old file: $HOME/.Rprofile.old\e[0m"
                 fi
                 cat $RRC/data/tmpl.Rprofile > $HOME/.Rprofile
-                echo -e " - New file: $HOME/.Rprofile"
-                echo -e "Done.\n"
+                echo -e "\e[32m - New file: $HOME/.Rprofile\e[0m"
+                echo -e "\e[1mDone.\e[0m"
 		sepline
         else
                 sepline
-		echo -e "\nCan't find $RRC/data/tmpl.Rprofile\n"
+		echo -e "\e[31mCan't find $RRC/data/tmpl.Rprofile\e[0m\n"
 		sepline
         fi
 }

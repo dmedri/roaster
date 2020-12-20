@@ -61,6 +61,6 @@ function R-build-standard {
 
 	rprofile-sys-install
 
-	echo -e "\n\e[1mInstallation completed.\e[0m\n"
+	echo -e "\e[1mInstallation completed.\e[0m\n"
 }
 

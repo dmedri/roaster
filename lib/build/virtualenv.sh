@@ -78,7 +78,7 @@ function R-build-virtualenv {
         # Add RVE/bin/activate
         if [[ -d $RVE/bin ]]; then
                 if [[ -f $RRC/data/tmpl.activate ]]; then
-			echo -e "\n\e[1mInstallation completed.\e[0m\n\n"
+			echo -e "\e[1mInstallation completed.\e[0m\n\n"
                         echo -e "\e[32mR Virtual Environment\e[0m"
                         cat $RRC/data/tmpl.activate > $RVE/bin/activate
                         echo -e "\e[32m enable: \$ source $RVE/bin/activate\e[0m"
