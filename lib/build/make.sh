@@ -20,26 +20,20 @@
 # call: roaster-build-checks
 #
 function roaster-build-check {
+	sepline
 	if [[ $MCHECK = "check-all" ]]; then
-		sepline
 		echo -e "\e[1mBuild tests: 'make $MCHECK'.\e[0m"
-		sepline
 		make check-all
 	elif [[ $MCHECK = "check-devel" ]]; then
-		sepline
 		echo -e "\e[1mBuild tests: 'make $MCHECK'.\e[0m"
-		sepline
 		make check-devel
 	elif [[ $MCHECK = "none" ]]; then
-		sepline
 		echo -e "\e[1mNo build checks.\e[0m"
-		sepline
 	else
-		sepline
 		echo -e "\e[1mBuild tests: 'make check'.\e[0m"
-		sepline
 		make check
 	fi
+	sepline
 }
 
 #
@@ -48,32 +42,24 @@ function roaster-build-check {
 #
 
 function roaster-build-make {
+	sepline
 	if [[ $OPTMAK = "j2Os" ]]; then
-		sepline
 		echo -e "\e[1mBuilding with 'make -j2 -O -s' (2 jobs, silent).\e[0m"
-		sepline
 		make -j2 -O -s
 	elif [[ $OPTMAK = "j4Os" ]]; then
-		sepline
 		echo -e "\e[1mBuilding with 'make -j4 -O -s' (4 jobs, silent).\e[0m"
-		sepline
 		make -j4 -O -s
 	elif [[ $OPTMAK = "j8Os" ]]; then
-		sepline
 		echo -e "\e[1mBuilding with 'make -j8 -O -s' (8 jobs, silent).\e[0m"
-		sepline
 		make -j8 -O -s
 	elif [[ $OPTMAK = "j4" ]]; then
-		sepline
 		echo -e "\e[1mBuilding with 'make -j4' (4 jobs).\e[0m"
-		sepline
 		make -j4
 	else
-		sepline
 		echo -e "\e[1mBuilding with 'make' (standard).\e[0m"
-		sepline
 		make
 	fi
+	sepline
 }
 
 #

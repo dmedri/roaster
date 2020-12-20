@@ -20,8 +20,8 @@
 # call: ccache-rve-install
 #
 function ccache-rve-install {
+	sepline
         if [[ -f $RRC/data/tmpl.ccache.Makevars ]] && [[ -f $RRC/data/tmpl.ccache.conf ]]; then
-		sepline
                 # ~/RVE/.R/Makevars
                 echo -e "\e[1mInstalling ~/RVE/.R/Makevars ...\e[0m"
                 mkdir -p $RVE/.R
@@ -33,16 +33,12 @@ function ccache-rve-install {
                 mkdir -p $RVE/.ccache
                 cat $RRC/data/tmpl.ccache.conf > $RVE/.ccache/ccache.conf
                 echo -e "\e[1mDone.\e[0m"
-		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
-		sepline
                 echo -e "\e[31mCan't find 'data/tmpl.ccache.Makevars' file.\e[0m"
-		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.conf ]]; then
-		sepline
                 echo -e "\e[31mCan't find 'data/tmpl.ccache.conf' file.\e[0m"
-		sepline
         fi
+	sepline
 }
 
 # 
@@ -50,8 +46,8 @@ function ccache-rve-install {
 # call: ccache-sys-install
 #
 function ccache-sys-install {
+	sepline
         if [[ -f $RRC/data/tmpl.ccache.Makevars ]] && [[ -f $RRC/data/tmpl.ccache.conf ]]; then
-                sepline
 		# .R/Makevars
                 echo -e "\e[1mInstalling ~/.R/Makevars ...\e[0m"
                 if [[ ! -f $HOME/.R/Makevars ]]; then
@@ -75,14 +71,10 @@ function ccache-sys-install {
                         echo -e "\e[32m - New file: $HOME/.ccache/ccache.conf\e[0m"
                 fi
                 echo -e "\e[1mDone.\e[0m"
-		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.Makevars ]]; then
-                sepline
 		echo -e "\e[31mCan't find 'data/tmpl.ccache.Makevars' file.\e[0m"
-		sepline
         elif [[ ! -f $RRC/data/tmpl.ccache.conf ]]; then
-		sepline
                 echo -e "\e[31mCan't find 'data/tmpl.ccache.conf' file.\e[0m"
-		sepline
         fi
+	sepline
 }
