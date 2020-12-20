@@ -2,6 +2,7 @@ expac
 gcc
 gcc-fortran
 automake
+make
 tk
 gsl
 nlopt
