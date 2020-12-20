@@ -23,17 +23,19 @@ function roaster-build-check {
 	sepline
 	if [[ $MCHECK = "check-all" ]]; then
 		echo -e "\e[1mBuild tests: 'make $MCHECK'.\e[0m"
+		sepline
 		make check-all
 	elif [[ $MCHECK = "check-devel" ]]; then
 		echo -e "\e[1mBuild tests: 'make $MCHECK'.\e[0m"
+		sepline
 		make check-devel
 	elif [[ $MCHECK = "none" ]]; then
 		echo -e "\e[1mNo build checks.\e[0m"
 	else
 		echo -e "\e[1mBuild tests: 'make check'.\e[0m"
+		sepline
 		make check
 	fi
-	sepline
 }
 
 #
