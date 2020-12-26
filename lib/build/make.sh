@@ -20,7 +20,6 @@
 # call: roaster-build-checks
 #
 function roaster-build-check {
-	sepline
 	if [[ $MCHECK = "check-all" ]]; then
 		echo -e "\e[1mBuild tests: 'make $MCHECK'.\e[0m"
 		sepline
