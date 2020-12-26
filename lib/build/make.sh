@@ -47,21 +47,25 @@ function roaster-build-make {
 	sepline
 	if [[ $OPTMAK = "j2Os" ]]; then
 		echo -e "\e[1mBuilding with 'make -j2 -O -s' (2 jobs, silent).\e[0m"
+		sepline
 		make -j2 -O -s
 	elif [[ $OPTMAK = "j4Os" ]]; then
 		echo -e "\e[1mBuilding with 'make -j4 -O -s' (4 jobs, silent).\e[0m"
+		sepline
 		make -j4 -O -s
 	elif [[ $OPTMAK = "j8Os" ]]; then
 		echo -e "\e[1mBuilding with 'make -j8 -O -s' (8 jobs, silent).\e[0m"
+		sepline
 		make -j8 -O -s
 	elif [[ $OPTMAK = "j4" ]]; then
 		echo -e "\e[1mBuilding with 'make -j4' (4 jobs).\e[0m"
+		sepline
 		make -j4
 	else
 		echo -e "\e[1mBuilding with 'make' (standard).\e[0m"
+		sepline
 		make
 	fi
-	sepline
 }
 
 #
