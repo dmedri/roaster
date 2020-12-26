@@ -12,3 +12,4 @@ base-devel
 git
 svn
 ccache
+jdk-openjdk
