@@ -3,3 +3,4 @@ libpcre2-dev
 git
 subversion
 ccache
+default-jdk
