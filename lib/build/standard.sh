@@ -47,7 +47,8 @@ function R-build-standard {
                 while true; do
                         read -p "Build done. Install now? (y/n) " yn
                         case $yn in
-                                [yY]* ) sudo make install \
+                                [yY]* ) sepline \
+					&& sudo make install \
                                         && log "build-standard: make clean (2)" \
                                         && make clean; break;;
                                 [nN]* ) echo -e "\n\e[32mNotice: installation can proceed with 'make install'.\e[0m\n"; exit;;
