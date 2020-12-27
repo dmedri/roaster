@@ -1,4 +1,4 @@
-# RVE/.Rprofile
+# ~/.Rprofile
 local({
 	# set default mirror
 	r = getOption("repos")
