@@ -26,7 +26,7 @@ source lib/libroaster-build.sh
 #
 function roaster-header {
         echo -e "\e[32mRoaster\e[0m - https://github.com/dmedri/roaster"
-        echo -e "Copyright 2019-2020 Daniele Medri - GNU LGPL 2.1+"
+        echo -e "Copyright 2019-2021 Daniele Medri - GNU LGPL 2.1+"
         echo -e "Use 'roaster --help' for the available options.\n"
 }
 
