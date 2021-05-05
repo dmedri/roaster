@@ -101,3 +101,14 @@ function svn-repo-fetch-all {
 	# R-TRUNK
 	svn-repo-fetch-trunk
 }
+
+#
+# SVN: list infos about available branches
+# call: svn-repo-branches
+#
+function svn-repo-branches {
+	#latest branches
+	br=$(svn ls $SVNSRV/R/branches --verbose|grep branch)
+	echo -e "\e[32mURL:\e[0m $SVNSRV/R/branches\n"
+	echo -e "\e[32mAvailable release branches:\e[0m\n$br\n"
+}

@@ -81,6 +81,9 @@ while [[ -n "$1" ]]; do
 	"--setup")
 		roaster-setup
 		;;
+	"--svn-repo-branches")
+		svn-repo-branches
+		;;
 	"--svn-repo-update-all")
 		svn-repo-update-all
 		;;

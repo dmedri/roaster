@@ -1,5 +1,13 @@
 Roaster
 
+CHANGES WITH v0.15 (...) "Riccione"
+ * check-status: get patched releases infos
+ * added hidden features for devs (mainly SVN support):
+     --setup
+     --svn-repo-update-all
+     --svn-repo-branches 
+ * colorfull messages in output
+
 CHANGES WITH v0.14 (04/21/2020) "Rimini XLVI"
  * functions relocation:
    - roaster script is now minimal
