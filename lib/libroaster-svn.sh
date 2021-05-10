@@ -108,7 +108,11 @@ function svn-repo-fetch-all {
 #
 function svn-repo-branches {
 	#latest branches
-	br=$(svn ls $SVNSRV/R/branches --verbose|grep branch)
-	echo -e "\e[32mURL:\e[0m $SVNSRV/R/branches\n"
-	echo -e "\e[32mAvailable release branches:\e[0m\n$br\n"
+	br=$(svn ls $SVNSRV/R/branches|grep branch|tail -3|sort)
+	echo -e "\e[32mURL:\e[0m $SVNSRV/R/branches/\n"
+	echo -e "\e[32mRelease branches (latest 3):\e[0m\n"
+	for i in $br; do
+		r=$(svn log $SVNSRV/R/branches/$i --stop-on-copy --quiet | tail -2 | head -1)
+		echo -e "\e[32m\t$i\e[0m\n\t$r\n"
+	done;
 }
