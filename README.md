@@ -73,49 +73,50 @@ How to prepare a *server solution*:
 
 ## For developers only
 
-*Since the release v0.13* you can handle SVN repositories. It's actually a "hidden" feature,
- there's no command line argument, just set an option in `~/.roaster/config` file.
- 
+*Since the release v0.13*, SVN repositories are supported. It's actually a "hidden" feature,
+ command line options not shown.
+
+```
+$ ./roaster --setup
+```
+
  * with `RBTYPE="stable"` you get latest stable release (e.g. "R-3.6.3");
  * with `RBTYPE="branch"` you get the stable svn branch (e.g. "R-3-6-branch", stable + patches);
  * with `RBTYPE="trunk"` you get the trunk svn repository.
 
-To use these features, please remove the `~/.roaster` directory before the first run.
 
 ```
-$ ./roaster-build-virtualenv
-
-...
-Branch R-3-6-branch available.
-Local directory: R-3-6-BRANCH.
-...
+$ ./roaster --build-virtualenv
 ```
+
 With SVN repositories, either "branch" or "trunk", the first run is a `svn checkout`, you 
 fetch all the sources available. Next times, with new builds, the local repositories will 
 be updated.
 
+Fetch latest n repos (optional):
+
+```
+$ ./roaster --svn-repo-fetch-all
+```
+
+Update all the local svn repos (optional):
+
+```
+$ ./roaster --svn-repo-update-all
+```
+
+List informations about the latest n repos:
+
+```
+$ ./roaster --svn-repo-branches
+```
+
 ## Supported platforms
 
-The `roaster` is text file that run on `bash`, the default shell on every
-GNU/Linux distribution, and even the external commands used are tipically existing 
-in Unix-like systems. Another good reason, is the needed software for our tasks.
+The `roaster` is a GNU Bash script, a text file that run on almost all modern
+GNU/Linux distributions. 
 
-When you try to build a mid-size project like R, your system is under pressure
-and your CPUs will warm up like never before. This is why, ironically, we give this name 
-to the project. The main `roaster` focus is get, configure and build source code, so all 
-the necessary tools are required. If you care about performance, this is the *way*.
-
-Summary:
-* Debian-derivatives (*tested*). Main development is on Debian 10;
-* RedHat-derivatives (*tested*, need help from its user-base);
-* Arch-derivatives (*tested*, need help from its user-base);
-* Other Linux distribution, need help from its user-base;
-* FreeBSD is a good candidate with the "ports" system;
-* MacOS is a good candidate with the "brew" system;
-* MS-Windows, by-design really far.
-
-## Notes for italian end-users
-
-The `roaster` is used to test the R italian translation project, see. 
-[R-italian-lang](https://github.com/dmedri/R-italian-lang). Use both repositories for your 
-activities.
+Tested on:
+* Debian-derivatives: main development is on Debian 10;
+* RedHat-derivatives;
+* Arch-derivatives;
