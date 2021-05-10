@@ -6,18 +6,19 @@
 
 This project is an attempt to design a new tiny tool to support 
 [**R**](http://www.r-project.org), its users (**statisticians**, **data
-scientists**) and **sysadmins**.
+scientists**) and **sysadmins**. It is an independent project, there is
+no relationship with the R Foundation.
 
 Basic features:
 
 * get the latest R stable release;
-* proceed with a _standard installation_;
-* prepare a _server solution_;
-* create _virtual environments_.
+* build sources:
+	* for a _standard installation_;
+	* for a _server solution_;
+	* for a _virtual environments_.
 
-Virtual Environments are a new kind of R deployment in user-space. For
-this specific case, the reference is Python virtualenv, and our goal is
-replicate _as-close-as-we-can_ its main features.
+_Virtual Environments_ are for special deployments in user-space. The
+reference is Python virtualenv, and the goal is replicate _as-close-as-we-can_ its main features.
 
 ## Basic usage
 
