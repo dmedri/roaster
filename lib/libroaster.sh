@@ -79,24 +79,29 @@ function check-roaster-working-dirs {
 #
 function app-options {
         echo -e "Get informations about R and mirrors:"
-        echo -e "\t\e[34m--check-status\e[0m   \tCheck available R releases."
-        echo -e "\t\e[34m--mirrors\e[0m        \tList mirror sites by-country.\n"
+        echo -e "\t\e[34m--status\e[0m         \tR status (online + local)\n"
         echo -e "Basic administration:"
+	echo -e "\t\e[34m--setup\e[0m          \tOpen roaster config file."
+        echo -e "\t\e[34m--mirrors\e[0m        \tShow mirrors by-country."
         echo -e "\t\e[34m--autoclean\e[0m      \tRemove unuseful files."    
-        echo -e "\t\e[34m--factory-reset\e[0m  \tFactory reset."
-        echo -e "\t\e[34m--settings\e[0m       \tShow settings.\n"
+        echo -e "\t\e[34m--factory-reset\e[0m  \tFactory reset.\n"
         echo -e "Build source code:"
+        echo -e "\t\e[34m--build-settings\e[0m  \tShow build settings."
         echo -e "\t\e[34m--build-server\e[0m    \tConcurrent minimal versions in system."
         echo -e "\t\e[34m--build-standard\e[0m  \tCommon installation in system."
         echo -e "\t\e[34m--build-virtualenv\e[0m\tCreate a virtual environment.\n"
+       	echo -e "SVN actions:"
+       	echo -e "\t\e[34m--svn-repo-fetch-all\e[0m\tFetch svn repos (latest 2 stable + trunk)."
+       	echo -e "\t\e[34m--svn-repo-update-all\e[0m\tUpdate local svn repos (in ~/.roaster/src/)."
+       	echo -e "\t\e[34m--svn-repo-branches\e[0m\tBasic infos about branches.\n"
 }
 
 #
 # Roaster: summary of settings before the build stage
-# call: app-settings
+# call: build-settings
 #
-function app-settings {
-        echo -e "Settings in $RCO/config:"
+function build-settings {
+        echo -e "Build settings in $RCO/config:"
         echo -e "\n\tmirror site: \e[32m$MIRROR\e[0m"
         echo -e "\t build type: \e[32m$RBTYPE\e[0m"
         echo -e "\t make tests: \e[32m$MCHECK\e[0m"

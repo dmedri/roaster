@@ -31,9 +31,8 @@ RCO="$HOME/.roaster"
 # Roaster server builds home
 SRV="/opt/R"
 
-# Ask to build or not a standard version?
+# Ask before build a standard version?
 BSTDASK=false
-
 
 
 #
@@ -62,7 +61,7 @@ fi
 # Help menu
 while [[ -n "$1" ]]; do
 	case $1 in
-	"--check-status")
+	"--status")
 		check-rstable-latest
 		check-status
 		;;
@@ -75,8 +74,8 @@ while [[ -n "$1" ]]; do
 	"--factory-reset")
 		roaster-factory-reset
 		;;
-	"--settings")
-		app-settings
+	"--build-settings")
+		build-settings
 		;;
 	"--setup")
 		roaster-setup
