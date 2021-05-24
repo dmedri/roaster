@@ -275,13 +275,3 @@ List informations about latest _n_ repositories:
 ```{bash}
 $ ./roaster --svn-repo-branches
 ```
-
-## Supported platforms
-
-The `roaster` is a GNU Bash script, a text file that run on almost all modern
-GNU/Linux distributions. 
-
-Tested on the following Linux distros:
-* Debian-derivatives;
-* RedHat-derivatives;
-* Arch-derivatives;
