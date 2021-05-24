@@ -15,7 +15,7 @@ Basic features:
 * build source code:
 	* for a _standard installation_;
 	* for a _server solution_;
-	* for a _virtual environments_.
+	* for _virtual environments_.
 * update.
 
 _Virtual Environments_ are for special deployments in user-space. The
@@ -95,14 +95,18 @@ Easy.
 # Build details and defaults
 
 By design, the `Roaster` has its own defaults optimized for generalized use
-cases. These don't need to be customized by an end-user, but could be helpful
-know their existances. The app has its own configuration file
-(``~/.roaster/config`) that can be opened with a common text editor (eg. `vi`)
-or a specific option (see. `--setup`).
+cases. The latter don't need to be customized by an end-user, but it can be useful to
+know them. The app has its own configuration file (``~/.roaster/config`) that can be 
+opened with a common text editor or the specific option (see. `--setup`). To
+show the build settings run:
+
+```{bash}
+$ ./roaster --settings
+```
 
 The configuration file is changed over time and could change with new incoming features.
-A factory reset it's always a good solution to clean temporary files and store the latest
-version of the needed files (see. `--factory-reset`).
+A factory reset it's always a good solution to clean temporary files and store
+the needed files (see. `--factory-reset`).
 
 ## Make and configure defaults
 
@@ -145,6 +149,8 @@ Note: take care that all options will be a one-line configuration set.
 
 ## Caching objects at build time
 
+_To be written..._
+
 ## Available options
 
 As you already seen above in the example session or you'll see in the app menu, 
@@ -159,12 +165,18 @@ there're tree kind of deploypment:
 ```{bash}
 $ ./roaster --build-standard
 ```
+_To be written_
+
+The default destination will be `/usr/local`.
 
 ### Build: server configuration
 
 ```{bash}
 $ ./roaster --build-server
 ```
+_To be written_
+
+The default destination will be `/opt/R/`.
 
 ### Build: virtual environments
 
