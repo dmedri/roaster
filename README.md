@@ -108,7 +108,7 @@ opened with a common text editor or the specific option (see. `--setup`). To
 show the build settings run:
 
 ```{bash}
-$ ./roaster --settings
+$ ./roaster --build-settings
 ```
 
 The configuration file is changed over time and could change with new incoming features.
@@ -161,10 +161,10 @@ _To be written..._
 ### Available options
 
 As you already seen above in the example session or you'll see in the app menu, 
-there're tree kind of deploypment:
+there're tree kind of deployments:
 
-* standard build (`--build-standard`);
-* server build (`--build-server`);
+* standard (`--build-standard`);
+* server (`--build-server`);
 * virtualenv (`--build-virtualenv`).
 
 #### Build: standard configuration
@@ -196,7 +196,7 @@ acronym RVE stands for _R Virtual Environment_.
 $ ./roaster --build-virtualenv
 ```
 
-The end result is in `~/RVE`, a directory with the `R` environment and the
+The end result is in `~/RVE`, a directory with the `R` binaries and the
 basic tools to work.
 
 To enable it:
@@ -212,9 +212,9 @@ You'll see a new prompt:
 (RVE) dmedri@host:~$
 ```
 
-If you browse the content of the new environment, you'll see some directories
-within: `bin/`, `lib/` and `share/` (for `R`) and a `workspace/` one for your
-work. Now run the following:
+If you browse the content of the new location, you'll see some 
+directories: `bin/`, `lib/` and `share/` (for `R`) and a `workspace/` 
+ for your work. Now run the following:
 
 ```{bash}
 (RVE) dmedri@host:~$ R
