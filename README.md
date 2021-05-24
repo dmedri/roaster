@@ -92,58 +92,166 @@ Are you ready to start? (y/n)
 ```
 Easy.
 
-## Support
+# Build details and defaults
 
-How to create *virtual environments*:
+By design, the `Roaster` has its own defaults optimized for generalized use
+cases. These don't need to be customized by an end-user, but could be helpful
+know their existances. The app has its own configuration file
+(``~/.roaster/config`) that can be opened with a common text editor (eg. `vi`)
+or a specific option (see. `--setup`).
 
-* [Virtual environments in user space](docs/build-virtualenv.md)
-* [Customizable options](docs/build-virtualenv-options.md)
+The configuration file is changed over time and could change with new incoming features.
+A factory reset it's always a good solution to clean temporary files and store the latest
+version of the needed files (see. `--factory-reset`).
 
-How to make a *standard installation*:
+## Make and configure defaults
 
-* [Standard installation in your system](docs/build-standard.md)
-* [Customizable options](docs/build-standard-options.md)
-
-How to prepare a *server solution*:
-
-* [Server installation in your system](docs/build-server.md)
-* [Customizable options](docs/build-server-options.md)
-
-## For developers only
-
-*Since the release v0.13*, SVN repositories are supported. It's actually a "hidden" feature,
- command line options not shown.
+By design, we could change the `configure` options for every build type. To do
+that, open up the configuration file and change the default accordingly to your
+specific needs.
 
 ```{bash}
 $ ./roaster --setup
 ```
 
- * with `RBTYPE="stable"` you get latest stable release (e.g. "R-3.6.3");
- * with `RBTYPE="branch"` you get the stable svn branch (e.g. "R-3-6-branch", stable + patches);
- * with `RBTYPE="trunk"` you get the trunk svn repository.
+Search `OPTSTD` for the standard build.
 
+```
+--enable-R-shlib
+```
+
+Search `OPTSRV` for the server build.
+
+```
+--without-recommended-packages
+--enable-memory-profiling
+--enable-R-shlib
+--with-blas
+--with-lapack
+--without-tcltk
+```
+
+Search `OPTRVE` for the virtualenv build. Default:
+
+```
+--without-recommended-packages
+--enable-R-shlib
+```
+
+While some options change the features set at low level (eg. the Java support,
+optional), the recommended packages could be always installed in a second-time.
+
+Note: take care that all options will be a one-line configuration set.
+
+## Caching objects at build time
+
+## Available options
+
+As you already seen above in the example session or you'll see in the app menu, 
+there're tree kind of deploypment:
+
+* standard build (`--build-standard`);
+* server build (`--build-server`);
+* virtualenv (`--build-virtualenv`).
+
+### Build: standard configuration
+
+```{bash}
+$ ./roaster --build-standard
+```
+
+### Build: server configuration
+
+```{bash}
+$ ./roaster --build-server
+```
+
+### Build: virtual environments
+
+A first-time feature -- already available in the Python world -- 
+was the concept of _virtual environment_. Our attempt is to mimic 
+some nice ideas for modern scenarios (eg. containers, VMs). The 
+acronym RVE stands for _R Virtual Environment_.
 
 ```{bash}
 $ ./roaster --build-virtualenv
 ```
 
-With SVN repositories, either "branch" or "trunk", the first run is a `svn checkout`, you 
-fetch all the sources available. Next times, with new builds, the local repositories will 
-be updated.
+The end result is in `~/RVE`, a directory with the `R` environment and the
+basic tools to work.
 
-Fetch latest n repos (optional):
+To enable it:
+
+```{bash}
+$ cd
+$ source RVE/bin/activate
+```
+
+You'll see a new prompt:
+
+```{bash}
+(RVE) dmedri@host:~$
+```
+
+If you browse the content of the new environment, you'll see some directories
+within: `bin/`, `lib/` and `share/` (for `R`) and a `workspace/` one for your
+work. Now run the following:
+
+```{bash}
+(RVE) dmedri@host:~$ R
+```
+
+When you leave `R`, restore everything with:
+
+```{bash}
+(RVE) dmedri@host:~$ deactivate
+```
+
+and you switch back to your HOME directory.
+
+Note: the _virtualenv_ option is in-development and need love.
+
+## Advanced features (for developers)
+
+By design, the `Roaster` was for end-users needs on stable `R` release.
+Handling SVN repositories is a recent feature to support an advanced use case,
+mainly designed for developers than need special options for their work. In
+other terms, the default is the `R` release code base, that could be changed
+with an option in the configuration file:
+
+```{bash}
+$ ./roaster --setup
+```
+
+Search the `RBTYPE` (aka _R Build Type_) option:
+
+ * `RBTYPE="stable"` will get latest stable release (e.g. "R-4.1.0", *default*);
+ * `RBTYPE="branch"` will get the stable release SVN branch (e.g. "R-4-1-branch");
+ * `RBTYPE="trunk"` will get the SVN repository for R-TRUNK.
+
+Edit, save and exit.
+
+Now, you can use the well-known build options described above, using
+SVN repositories by default.
+
+### SVN menu options
+
+With SVN repositories, either "branch" or "trunk", the first run will fetch all the
+needed SVN file from the repository. Next builds, get updates for local repositories.
+
+Fetch latest _n_ repos (optional):
 
 ```{bash}
 $ ./roaster --svn-repo-fetch-all
 ```
 
-Update all the local svn repos (optional):
+Update local svn repositories (optional):
 
 ```{bash}
 $ ./roaster --svn-repo-update-all
 ```
 
-List informations about the latest n repos:
+List informations about latest _n_ repositories:
 
 ```{bash}
 $ ./roaster --svn-repo-branches
