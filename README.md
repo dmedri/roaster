@@ -12,13 +12,22 @@ no relationship with the R Foundation.
 Basic features:
 
 * get the latest R stable release;
-* build sources:
+* build source code:
 	* for a _standard installation_;
 	* for a _server solution_;
 	* for a _virtual environments_.
+* update.
 
 _Virtual Environments_ are for special deployments in user-space. The
 reference is Python virtualenv, and the goal is replicate _as-close-as-we-can_ its main features.
+
+Advanced features:
+
+* get source code from SVN repositories:
+	* clone and update latest 2 stable branches;
+	* clone and update R-TRUNK.
+* build source code with the same options seen above.
+
 
 ## Basic usage
 
@@ -54,7 +63,8 @@ SVN actions:
 	--svn-repo-branches	Basic infos about branches.
 
 ```
-First test: build a Virtual Environment:
+
+First test: build a virtual environment (`--build-virtualenv`).
 
 ```{bash}
 $ ./roaster --build-virtualenv
