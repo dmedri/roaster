@@ -9,6 +9,13 @@ This project is an attempt to design a new tiny tool to support
 scientists**) and **sysadmins**. It is an independent project, there is
 no relationship with the R Foundation.
 
+The `roaster` file is a GNU Bash script, a text file that run on almost 
+all modern GNU/Linux distributions. Tested on the following Linux distros:
+
+* Debian-derivatives;
+* RedHat-derivatives;
+* Arch-derivatives;
+
 Basic features:
 
 * get the latest R stable release;
@@ -92,7 +99,7 @@ Are you ready to start? (y/n)
 ```
 Easy.
 
-# Build details and defaults
+## Build details and defaults
 
 By design, the `Roaster` has its own defaults optimized for generalized use
 cases. The latter don't need to be customized by an end-user, but it can be useful to
@@ -108,7 +115,7 @@ The configuration file is changed over time and could change with new incoming f
 A factory reset it's always a good solution to clean temporary files and store
 the needed files (see. `--factory-reset`).
 
-## Make and configure defaults
+### Make and configure defaults
 
 By design, we could change the `configure` options for every build type. To do
 that, open up the configuration file and change the default accordingly to your
@@ -147,11 +154,11 @@ optional), the recommended packages could be always installed in a second-time.
 
 Note: take care that all options will be a one-line configuration set.
 
-## Caching objects at build time
+### Caching objects at build time
 
 _To be written..._
 
-## Available options
+### Available options
 
 As you already seen above in the example session or you'll see in the app menu, 
 there're tree kind of deploypment:
@@ -160,7 +167,7 @@ there're tree kind of deploypment:
 * server build (`--build-server`);
 * virtualenv (`--build-virtualenv`).
 
-### Build: standard configuration
+#### Build: standard configuration
 
 ```{bash}
 $ ./roaster --build-standard
@@ -169,7 +176,7 @@ _To be written_
 
 The default destination will be `/usr/local`.
 
-### Build: server configuration
+#### Build: server configuration
 
 ```{bash}
 $ ./roaster --build-server
@@ -178,7 +185,7 @@ _To be written_
 
 The default destination will be `/opt/R/`.
 
-### Build: virtual environments
+#### Build: virtual environments
 
 A first-time feature -- already available in the Python world -- 
 was the concept of _virtual environment_. Our attempt is to mimic 
