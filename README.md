@@ -6,8 +6,8 @@
 
 This project is an attempt to design a new tiny tool to support 
 [**R**](http://www.r-project.org), its users (**statisticians**, **data
-scientists**) and **sysadmins**. It is an independent project, there is
-no relationship with the R Foundation.
+scientists**) and **sysadmins**. It's an independent project, with
+no relation to the R Foundation.
 
 The `roaster` file is a GNU Bash script, a text file that run on almost 
 all modern GNU/Linux distributions. Tested on the following Linux distros:
@@ -23,7 +23,7 @@ Basic features:
 	* for a _standard installation_;
 	* for a _server solution_;
 	* for _virtual environments_.
-* update.
+* get regular update.
 
 _Virtual Environments_ are for special deployments in user-space. The
 reference is Python virtualenv, and the goal is replicate _as-close-as-we-can_ its main features.
@@ -49,7 +49,7 @@ Roaster - https://github.com/dmedri/roaster
 Copyright 2019-2021 Daniele Medri - GNU LGPL 2.1+
 Use 'roaster --help' for the available options.
 
-Get informations about R and mirrors:
+Get informations:
 	--status         	R status (online + local)
 
 Basic administration:
@@ -117,9 +117,7 @@ the needed files (see. `--factory-reset`).
 
 ### Make and configure defaults
 
-By design, we could change the `configure` options for every build type. To do
-that, open up the configuration file and change the default accordingly to your
-specific needs.
+By design, the `configure` options are customizable for every build type.
 
 ```{bash}
 $ ./roaster --setup
@@ -149,7 +147,7 @@ Search `OPTRVE` for the virtualenv build. Default:
 --enable-R-shlib
 ```
 
-While some options change the features set at low level (eg. the Java support,
+While some options could change the features set at low level (eg. the Java support,
 optional), the recommended packages could be always installed in a second-time.
 
 Note: take care that all options will be a one-line configuration set.
@@ -160,7 +158,7 @@ _To be written..._
 
 ### Available options
 
-As you already seen above in the example session or you'll see in the app menu, 
+As you already seen above in the example session above, or you'll see in the app menu, 
 there're tree kind of deployments:
 
 * standard (`--build-standard`);
@@ -232,11 +230,11 @@ Note: the _virtualenv_ option is in-development and need love.
 
 ## Advanced features (for developers)
 
-By design, the `Roaster` was for end-users needs on stable `R` release.
+By design, the `Roaster` was for end-users and `R` stable release.
 Handling SVN repositories is a recent feature to support an advanced use case,
 mainly designed for developers than need special options for their work. In
-other terms, the default is the `R` release code base, that could be changed
-with an option in the configuration file:
+other terms, the default is the `R` release code base, but could be changed
+with an option-value in the configuration file:
 
 ```{bash}
 $ ./roaster --setup
@@ -251,14 +249,14 @@ Search the `RBTYPE` (aka _R Build Type_) option:
 Edit, save and exit.
 
 Now, you can use the well-known build options described above, using
-SVN repositories by default.
+SVN repositories.
 
 ### SVN menu options
 
-With SVN repositories, either "branch" or "trunk", the first run will fetch all the
-needed SVN file from the repository. Next builds, get updates for local repositories.
+With SVN repositories, either "branch" or "trunk", the first run will fetch all the 
+files. Local updates are the next step.
 
-Fetch latest _n_ repos (optional):
+Fetch latest 2 repositories (optional):
 
 ```{bash}
 $ ./roaster --svn-repo-fetch-all
@@ -270,7 +268,7 @@ Update local svn repositories (optional):
 $ ./roaster --svn-repo-update-all
 ```
 
-List informations about latest _n_ repositories:
+List informations about latest 3 repositories:
 
 ```{bash}
 $ ./roaster --svn-repo-branches
