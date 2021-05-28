@@ -23,7 +23,7 @@ Basic features:
 	* for a _standard installation_;
 	* for a _server solution_;
 	* for _virtual environments_.
-* get regular update.
+* get regular updates.
 
 _Virtual Environments_ are for special deployments in user-space. The
 reference is Python virtualenv, and the goal is replicate _as-close-as-we-can_ its main features.
@@ -35,16 +35,19 @@ Advanced features:
 	* clone and update R-TRUNK.
 * build source code with the same options seen above.
 
+---
 
 ## Basic usage
 
 Installation:
 
-```{bash}
+```bash
 $ git clone https://github.com/dmedri/roaster/
 $ cd roaster/
 $ ./roaster --help
+```
 
+```
 Roaster - https://github.com/dmedri/roaster
 Copyright 2019-2021 Daniele Medri - GNU LGPL 2.1+
 Use 'roaster --help' for the available options.
@@ -73,9 +76,11 @@ SVN actions:
 
 First test: build a virtual environment (`--build-virtualenv`).
 
-```{bash}
+```bash
 $ ./roaster --build-virtualenv
+```
 
+```
 Roaster - https://github.com/dmedri/roaster
 Copyright 2019-2021 Daniele Medri - GNU LGPL 2.1+
 Use 'roaster --help' for the available options.
@@ -107,7 +112,7 @@ know them. The app has its own configuration file (``~/.roaster/config`) that ca
 opened with a common text editor or the specific option (see. `--setup`). To
 show the build settings run:
 
-```{bash}
+```bash
 $ ./roaster --build-settings
 ```
 
@@ -119,7 +124,7 @@ the needed files (see. `--factory-reset`).
 
 By design, the `configure` options are customizable for every build type.
 
-```{bash}
+```bash
 $ ./roaster --setup
 ```
 
@@ -154,7 +159,27 @@ Note: take care that all options will be a one-line configuration set.
 
 ### Caching objects at build time
 
-_To be written..._
+By design, `ccache` is installed by default. This is a compiler cache that speeds up 
+recompilation by caching the result of previous compilations and detecting when the 
+same compilation is being done again. Supported languages are C, C++, Objective-C and
+Objective-C++. It's useful to build R source code and, in second-time, to build
+and install packages in supported languages.
+
+For _standard_ and _server_ builds, you'll have a directory in your HOME,
+`~/.ccache`, and a configuration file within, `ccache.conf`, with the following
+settings:
+
+```
+# Roaster - 'ccache' configuration
+# in ~/.ccache/ccache.conf
+max_size = 5.0G
+sloppiness = include_file_ctime
+hash_dir=false
+```
+
+Virtual environments get the same files in their own directories, usually
+`~/RVE`. While the existing configurations are functional in almost use cases, 
+can be obviously customized ex-post.
 
 ### Available options
 
@@ -167,21 +192,33 @@ there're tree kind of deployments:
 
 #### Build: standard configuration
 
-```{bash}
+```bash
 $ ./roaster --build-standard
 ```
-_To be written_
+The _standard_ build is the most general configuration of your R environment,
+close to the official distributed binaries. The deployment is within your
+system and the default destination will be `/usr/local`.
 
-The default destination will be `/usr/local`.
+Everytime you'll build
+sources the resulting files (binaries, docs and so on) will overwrite the previous
+installation. If your need is have the most updated release, it's okay. If you
+need to maintain multiple release for production use-cases, the _server_ build
+is the answer.
 
 #### Build: server configuration
 
-```{bash}
+```bash
 $ ./roaster --build-server
 ```
-_To be written_
+The _server_ build is for production use-cases and one feature over all is the
+concurrent installation. The default destination will be `/opt/R/`, by-release
+version. Directories (eg. `/opt/R/R-4.1`) will collect all the needed files
+**and** a copy of the environment source code -- to re-build and/or customize the
+three.
 
-The default destination will be `/opt/R/`.
+It's a special case deployment reserved to developers and sysadmins. Binaries 
+are not executable by default, their paths should be appended to the PATH envar
+and access need administrave rights.
 
 #### Build: virtual environments
 
@@ -190,7 +227,7 @@ was the concept of _virtual environment_. Our attempt is to mimic
 some nice ideas for modern scenarios (eg. containers, VMs). The 
 acronym RVE stands for _R Virtual Environment_.
 
-```{bash}
+```bash
 $ ./roaster --build-virtualenv
 ```
 
@@ -199,14 +236,14 @@ basic tools to work.
 
 To enable it:
 
-```{bash}
+```bash
 $ cd
 $ source RVE/bin/activate
 ```
 
 You'll see a new prompt:
 
-```{bash}
+```bash
 (RVE) dmedri@host:~$
 ```
 
@@ -214,19 +251,21 @@ If you browse the content of the new location, you'll see some
 directories: `bin/`, `lib/` and `share/` (for `R`) and a `workspace/` 
  for your work. Now run the following:
 
-```{bash}
+```bash
 (RVE) dmedri@host:~$ R
 ```
 
 When you leave `R`, restore everything with:
 
-```{bash}
+```bash
 (RVE) dmedri@host:~$ deactivate
 ```
 
 and you switch back to your HOME directory.
 
 Note: the _virtualenv_ option is in-development and need love.
+
+---
 
 ## Advanced features (for developers)
 
@@ -236,7 +275,7 @@ mainly designed for developers than need special options for their work. In
 other terms, the default is the `R` release code base, but could be changed
 with an option-value in the configuration file:
 
-```{bash}
+```bash
 $ ./roaster --setup
 ```
 
@@ -258,18 +297,18 @@ files. Local updates are the next step.
 
 Fetch latest 2 repositories (optional):
 
-```{bash}
+```bash
 $ ./roaster --svn-repo-fetch-all
 ```
 
 Update local svn repositories (optional):
 
-```{bash}
+```bash
 $ ./roaster --svn-repo-update-all
 ```
 
 List informations about latest 3 repositories:
 
-```{bash}
+```bash
 $ ./roaster --svn-repo-branches
 ```
