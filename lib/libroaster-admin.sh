@@ -25,7 +25,7 @@ source lib/libroaster-utils.sh
 # call: check-status
 #
 function check-status {
-        echo "R - Check status"
+        echo "Status of R stable release and local installations."
 
         # Check online
         echo -e "\n\tSource code available online:\n"
@@ -36,7 +36,7 @@ function check-status {
         local checkr=$(command -v R)
         if [[ $checkr != "" && -e $checkr ]]; then
                 verr=$(R --version | awk '$1=="R" && $2=="version" {print $3}')
-		verp=$(R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "patched (svn " $6}')
+		verp=$(R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "branch patched (" $6}')
                 echo -e "\t\e[32m$verr\e[0m\t$checkr (standard) $verp"
         else
                 echo -e "\t\e[32m-----\e[0m\tNot available (standard)"
@@ -47,7 +47,7 @@ function check-status {
 	local verp
         if [[ -f $RVE/bin/R ]]; then
                 verr=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-		verp=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "patched (svn " $6}')
+		verp=$($RVE/bin/R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "branch patched (" $6}')
                 echo -e "\t\e[32m$verr\e[0m\t~/RVE/bin/R (virtualenv) $verp"
         else
                 echo -e "\t\e[32m-----\e[0m\tNot available (virtualenv)"
@@ -62,7 +62,7 @@ function check-status {
         if [[ -n "$lsadir" ]]; then
                 for i in $lsadir; do
                         srvr=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" {print $3}')
-                        srvp=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "patched (svn " $6}')
+                        srvp=$($SRV/$i/bin/R --version | awk '$1=="R" && $2=="version" && $4=="Patched" {print "branch patched (" $6}')
                         echo -e "\t\e[32m$srvr\e[0m\t$SRV/$i/bin/R (server) $srvp";
                 done
         else

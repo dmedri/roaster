@@ -78,7 +78,7 @@ function check-roaster-working-dirs {
 # call: app-options
 #
 function app-options {
-        echo -e "Get informations about R and mirrors:"
+        echo -e "Get informations:"
         echo -e "\t\e[34m--status\e[0m         \tR status (online + local)\n"
         echo -e "Basic administration:"
 	echo -e "\t\e[34m--setup\e[0m          \tOpen roaster config file."
