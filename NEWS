@@ -1,14 +1,16 @@
 Roaster
 
 CHANGES WITH v0.15 (...) "Riccione"
- * check-status: get patched releases infos
- * added hidden features for devs (mainly SVN support):
-     --setup (open the roaster config file)
+ * Menu option --status (was "check-status", renamed)
+   - get infos about SVN builds (eg. patches)
+ * colorfull messages in output
+ * reworked README, removed docs
+ * reworked menu options
+   - added "--setup" to open the configuration file
+   - added SVN options:
      --svn-repo-fetch-all (online check, grab latest 2 stable + trunk)
      --svn-repo-update-all (local check, update available)
      --svn-repo-branches  (online check, list available release branches)
- * colorfull messages in output
- * config setting to show svn options in menu
 
 CHANGES WITH v0.14 (04/21/2020) "Rimini XLVI"
  * functions relocation:
