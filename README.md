@@ -211,14 +211,17 @@ is the answer.
 $ ./roaster --build-server
 ```
 The _server_ build is for production use-cases and one feature over all is the
-concurrent installation. The default destination will be `/opt/R/`, by-release
-version. Directories (eg. `/opt/R/R-4.1`) will collect all the needed files
-**and** a copy of the environment source code -- to re-build and/or customize the
-three.
+concurrent installation. It's a special case deployment reserved to developers 
+and sysadmins.
 
-It's a special case deployment reserved to developers and sysadmins. Binaries 
-are not executable by default, their paths should be appended to the PATH envar
-and access need administrave rights.
+The default destination will be `/opt/R/`, by-release version. Directories (eg. 
+`/opt/R/R-4-1-BRANCH`) will collect all the needed files **and** a copy of the 
+source code -- to re-build and/or customize the stable three. For the extended 
+case of SVN repos, you could still update the available objects with `svn update` 
+in the source three.
+
+Binaries are not executable by default, their paths should be appended to the 
+PATH envar and access need administrave rights.
 
 #### Build: virtual environments
 
