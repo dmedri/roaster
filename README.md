@@ -5,7 +5,7 @@
 ## Introduction
 
 This project is an attempt to design a new tiny tool to support 
-[**R**](http://www.r-project.org), its users (**statisticians**, **data
+[**R**](http://www.r-project.org), helps its users (**statisticians**, **data
 scientists**) and **sysadmins**. It's an independent project, with
 no relation to the R Foundation.
 
@@ -25,8 +25,8 @@ Basic features:
 	* for _virtual environments_.
 * get regular updates.
 
-_Virtual Environments_ are for special deployments in user-space. The
-reference is Python virtualenv, and the goal is replicate _as-close-as-we-can_ its main features.
+_Virtual Environments_ are new deployments in user-space, the
+reference is Python virtualenv and the goal is replicate _as-close-as-we-can_ its main features.
 
 Advanced features:
 
@@ -108,21 +108,20 @@ Easy.
 
 By design, the `Roaster` has its own defaults optimized for generalized use
 cases. The latter don't need to be customized by an end-user, but it can be useful to
-know them. The app has its own configuration file (``~/.roaster/config`) that can be 
-opened with a common text editor or the specific option (see. `--setup`). To
-show the build settings run:
+know them. The app has its own configuration file (`~/.roaster/config`) that can be 
+opened with a common text editor or the specific option (see. `--setup`). Type
+the following command:
 
 ```bash
 $ ./roaster --build-settings
 ```
 
-The configuration file is changed over time and could change with new incoming features.
 A factory reset it's always a good solution to clean temporary files and store
 the needed files (see. `--factory-reset`).
 
 ### Make and configure defaults
 
-By design, the `configure` options are customizable for every build type.
+The `configure` options can be customized for custom builds.
 
 ```bash
 $ ./roaster --setup
@@ -162,8 +161,7 @@ Note: take care that all options will be a one-line configuration set.
 By design, `ccache` is installed by default. This is a compiler cache that speeds up 
 recompilation by caching the result of previous compilations and detecting when the 
 same compilation is being done again. Supported languages are C, C++, Objective-C and
-Objective-C++. It's useful to build R source code and, in second-time, to build
-and install packages in supported languages.
+Objective-C++. It's useful to build R source code and new packages.
 
 For _standard_ and _server_ builds, you'll have a directory in your HOME,
 `~/.ccache`, and a configuration file within, `ccache.conf`, with the following
@@ -178,8 +176,7 @@ hash_dir=false
 ```
 
 Virtual environments get the same files in their own directories, usually
-`~/RVE`. While the existing configurations are functional in almost use cases, 
-can be obviously customized ex-post.
+`~/RVE`. Existing configurations are for general use-cases but can be customized.
 
 ### Available options
 
@@ -196,13 +193,13 @@ there're tree kind of deployments:
 $ ./roaster --build-standard
 ```
 The _standard_ build is the most general configuration of your R environment,
-close to the official distributed binaries. The deployment is within your
-system and the default destination will be `/usr/local`.
+quite close to the official distributed binaries. The default destination for
+files is usually in `/usr/local` -- for Linux systems.
 
 Everytime you'll build
 sources the resulting files (binaries, docs and so on) will overwrite the previous
-installation. If your need is have the most updated release, it's okay. If you
-need to maintain multiple release for production use-cases, the _server_ build
+installation. For the most updated release could be okay, but if you
+need to maintain many R releases for production use-cases, the _server_ build
 is the answer.
 
 #### Build: server configuration
@@ -225,10 +222,10 @@ PATH envar and access need administrave rights.
 
 #### Build: virtual environments
 
-A first-time feature -- already available in the Python world -- 
-was the concept of _virtual environment_. Our attempt is to mimic 
-some nice ideas for modern scenarios (eg. containers, VMs). The 
-acronym RVE stands for _R Virtual Environment_.
+A killer feature -- a concept already available in the Python world -- 
+are the support for _virtual environments_. Our attempt is to mimic 
+some nice ideas looking at modern scenarios (eg. containers, VMs). RVE 
+means _R Virtual Environment_.
 
 ```bash
 $ ./roaster --build-virtualenv
@@ -272,8 +269,8 @@ Note: the _virtualenv_ option is in-development and need love.
 
 ## Advanced features (for developers)
 
-By design, the `Roaster` was for end-users and `R` stable release.
-Handling SVN repositories is a recent feature to support an advanced use case,
+Originally, the _Roaster_ was designed to end-users, and latest `R` stable release.
+Handling SVN repositories is a new feature to support an advanced use case,
 mainly designed for developers than need special options for their work. In
 other terms, the default is the `R` release code base, but could be changed
 with an option-value in the configuration file:
