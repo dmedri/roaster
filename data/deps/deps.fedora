@@ -2,3 +2,4 @@ make
 git
 svn
 ccache
+subversion
