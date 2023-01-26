@@ -1,6 +1,6 @@
 # This file is part of the Roaster project 
 # https://github.com/dmedri/roaster/
-# Copyright (c) 2019-2020 Daniele Medri.
+# Copyright (c) 2019-2023 Daniele Medri.
 # 
 # This program is free software: you can redistribute it and/or modify  
 # it under the terms of the GNU General Public License as published by  
@@ -59,17 +59,12 @@ function check-os-linux-deps {
 
 #
 # Linux: show the number of available CPUs
-# call: check-os-macos-ncpu
+# call: check-os-linux-ncpu
 #
-#function check-os-linux-ncpu {
-#        # number of cpu
-#        local $ncpu = $(grep -c processor /proc/cpuinfo)
-#
-#        echo -e "Linux - CPUs\n"
-#        echo -e "  Number: $ncpu\n"
-#	echo -e $(cat /proc/cpuinfo)
-#        if [[ $ncpu > 1 ]]; then
-#                echo -e "\nTry the 'parallel' package for better performance."
-#        fi
-#        exit
-#}
+function check-os-linux-ncpu {
+        # number of cpu
+        local $ncpu = $(grep -c processor /proc/cpuinfo)
+        if [[ $ncpu > 1 ]]; then
+		echo -e "\nWith $ncpu you should try the 'parallel' R package for better performance."
+	fi
+}

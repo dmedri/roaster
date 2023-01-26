@@ -1,6 +1,6 @@
 # This file is part of the Roaster project 
 # https://github.com/dmedri/roaster/
-# Copyright (c) 2019-2020 Daniele Medri.
+# Copyright (c) 2019-2023 Daniele Medri.
 # 
 # This program is free software: you can redistribute it and/or modify  
 # it under the terms of the GNU General Public License as published by  
@@ -128,3 +128,50 @@ function freemem {
         unset RVE
         unset LOG
 }
+
+#
+# Autocomplete: will suggest arguments on tab
+# call: private
+#
+
+_roaster() {
+	local cur prev opts
+	COMPREPLY=()
+	# The argument typed so far
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	# The previous argument
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+	# Go though all cases we support
+	case "${prev}" in
+		# After the main command, show the commands
+		"roaster")
+			opts="--build-standard --build-virtualenv --build-server"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+			;;
+		# Standard build
+		"--build-standard")
+			COMPREPLY=( $(compgen --build-standard -- ${curl}) )
+			return 0
+			;;
+		# Virtualenv build
+		"--build-virtualenv")
+			COMPREPLY=( $(compgen --build-virtualenv -- ${cur}) )
+			return 0
+			;;
+		# Server build
+		"--build-server")
+			COMPREPLY=( $(compgen --build-server -- ${cur}) )
+			return 0
+			;;
+ 		*)
+		;;
+	esac
+
+	# Nothing matched, so return nothing
+	return 0
+}
+
+# Register the autocomplete function
+complete -F _roaster roaster

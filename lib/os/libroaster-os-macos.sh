@@ -1,6 +1,6 @@
 # This file is part of the Roaster project 
 # https://github.com/dmedri/roaster/
-# Copyright (c) 2019-2020 Daniele Medri.
+# Copyright (c) 2019-2023 Daniele Medri.
 # 
 # This program is free software: you can redistribute it and/or modify  
 # it under the terms of the GNU General Public License as published by  
@@ -28,22 +28,9 @@ function check-os-macos-deps {
 # MacOs: show the number of available CPUs
 # call: check-os-macos-ncpu
 #
-#function check-os-macos-ncpu {
-#	# number of cpu
-#	local $ncpu = $(sysctl -n hw.ncpu)
-#
-#	# number of phisical cpu
-#	local $pcpu = $(sysctl -n hw.physicalcpu)
-#
-#	# number of logical cpu
-#	local $lcpu = $(sysctl -n hw.logicalcpu)
-#
-#	echo -e "MacOs - CPUs\n"
-#	echo -e "  Number: $ncpu"
-#	echo -e "Phisical: $pcpu"
-#	echo -e " Logical: $lcpu"
-#	if[$ncpu > 1]{
-#		echo -e "\nTry the 'parallel' package for better performance."
-#	}
-#	exit
-#}
+function check-os-macos-ncpu {
+	local $ncpu = $(sysctl -n hw.ncpu)
+	if [[ $ncpu > 1 ]]; then
+		echo -e "\nWith $ncpu you should try the 'parallel' R package for better performance."
+	fi
+}

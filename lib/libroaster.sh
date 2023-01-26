@@ -1,6 +1,6 @@
 # This file is part of the Roaster project 
 # https://github.com/dmedri/roaster/
-# Copyright (c) 2019-2020 Daniele Medri.
+# Copyright (c) 2019-2023 Daniele Medri.
 # 
 # This program is free software: you can redistribute it and/or modify  
 # it under the terms of the GNU General Public License as published by  
@@ -26,7 +26,7 @@ source lib/libroaster-build.sh
 #
 function roaster-header {
         echo -e "\e[32mRoaster\e[0m - https://github.com/dmedri/roaster"
-        echo -e "Copyright 2019-2021 Daniele Medri - GNU LGPL 2.1+"
+        echo -e "Copyright 2019-2023 Daniele Medri - GNU LGPL 2.1+"
         echo -e "Use 'roaster --help' for the available options.\n"
 }
 
