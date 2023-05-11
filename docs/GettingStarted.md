@@ -15,8 +15,8 @@ $ cd roaster/
 $ ./roaster --help
 ```
 
-The default environment is by default "stable" and you don't need any
-other action before the build. Other available options are:
+The default environment is "stable" and you don't need any
+other action before the build. Available options are:
 
 ```bash
 $ ./roaster --set-branch
