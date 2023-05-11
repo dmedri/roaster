@@ -23,7 +23,7 @@ $ ./roaster --set-branch
 ```
 
 for the "branch" (stable, from SVN server) version of R environment. With
-this option you could try the features of a stable release, with the incoming
+this option you can try the features of a stable release, with the incoming
 patches that will be in for the next minor release.
 
 ```bash
@@ -36,7 +36,7 @@ major release. Useful for developers, not for basic needs.
 ```bash
 $ ./roaster --set-stable
 ```
-To set up the "stable" environment.
+To set up the "stable" environment back again.
 
 ## Build
 
