@@ -23,4 +23,4 @@ Windows, MacOs and other Unix-like Oses.
 ## Documentations
 
 * Basic Usage:
-  * [Getting started][docs/GettingStarted.md]
+  * [Getting started](docs/GettingStarted.md)
