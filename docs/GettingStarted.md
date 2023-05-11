@@ -15,11 +15,11 @@ $ cd roaster/
 $ ./roaster --help
 ```
 
-By default, the "stable" environment is set and you don't need any
-other action before the build. To set a different release:
+The default environment is by default "stable" and you don't need any
+other action before the build. Other available options are:
 
 ```bash
-$ ./roastger --set-branch
+$ ./roaster --set-branch
 ```
 
 for the "branch" (stable, from SVN server) version, or
@@ -28,6 +28,11 @@ for the "branch" (stable, from SVN server) version, or
 $ ./roaster --set-trunk
 ```
 for the "trunk" (unstable) version of R environment.
+
+```bash
+$ ./roaster --set-stable
+```
+To set up the "stable" environment.
 
 ## Build
 
@@ -55,8 +60,9 @@ fit in the system path-three, and can live concurrently with other release.
 $ ./roaster --build-server
 ```
 
-You could run the whole set of these options, building and using 3 kind of
-installations. An ex-post command at this point is:
+You could run the whole set of these options, building and using the whole set.
+
+At any time, you could see the status:
 
 ```bash
 $ ./roaster --status
