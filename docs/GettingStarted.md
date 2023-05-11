@@ -15,10 +15,6 @@ $ cd roaster/
 $ ./roaster --help
 ```
 
-![](images/roaster-terminal-help.png)
-
-If you can see the help menu, the tool is available and running.
-
 By default, the "stable" environment is set and you don't need any
 other action before the build. To set a different release:
 
