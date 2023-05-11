@@ -22,12 +22,16 @@ other action before the build. Other available options are:
 $ ./roaster --set-branch
 ```
 
-for the "branch" (stable, from SVN server) version, or
+for the "branch" (stable, from SVN server) version of R environment. With
+this option you could try the features of a stable release, with the incoming
+patches that will be in for the next minor release.
 
 ```bash
 $ ./roaster --set-trunk
 ```
-for the "trunk" (unstable) version of R environment.
+for the "trunk" (unstable, from SVN server) version of R environment.
+With this option you can try the incoming features that will be in the next
+major release. Useful for developers, not for basic needs.
 
 ```bash
 $ ./roaster --set-stable
