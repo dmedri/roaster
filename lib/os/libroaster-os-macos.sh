@@ -25,12 +25,16 @@ function check-os-macos-deps {
 }
 
 #
-# MacOs: show the number of available CPUs
-# call: check-os-macos-ncpu
+# MacOs: tips
+# call: os-macos-tips
 #
-function check-os-macos-ncpu {
+function os-macos-tips {
+	# check the number of cpu cores
 	local $ncpu = $(sysctl -n hw.ncpu)
 	if [[ $ncpu > 1 ]]; then
-		echo -e "\nWith $ncpu you should try the 'parallel' R package for better performance."
+		sepline
+		echo -e "\e[1mCPU with $ncpu Core\e[0m"
+		echo -e "You should try the 'parallel' R package for better performance."
+		sepline
 	fi
 }

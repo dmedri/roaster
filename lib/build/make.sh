@@ -67,19 +67,3 @@ function roaster-build-make {
 		make
 	fi
 }
-
-#
-# Configure
-# call: roaster-build-configure
-#
-function roaster-build-configure {
-	if [[]]; then
-		echo "virtualenv"
-	elif [[]]; then
-		echo "standard"
-	elif [[]]; then
-		echo "server"
-	else
-		echo ""
-	fi
-}

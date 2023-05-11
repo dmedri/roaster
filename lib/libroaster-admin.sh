@@ -91,12 +91,16 @@ function roaster-autoclean {
 #
 function roaster-factory-reset {
 	# Add a new config file
-        if [[ -f $RCO/config ]]; then
+        if [[ ! -d $RCONF ]]; then
+		echo -e "Ricreo file di configurazione?"
                 roaster-new-config
         fi
 	
 	# Remove check files and logs
         roaster-autoclean
+
+	# RBTYPE default
+	set-rbtype-stable
 
 	# Remove all files, reporitories and source code directories
 	if [[ -d $RCO ]]; then

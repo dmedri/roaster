@@ -16,7 +16,7 @@
 
 
 #
-# Build: install a 'canonical' R in the system
+# Build: install a R standard build
 # call: R-build-standard
 #
 function R-build-standard {
@@ -64,4 +64,3 @@ function R-build-standard {
 
 	echo -e "\e[1mInstallation completed.\e[0m\n"
 }
-

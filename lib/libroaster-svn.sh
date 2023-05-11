@@ -34,9 +34,9 @@ function check-svn-branch {
 
 #
 # SVN: update all local repositories
-# call: svn-repo-update-all
+# call: svn-repo-update
 #
-function svn-repo-update-all {
+function svn-repo-update {
 	cd $RCO/src
 	echo -e "\e[32mSVN local repositories:\e[0m"
 	for i in `ls -d {R*-B*,R-TRUNK} 2>/dev/null`; do
@@ -58,12 +58,16 @@ function svn-repo-fetch-branch {
 	if [[ ! -d $BRANDIR ]]; then
 		svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR \
 		&& log "svn co $SVNSRV/R/branches/R-$BRANNM-branch/ $BRANDIR"
+		sepline
 		echo -e "\e[1m2) The source code is now available.\e[0m"
+		sepline
 	else
 		cd $BRANDIR
 		svn up \
 		&& log "svn up"
+		sepline
 		echo -e "\e[1m2) The source code is now updated.\e[0m"
+		sepline
 	fi
 }
 
@@ -77,12 +81,16 @@ function svn-repo-fetch-trunk {
 	if [[ ! -d "R-TRUNK" ]]; then
 		svn co $SVNSRV/R/trunk R-TRUNK \
 		&& log "svn co $SVNSRV/R/trunk R-TRUNK"
+		sepline
 		echo -e "\e[1m2) The source code is now available.\e[0m"
+		sepline
 	else
 		cd R-TRUNK
 		svn up \
 		&& log "svn up"
+		sepline
 		echo -e "\e[1m2) The source code is now updated.\e[0m"
+		sepline
 	fi
 }
 
@@ -90,7 +98,7 @@ function svn-repo-fetch-trunk {
 # SVN: fetch a defined list of repo
 # call: svn-repo-fetch-all
 #
-function svn-repo-fetch-all {
+function svn-repo-fetch {
 	cd $RCO/src
 	# latest n branches
 	n=2
@@ -107,10 +115,11 @@ function svn-repo-fetch-all {
 # call: svn-repo-branches
 #
 function svn-repo-branches {
-	#latest branches
-	br=$(svn ls $SVNSRV/R/branches|grep branch|tail -3|sort)
+	#latest n branches
+	n=3
+	br=$(svn ls $SVNSRV/R/branches|grep branch|tail -$n|sort)
 	echo -e "\e[32mURL:\e[0m $SVNSRV/R/branches/\n"
-	echo -e "\e[32mRelease branches (latest 3):\e[0m\n"
+	echo -e "\e[32mRelease branches (latest $n):\e[0m\n"
 	for i in $br; do
 		r=$(svn log $SVNSRV/R/branches/$i --stop-on-copy --quiet | tail -2 | head -1)
 		echo -e "\e[32m\t$i\e[0m\n\t$r\n"

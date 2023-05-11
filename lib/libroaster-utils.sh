@@ -34,7 +34,15 @@ function log {
 # call: MIRROR=$(get-value MIRROR)
 #
 function get-value {
-	cat $RCO/config | grep "^$1" | awk -F '"' '{print $2}'
+	cat $RCONF/config | grep "^$1" | awk -F '"' '{print $2}'
+}
+
+# 
+# Retrieve rbtype value
+# call: RBTYPE=$(get-value-rbtype)
+#
+function get-value-rbtype {
+        cat $RCONF/config.rbtype | grep "^$1" | awk -F '"' '{print $2}'
 }
 
 #
@@ -84,7 +92,7 @@ function file-untar {
 # call: roaster-setup
 #
 function roaster-setup {
-	vi $RCO/config
+	vi $RCONF/config
 }
 
 #
@@ -128,50 +136,3 @@ function freemem {
         unset RVE
         unset LOG
 }
-
-#
-# Autocomplete: will suggest arguments on tab
-# call: private
-#
-
-_roaster() {
-	local cur prev opts
-	COMPREPLY=()
-	# The argument typed so far
-	cur="${COMP_WORDS[COMP_CWORD]}"
-	# The previous argument
-	prev="${COMP_WORDS[COMP_CWORD-1]}"
-
-	# Go though all cases we support
-	case "${prev}" in
-		# After the main command, show the commands
-		"roaster")
-			opts="--build-standard --build-virtualenv --build-server"
-			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-			return 0
-			;;
-		# Standard build
-		"--build-standard")
-			COMPREPLY=( $(compgen --build-standard -- ${curl}) )
-			return 0
-			;;
-		# Virtualenv build
-		"--build-virtualenv")
-			COMPREPLY=( $(compgen --build-virtualenv -- ${cur}) )
-			return 0
-			;;
-		# Server build
-		"--build-server")
-			COMPREPLY=( $(compgen --build-server -- ${cur}) )
-			return 0
-			;;
- 		*)
-		;;
-	esac
-
-	# Nothing matched, so return nothing
-	return 0
-}
-
-# Register the autocomplete function
-complete -F _roaster roaster

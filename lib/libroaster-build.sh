@@ -22,6 +22,7 @@ source lib/build/server.sh
 source lib/build/ccache.sh
 source lib/build/make.sh
 source lib/build/rprofile.sh
+source lib/build/rbtype.sh
 source lib/libroaster-svn.sh
 source lib/libroaster-web.sh
 

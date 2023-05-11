@@ -31,22 +31,31 @@ function roaster-header {
 }
 
 # 
-# Create a new config file
+# Create a new Roaster configuration file
 # call: roaster-new-config
 #
 function roaster-new-config {
-        if [[ -f $RRC/data/tmpl.config ]]; then
-                cat $RRC/data/tmpl.config > $RCO/config
+	# Get the default available configuration
+	if [[ -f $RRC/data/tmpl.config ]]; then
+                cat $RRC/data/tmpl.config > $RCONF/config
+		set-rbtype-stable
         else
-                echo "MIRROR=\"https://cloud.r-project.org\"" > $RCO/config
-                echo "LOG=\"file\"" >> $RCO/config
-                echo "SVNSRV=\"https://svn.r-project.org/\"" >> $RCO/config
-                echo "RBTYPE=\"stable" >> $RCO/config
-                echo "OPTSRV=\"\"" >> $RCO/config
-                echo "OPTSTD=\"\"" >> $RCO/config
-                echo "OPTRVE=\"\"" >> $RCO/config
-                echo "MCHECK=\"check\"" >> $RCO/config
-                echo "MAKE=\"\"" >> $RCO/config
+		# Set a fall-back configuration
+		sepline
+		echo -e "The default configuration file:\n"
+		echo -e "\t$RRC/data/tmpl.config\n"
+		echo -e "is not available. Setting a fall-back setup."
+		sepline
+
+                echo "MIRROR=\"https://cloud.r-project.org\"" > $RCONF/config
+                echo "LOG=\"file\"" >> $RCONF/config
+                echo "SVNSRV=\"https://svn.r-project.org/\"" >> $RCONF/config
+                echo "RBTYPE=\"stable" >> $RCONF/config.rbtype
+                echo "OPTSRV=\"\"" >> $RCONF/config
+                echo "OPTSTD=\"\"" >> $RCONF/config
+                echo "OPTRVE=\"\"" >> $RCONF/config
+                echo "MCHECK=\"check\"" >> $RCONF/config
+                echo "MAKE=\"\"" >> $RCONF/config
         fi
 }
 
@@ -57,24 +66,24 @@ function roaster-new-config {
 function check-roaster-working-dirs {
         # Create Roaster directories
 	if [[ ! -d $RCO ]]; then
-                mkdir -p $RCO/{src,logs,checks,infos}
+                mkdir -p $RCO/{src,logs,checks,infos,confs}
                 roaster-new-config
         fi
 
         # Query available settings
         MIRROR=$(get-value MIRROR)
         SVNSRV=$(get-value SVNSRV)
-        RBTYPE=$(get-value RBTYPE)
         OPTSRV=$(get-value OPTSRV)
         OPTSTD=$(get-value OPTSTD)
         OPTRVE=$(get-value OPTRVE)
         MCHECK=$(get-value MCHECK)
         OPTMKE=$(get-value OPTMKE)
+        RBTYPE=$(get-value-rbtype RBTYPE)
         LOG=$(get-value LOG)
 }
 
 # 
-# Roaster help menuo
+# Roaster help menu
 # call: app-options
 #
 function app-options {
@@ -83,17 +92,21 @@ function app-options {
         echo -e "Basic administration:"
 	echo -e "\t\e[34m--setup\e[0m          \tOpen roaster config file."
         echo -e "\t\e[34m--mirrors\e[0m        \tShow mirrors by-country."
-        echo -e "\t\e[34m--autoclean\e[0m      \tRemove unuseful files."    
+        echo -e "\t\e[34m--autoclean\e[0m      \tRemove all session files."    
         echo -e "\t\e[34m--factory-reset\e[0m  \tFactory reset.\n"
+        echo -e "R environment:"
+        echo -e "\t\e[34m--set-stable\e[0m     \tLatest stable release (default)."
+        echo -e "\t\e[34m--set-branch\e[0m     \tThe stable branch repository (SVN)."
+        echo -e "\t\e[34m--set-trunk\e[0m      \tThe unstable trunk repository (SVN).\n"
         echo -e "Build source code:"
         echo -e "\t\e[34m--build-settings\e[0m  \tShow build settings."
         echo -e "\t\e[34m--build-server\e[0m    \tConcurrent minimal versions in system."
         echo -e "\t\e[34m--build-standard\e[0m  \tCommon installation in system."
         echo -e "\t\e[34m--build-virtualenv\e[0m\tCreate a virtual environment.\n"
        	echo -e "SVN actions:"
-       	echo -e "\t\e[34m--svn-repo-fetch-all\e[0m\tFetch svn repos (latest 2 stable + trunk)."
-       	echo -e "\t\e[34m--svn-repo-update-all\e[0m\tUpdate local svn repos (in ~/.roaster/src/)."
-       	echo -e "\t\e[34m--svn-repo-branches\e[0m\tBasic infos about branches.\n"
+       	echo -e "\t\e[34m--svn-repo-fetch\e[0m\tFetch svn repos (latest 2 stable + trunk)."
+       	echo -e "\t\e[34m--svn-repo-update\e[0m\tUpdate local svn repos (in ~/.roaster/src/)."
+       	echo -e "\t\e[34m--svn-repo-branches\e[0m\tBasic infos about most recent branches.\n"
 }
 
 #

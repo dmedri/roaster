@@ -27,20 +27,26 @@ function check-os-linux-deps {
 	if [[ ! -f $RCO/checks/required-packages ]]; then
 		log "Installing required dependencies"
 		if [[ -e $apt ]]; then
-			LNX="Debian derivatives (Debian, Ubuntu, Kali)"
-			echo -e "\e[1m1) $LNX installing dependencies...\e[0m\n"
+			LNX="Debian derivatives -"
+			sepline
+			echo -e "\e[1m1) $LNX installing dependencies...\e[0m"
+			sepline
 			sudo apt-get build-dep r-base --yes --quiet \
 			&& sudo apt-get install $(cat data/deps/deps.debian) --yes --quiet \
 			&& echo $(date) > $RCO/checks/required-packages
 		elif [[ -e $yum  ]]; then
-			LNX="Fedora derivatives (Fedora, SuSE, CentOs)"
-			echo -e "\e[1m1) $LNX installing dependencies...\e[0m\n"
+			LNX="Fedora derivatives -"
+			sepline
+			echo -e "\e[1m1) $LNX installing dependencies...\e[0m"
+			sepline
 			sudo yum builddep R -y \
 			&& sudo yum install $(cat data/deps/deps.fedora) -y \
 			&& echo $(date) > $RCO/checks/required-packages
 		elif [[ -e $pac ]]; then
-			LNX="Arch derivatives (Arch, Manjaro, Antergos)"
-			echo -e "\e[1m1) $LNX installing dependencies...\e[0m\n"
+			LNX="Arch derivatives -"
+			sepline
+			echo -e "\e[1m1) $LNX installing dependencies...\e[0m"
+			sepline
 			sudo pacman -S --needed - < data/deps/deps.arch --noconfirm \
 			&& sudo pacman -S $(expac -S "%E" r) --noconfirm \
 			&& echo $(date) > $RCO/checks/required-packages
@@ -52,19 +58,24 @@ function check-os-linux-deps {
 		fi
 	else
 		log "Dependencies already available"
+		sepline
 		echo -e "\e[1m1) Dependencies already available.\e[0m"
+		sepline
 	fi
 }
 
 
 #
-# Linux: show the number of available CPUs
-# call: check-os-linux-ncpu
+# Linux: show tips
+# call: os-linux-tips
 #
-function check-os-linux-ncpu {
-        # number of cpu
+function os-linux-tips {
+        # check the number of cpu cores
         local $ncpu = $(grep -c processor /proc/cpuinfo)
         if [[ $ncpu > 1 ]]; then
-		echo -e "\nWith $ncpu you should try the 'parallel' R package for better performance."
+		sepline
+		echo -e "\e[1mCPU with $ncpu Core\e[0m"
+		echo -e "You should try the 'parallel' R package for better performance."
+		sepline
 	fi
 }

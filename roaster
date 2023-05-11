@@ -28,6 +28,9 @@ RVE="$HOME/RVE"
 # Roaster home
 RCO="$HOME/.roaster"
 
+# Roaster configurations
+RCONF="$RCO/confs"
+
 # Roaster server builds home
 SRV="/opt/R"
 
@@ -53,7 +56,7 @@ CRANM="CRAN_mirrors.csv"
 roaster-header
 
 # Commands: evaluate status
-check-cmdreq {bash,awk,cat,cut,tar,pwd,wget,grep,sudo}
+check-cmdreq {bash,awk,cat,cut,tar,pwd,wget,grep,sudo,vi}
 if [[ $RBTYPE = "branch" || $RBTYPE = "trunk" ]]; then
 	check-cmdreq {svn,git}
 fi
@@ -83,11 +86,20 @@ while [[ -n "$1" ]]; do
 	"--svn-repo-branches")
 		svn-repo-branches
 		;;
-	"--svn-repo-update-all")
-		svn-repo-update-all
+	"--svn-repo-update")
+		svn-repo-update
 		;;
-	"--svn-repo-fetch-all")
-		svn-repo-fetch-all
+	"--svn-repo-fetch")
+		svn-repo-fetch
+		;;
+	"--set-stable")
+		set-rbtype-stable
+		;;
+	"--set-branch")
+		set-rbtype-branch
+		;;
+	"--set-trunk")
+		set-rbtype-trunk
 		;;
 	"--build-server")
 		check-rstable-latest

@@ -22,12 +22,16 @@
 function check-os-freebsd-deps {
 	if [[ ! -f $RCO/checks/required-packages ]]; then
 		log "Installing required dependencies"
+		sepline
 		echo "1) Installing dependencies..."
+		sepline
 		sudo pkg info -qd | xargs sudo pkg install --yes \
 		&& sudo pkg install $(cat data/pkgs.freebsd) --yes \
 		&& echo $(date) > $RCO/checks/required-packages
 	else
 		log "Dependencies already available"
+		sepline
 		echo "1) Dependencies already available."
+		sepline
 	fi
 }
