@@ -24,3 +24,4 @@ Windows, MacOs and other Unix-like Oses.
 
 * Basic Usage:
   * [Getting started](/docs/GettingStarted.md)
+  * [Test latest branch and unstable release](/docs/SvnTools.md)

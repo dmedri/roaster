@@ -17,7 +17,7 @@ $ ./roaster --set-branch
 For R unstable (SVN server):
 
 ```
-$ ./roaster --set-unstable
+$ ./roaster --set-trunk
 ```
 
 To switch back to stable:
