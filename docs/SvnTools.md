@@ -1,6 +1,6 @@
 # roaster
 
-![](images/roaster-logo.png)
+![](../images/roaster-logo.png)
 
 ## Using SVN source repositories
 
