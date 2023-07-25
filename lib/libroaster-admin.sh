@@ -92,7 +92,7 @@ function roaster-autoclean {
 function roaster-factory-reset {
 	# Add a new config file
         if [[ ! -d $RCONF ]]; then
-		echo -e "Ricreo file di configurazione?"
+		echo -e "\e[32mResetting configuration files.\e[0m"
                 roaster-new-config
         fi
 	
